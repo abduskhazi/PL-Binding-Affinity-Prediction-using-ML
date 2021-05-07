@@ -1,0 +1,9 @@
+Here we describe the infrastructure of our project including description of our data.
+
+PCBA dataset - 
+1. It is a csv file in which each line of our file represents a molecule
+2. The 2nd last columns represent a module ID (CID*) which is an ID given by PubChem website.
+3. Last column represents the SMILE string of our molecule.
+4. All other columns are PCBA<num> (PubChem BioAssay). The represents an assessment of the molecule w.r.t to a biological experiment* (More information needed). Their values are {empty, 0, 1} for each record.
+
+
