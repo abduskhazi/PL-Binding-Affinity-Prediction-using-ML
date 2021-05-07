@@ -1,0 +1,40 @@
+Representation of molecules
+
+SMILES - https://en.wikipedia.org/wiki/Simplified_molecular-input_line-entry_system
+1. It is used to represent molecules as an ASCII string.
+2. The molecules are first given input as a graph where nodes are atoms and bonds are undirected edjes.
+3. All hydrogen atoms are trimmed (They are assumed to exist when the # bonds < required for an element)
+4. A spanning tree is created by removing all the cycles.
+5. A depth first traversel of the graphs is done to form the SMILES string.
+
+    Advantage:
+        1. Easier/standadized representation of the molecules
+    Disadvantage:
+        1. Non unique representation of the molecule. Infact the number of representations are exponential.
+        2. 3-D structure differentiation representation requires special characters. (For physical isomorphs)
+        3. More than one unique representations possible for a molecule.
+
+XYZ format - https://www.youtube.com/watch?v=f6K8k0sH2TY 
+             https://en.wikipedia.org/wiki/XYZ_file_format
+1. This is used to represent the molecule in its 3D shape.
+2. All the atoms are represented with X, Y and Z coordinates hence the name XYZ format.
+3. The X,Y,Z coordinates given are relative to each other hence, translation and rotation do not change the represenation.
+
+    Advantage:
+    1. 3D structure is inbuilt in the representation
+    Disadvantage:
+    2. Connectivity information is calculated and is not implicit.
+
+PDB format - https://www.youtube.com/watch?v=_1q7sfjl2Kw
+             https://en.wikipedia.org/wiki/Protein_Data_Bank_(file_format)
+1. Used to represent the protein molecules (macro molecules)
+2. Contains information regarding the coordinates of atoms like the XYZ format. (Armstrong units)
+3. Contains information regarding protein secondary structures.
+4. Molecular visualization is possible using specialized software. 
+5. Column specific (Due to legacy conditions)
+
+SDF Format - https://en.wikipedia.org/wiki/Chemical_table_file
+1. It is a type of molecular descriptive file.
+2. Contains information similar to xyz format.
+3. In addition to this contains bond information.
+4. [My observation] Can be used to create a graph using which SMILES string can be created.
