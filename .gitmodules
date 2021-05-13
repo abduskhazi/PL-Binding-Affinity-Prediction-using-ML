@@ -1,0 +1,3 @@
+[submodule "galaxytools"]
+	path = galaxytools
+	url = https://github.com/bgruening/galaxytools.git
