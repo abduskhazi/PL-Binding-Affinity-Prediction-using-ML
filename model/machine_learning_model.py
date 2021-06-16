@@ -1,10 +1,11 @@
+import sys
 import numpy as np
 
 # First get the output variable value
 output_var_file = "regression_var.data"
 
-# Input variable file
-input_var_file = "model_input_all_proteins_mol2_exp.data"
+print("Enter input variable file name : ", file=sys.stderr)
+input_var_file = input()
 
 with open(output_var_file) as regression_f:
     regression_list = [r.strip() for r in regression_f.readlines()]

@@ -1,9 +1,34 @@
-Probable work in the future
-    1. *** Maybe we need to combine multiple pocket descriptors from the same protien...***
+=============================================================================================
+                                     THINGS TODO IN FUTURE
+=============================================================================================
+These tasks are after completing the machine learning pipeline -
+    1. Combining multiple pocket descriptors from the same protien. Here it maybe that multiple pockets bind to the same lingand.
+       So it may be a good idea to combine the descriptors of the pockets
+    2. Do normalization before doing a PCA. PCA in itself is not found to be a good feature reduction technique. So this could be tried
+       out in the future.
+
+=============================================================================================
+                                   TRIED THIS WEEK
+=============================================================================================
+    1. Use log scale instead of removing the feature.
     2. Make a threashold of eg 0.1 and all the bins should be higher than this for selection. 
-    3. *** ---- only for testing ---- Do normalization before doing a PCA. ***
-    4. See / read about the models that you can apply
+    3. See / read about the models that you can apply
         a. Reading for small data sets.
         b. Feature selection ***
         c. 
-    5.  
+
+=============================================================================================
+                               MACHINE LEARNING MODEL
+=============================================================================================
+Model Input Setup
+    Extracted regression variable data is copied in the model/ folder of repository (model output).
+    mol2-all-proteins is copied as the input in the model/ folder. (model input)
+    Here we have constructed a model input in the following format -
+	57 + 403 columns for each row for the giving protein ligand complex.
+        Columns 1,2,58 should be removed because they are strings of protein, , ligand_name
+
+    Test - train split is done with 80 + 10 + 10. Train and validate data is kept together for doing
+           hyperparamter optimization.
+    Create a full matrix of values using numpy.
+    Feature selection can be done using the index selection of numpy.
+    It is better to wait for the feature selection before removing nans from our data.
