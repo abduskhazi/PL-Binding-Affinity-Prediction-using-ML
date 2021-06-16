@@ -1,0 +1,9 @@
+Probable work in the future
+    1. *** Maybe we need to combine multiple pocket descriptors from the same protien...***
+    2. Make a threashold of eg 0.1 and all the bins should be higher than this for selection. 
+    3. *** ---- only for testing ---- Do normalization before doing a PCA. ***
+    4. See / read about the models that you can apply
+        a. Reading for small data sets.
+        b. Feature selection ***
+        c. 
+    5.  

@@ -1,0 +1,41 @@
+First convert all files to smi files.
+https://iwatobipen.wordpress.com/2018/01/06/simple-way-for-making-smiles-file-rdkit/
+Could only sythesyse 7000 out of ~11000 ligands to smiles.
+
+find . | grep sdf | xargs -n 1 python ../Repository/galaxytools/chemicaltoolbox/rdkit/rdkit_descriptors.py --iformat sdf -i > ligand_descriptors.dat
+
+Getting errors is this cause for concern? - 
+ERROR: Explicit valence for atom # 2 C, 6, is greater than permitted
+[12:15:31] Explicit valence for atom # 0 C, 6, is greater than permitted
+[12:15:31] ERROR: Could not sanitize molecule ending on line 301
+
+
+When using mol2 format - we get the following warning = (O.co2 with non C.2 or S.o2 neighbor.)
+    also getting the following error ==> Warning - O.co2 with degree >1.
+    Can't kekulize mol.  Unkekulized atoms: 9 10 11 13 14 15 16 17 18
+    no explicit hydrogens in mol2 file but needed for formal charge estimation. TODO (may be related to explicit valence)----> Assumed in file formats. Find functionality to add missing hydrogen atoms.
+
+TODO -------> Perform sanitization process. (script)
+     -------> 2019... vs 2015. maybe get the latest version.
+     -------> Add hydrogen atoms.
+     ----> Download again pdbdataset for getting ID of the ligand.
+# To send data to the remote location - use scp -i vm_bioinformatics Data/* user@192.52.41.43:/scratch/users/abdus/data/
+
+
+
+
+(Done)
+Unable to do libXrender.so so I did on my compute to save time.
+
+
+Got more descriptors in mol2 format.
+
+
+
+find . | grep _protein.pdb | xargs -n 1 fpocket -f ==> for running fpocket on al the proteins.
+Errors obtained -
+exceeding memory size for each grid element***** POCKET HUNTING ENDS *****
+
+
+Questions - 
+What is resname for getting the binding descriptions (of proteins using dpocket)

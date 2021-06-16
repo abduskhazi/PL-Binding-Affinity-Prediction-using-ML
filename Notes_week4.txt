@@ -1,0 +1,86 @@
+=============================================================================
+LITERATURE REVIEW
+=============================================================================
+
+Points understood from papers -
+
+There are 2 type of problems 
+    LBS - Ligand binding site prediction
+    Ligand affinity prediction
+
+Both the above probles are a dichotomous problem.
+    Thus the accuracy measure of the protien LBS prediction is the same as the dichotomous problems in math.
+
+LBS (Ligand binding side) prediction can be classified into 3 types -
+    1. 3D structure based
+    2. Template based
+    3. Sequence based
+    Example - Fpocket a #3D structure based LBS finding algorithm
+              fpocket uses veronoi tessalation (3D) to find out pockets in our protein structure.
+
+Our problem - Binding affinity prediction.
+    Example of 3D structure based affinity prediction is K-deep - https://pubs.acs.org/doi/10.1021/acs.jcim.7b00650
+    It takes protein.pdb + ligand.sdf => binding affinity.
+
+Dealing with bad (nan) data -
+    1. Remove the entry (row itself) if the row is very bad.
+    2. If a column is consistenly bad remove the feature during the feature selection
+    3. Easiest option taken - grep -v nan. Only very few data points ~80 are shed because of this.
+
+Feature selection -
+    1. Select the best combination of features to give the best results - Computational feature engineering.
+       Global optimal not possible - Eg: 403 Choose 20 is a combinatorial problem. Hence heuristics may be used.
+    2. Features given by experts.
+    3. Correlation with the output. Ranking of the feature based on the magnitude of correlation. Take highest ranks.
+
+Papers read -
+1. https://www.sciencedirect.com/science/article/pii/S2001037019304465#b0600
+2. Project by Larine
+
+=============================================================================
+NOTES ABOUT COMPLETED TASKS
+=============================================================================
+The descriptors of protein bind that we have to take are from fpocket (The reason is) -
+    explicitp --> bases the calculation of the pocket based on the structure of ligand.
+    fpocket --> find pocket and then match with ligand. 
+    Using fpocket seems to cleaner. Because there is no ligand influence in pocket calculation.
+
+Use just mol2 file descriptors just for now as the calculations maybe consistent.
+    If I require more data -> remove 564 different entries.
+    (There might be some error in my scripts) - Check again in spare time.
+
+Maybe remove "as_density" feature from protein features to get rid of NAN.
+    It is better to wait for elimination of features based on NAN till just before input to the model
+
+The removal of hydrogen rows from sdf files is not working because -
+    There are rows below the H entries that use the H molecule number to specify bonds. Hence just removing the hydrogen lines may make the molecule invalid.
+    Eg: the first 2 columns below the atom entries in the sdf files specify atomic bond.
+
+=============================================================================
+DISCUSSION and NEXT TASKS 
+=============================================================================
+2. Use - log (kd/ki) as the regression variable as of now.
+    (THis is done even in https://github.com/deepchem/deepchem/issues/715)
+
+3. What proportion of values / regrssion values are kd and ki in the data
+    Total --> 17679
+    Kd --> 6455 (36.55 %)
+    Ki --> 4669 (26.43 %)
+    IC50 --> 6555 (37.11 %)
+
+4. Invest some time to find out statistics for fpocketp descriptor.
+    a. Find how many pockets per complex. Find the distribution of # of pockets.
+    check ./model_input/fp_statistics.txt
+
+1. Do correlation calculation for each feature in both the protein descriptors and ligand desriptors and select top (eg 20) features in each.
+5. Check the correlation values. If they are the same for everything, try different reductin eg: PCA.
+    ---> Interesting to do on subset of the data. 1000 dataset / bin ==> IF there is a correlation then the same correlation should existsin all parts of the data.
+    ==> There is extremely weak correlation present in the data.
+    ==> We get nan if we use explicit. This is because most of the values are identical. Not the case in using fp.
+    ==> However, this might be because of the dichotomous nature of our problem.
+    ==> IPC is a big issue.
+    ==> PCA is very fragile. For example IPC column is ridiculously big in values.
+
+6. After the machine learning model is completed, Select features by "Feature elimination" one by one.
+
+[Please feel free to add more comments on my report]
