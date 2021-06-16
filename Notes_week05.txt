@@ -29,6 +29,9 @@ Model Input Setup
 
     Test - train split is done with 80 + 10 + 10. Train and validate data is kept together for doing
            hyperparamter optimization.
+    Not taking into consideration overlap for these models
+        Future - Not having the overlap is not correct if we fp pocket descriptors so, I need to change protein descriptor selection
+
     Create a full matrix of values using numpy.
     Feature selection can be done using the index selection of numpy.
     It is better to wait for the feature selection before removing nans from our data.
