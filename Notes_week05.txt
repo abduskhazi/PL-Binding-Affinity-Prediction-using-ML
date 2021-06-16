@@ -35,3 +35,16 @@ Model Input Setup
     Create a full matrix of values using numpy.
     Feature selection can be done using the index selection of numpy.
     It is better to wait for the feature selection before removing nans from our data.
+
+
+For linear regression we have the following linear regressino scores.
+../data/train/train_model_input_all_proteins_mol2_exp_no_nan.data
+Len of X =  (11903, 39)
+Len of y =  (11903,)
+Linear Regression score =  0.3266501456309372
+
+../data/train/train_model_input_all_proteins_mol2_fp_no_nan.data         
+Len of X =  (20543, 39)
+Len of y =  (20543,)
+Linear Regression score =  0.281371366575914
+
