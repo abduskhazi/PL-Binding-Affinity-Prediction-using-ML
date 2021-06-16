@@ -32,12 +32,18 @@ for row in input_list:
     complex_name = row_values[0][:4]
     # Feature selection. According to spearman coeffecient
     protein_indexes = sorted([17, 30, 18, 15, 16, 10, 13, 25, 47, 56, 11, 3, 31, 6, 49, 5, 9, 26, 28, 19])
-    # since IPC has huge values we have to use a logorithmic scale. Value 235 should be removed
-    ligand_indexes = sorted([121, 2, 120, 208, 112, 111, 182, 210, 79, 90, 249, 205, 239, 233, 206, 1, 209, 212, 207])
+    ligand_indexes = sorted([121, 2, 120, 208, 112, 111, 182, 210, 235, 79, 90, 249, 205, 239, 233, 206, 1, 209, 212, 207])
     row_protein = row_values[:57]
     row_ligand = row_values[57:]
     row_protein = [row_protein[i] for i in protein_indexes]
-    row_ligand = [row_ligand[i] for i in ligand_indexes]
+    temp = []
+    for i in ligand_indexes:
+        # since IPC has huge values we have to use a logorithmic scale. Otherwise Value 235 should be removed
+        if i == 235:
+            temp += [np.log(float(row_ligand[i]))]
+        else:
+            temp += [row_ligand[i]]
+    row_ligand = temp
     # print(row_protein)
     # print(row_ligand)
     # exit()
