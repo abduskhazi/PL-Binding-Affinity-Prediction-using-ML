@@ -62,3 +62,6 @@ Linear Regression score =  0.281371366575914
 Conclusion of analysis---------
 The features selected have a heavy bias towards linearity so the linear models seem to work well
 --> Particularly polynomial of degree 2 regression with ordinary least square regression is working ok compared to the other regressions.
+--> We need a good way to select the features...
+-->     Do we automate this ? May be genetic algorithms with Linear regression may work good because OLSq regression has an analytical
+        solution ....... ?
