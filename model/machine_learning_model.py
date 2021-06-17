@@ -27,30 +27,42 @@ with open(input_var_file) as input_f:
 # Do direct feature selection here as this will get rid of strings as well.
 ###
 
+X_protein = []
+X_ligand = []
+
 for row in input_list:
     row_values = row.split()
     complex_name = row_values[0][:4]
-    # Feature selection. According to spearman coeffecient
-    protein_indexes = sorted([17, 30, 18, 15, 16, 10, 13, 25, 47, 56, 11, 3, 31, 6, 49, 5, 9, 26, 28, 19])
-    ligand_indexes = sorted([121, 2, 120, 208, 112, 111, 182, 210, 235, 79, 90, 249, 205, 239, 233, 206, 1, 209, 212, 207])
-    row_protein = row_values[:57]
-    row_ligand = row_values[57:]
-    row_protein = [row_protein[i] for i in protein_indexes]
-    temp = []
-    for i in ligand_indexes:
-        # since IPC has huge values we have to use a logorithmic scale. Otherwise Value 235 should be removed
-        if i == 235:
-            temp += [np.log(float(row_ligand[i]))]
-        else:
-            temp += [row_ligand[i]]
-    row_ligand = temp
-    # print(row_protein)
-    # print(row_ligand)
-    # exit()
-    x_i = [row_protein + row_ligand]
-    #if 'nan' not in x_i:
-    X += x_i
+    p_i = row_values[:57]
+    l_i = row_values[57:]
+    # since IPC has huge values we have to use a logorithmic scale. Otherwise Value 235 should be removed
+    l_i[235] = np.log(float(l_i[235]))
+    # Removing the first strings in both descriptors
+    p_i = p_i[2:]
+    l_i = l_i[1:]
+    X_protein += [p_i]
+    X_ligand += [l_i]
     y += [regression[complex_name]]
+
+
+X_protein = np.asarray(X_protein, dtype='float64')
+X_ligand = np.asarray(X_ligand, dtype='float64')
+
+from sklearn.feature_selection import SelectKBest
+from sklearn.feature_selection import f_regression, mutual_info_regression
+
+print("X_protein shape : ", X_protein.shape)
+print("X_ligand shape : ", X_ligand.shape)
+
+X_protein = SelectKBest(score_func=mutual_info_regression, k=30).fit_transform(X_protein, y)
+X_ligand = SelectKBest(score_func=mutual_info_regression, k=30).fit_transform(X_ligand, y) 
+
+print("X_protein shape (after feature selection) : ", X_protein.shape)
+print("X_ligand shape (after feature selection) : ", X_ligand.shape)
+
+X = np.concatenate((X_protein, X_ligand), axis=1)
+
+print("X shape = ", X.shape)
 
 X = np.asarray(X, dtype='float64')
 y = np.asarray(y, dtype='float64')
@@ -65,17 +77,19 @@ from sklearn.linear_model import LinearRegression
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import PolynomialFeatures
 
-degree = 2
-poly = PolynomialFeatures(degree, include_bias=False)
-X = poly.fit_transform(X)
-y = y
-
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.10, random_state=42)
 
 print(X_train.shape)
 print(X_test.shape)
 
 if True:
+    #degree = 2
+    #poly = PolynomialFeatures(degree, include_bias=False)
+    #X = poly.fit_transform(X)
+    #y = y
+
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.10, random_state=42)
+
     reg = LinearRegression().fit(X_train, y_train)
     y_pred = reg.predict(X_test)
     print("Ordinary LSQ Regression score = ", reg.score(X_train, y_train))
