@@ -65,20 +65,22 @@ from sklearn.linear_model import LinearRegression
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import PolynomialFeatures
 
-degree = 2
-poly = PolynomialFeatures(degree, include_bias=False)
-X = poly.fit_transform(X)
-y = y
-
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.10, random_state=42)
 
 print(X_train.shape)
 print(X_test.shape)
 
 if True:
+    degree = 2
+    poly = PolynomialFeatures(degree, include_bias=False)
+    X = poly.fit_transform(X)
+    #y = y
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.10, random_state=42)
     reg = LinearRegression().fit(X_train, y_train)
-    y_pred = reg.predict(X_test)
-    print("Ordinary LSQ Regression score = ", reg.score(X_train, y_train))
+    print("Ordinary LSQ Regression score (train)    = ", reg.score(X_train, y_train))
+    print("Ordinary LSQ Regression score (Validate) = ", reg.score(X_test, y_test))
+    #y_pred = reg.predict(X_test)[:15]
+    #y_test = y_test[:15]
 
 # Model 1 ends ... We would like to test the model for our test set.
 # For this we create a graph of predicted vs actual values to see how it performs.
