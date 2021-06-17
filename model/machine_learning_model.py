@@ -54,8 +54,8 @@ from sklearn.feature_selection import f_regression, mutual_info_regression
 print("X_protein shape : ", X_protein.shape)
 print("X_ligand shape : ", X_ligand.shape)
 
-X_protein = SelectKBest(score_func=mutual_info_regression, k=30).fit_transform(X_protein, y)
-X_ligand = SelectKBest(score_func=mutual_info_regression, k=30).fit_transform(X_ligand, y) 
+X_protein = SelectKBest(score_func=f_regression, k=20).fit_transform(X_protein, y)
+X_ligand = SelectKBest(score_func=f_regression, k=20).fit_transform(X_ligand, y)
 
 print("X_protein shape (after feature selection) : ", X_protein.shape)
 print("X_ligand shape (after feature selection) : ", X_ligand.shape)
@@ -83,10 +83,10 @@ print(X_train.shape)
 print(X_test.shape)
 
 if True:
-    #degree = 2
-    #poly = PolynomialFeatures(degree, include_bias=False)
-    #X = poly.fit_transform(X)
-    #y = y
+    degree = 2
+    poly = PolynomialFeatures(degree, include_bias=False)
+    X = poly.fit_transform(X)
+    y = y
 
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.10, random_state=42)
 
