@@ -54,13 +54,14 @@ from sklearn.feature_selection import f_regression, mutual_info_regression
 print("X_protein shape : ", X_protein.shape)
 print("X_ligand shape : ", X_ligand.shape)
 
-X_protein = SelectKBest(score_func=f_regression, k=20).fit_transform(X_protein, y)
-X_ligand = SelectKBest(score_func=f_regression, k=20).fit_transform(X_ligand, y)
+X_protein = SelectKBest(score_func=mutual_info_regression, k=30).fit_transform(X_protein, y)
+X_ligand = SelectKBest(score_func=mutual_info_regression, k=30).fit_transform(X_ligand, y)
 
 print("X_protein shape (after feature selection) : ", X_protein.shape)
 print("X_ligand shape (after feature selection) : ", X_ligand.shape)
 
 X = np.concatenate((X_protein, X_ligand), axis=1)
+#X = SelectKBest(score_func=mutual_info_regression, k=100).fit_transform(X, y)
 
 print("X shape = ", X.shape)
 
@@ -85,14 +86,16 @@ print(X_test.shape)
 if True:
     degree = 2
     poly = PolynomialFeatures(degree, include_bias=False)
-    X = poly.fit_transform(X)
+    #X = poly.fit_transform(X)
     y = y
 
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.10, random_state=42)
 
     reg = LinearRegression().fit(X_train, y_train)
     y_pred = reg.predict(X_test)
-    print("Ordinary LSQ Regression score = ", reg.score(X_train, y_train))
+    y_train_pred = reg.predict(X_train)
+    print("Ordinary LSQ Regression score (train) = ", reg.score(X_train, y_train))
+    print("Ordinary LSQ Regression score (validate) = ", reg.score(X_test, y_test))
 
 # Model 1 ends ... We would like to test the model for our test set.
 # For this we create a graph of predicted vs actual values to see how it performs.
@@ -103,6 +106,7 @@ if False:
     lasso_reg = linear_model.Lasso(alpha=0.8)
     lasso_reg.fit(X_train,y_train)
     y_pred = lasso_reg.predict(X_test)
+    y_train_pred = lasso_reg.predict(X_train)
     print("Lasso Regression score = ", lasso_reg.score(X_train, y_train))
 
 # Since it takes a lot of time.
@@ -113,12 +117,14 @@ if False:
     regressor.fit(X_train, y_train)
     print("Support Vector Regession score = ", regressor.score(X_train, y_train))
     y_pred = regressor.predict(X_test)
+    y_train_pred = regressor.predict(X_train)
 
 if False:
     from sklearn.linear_model import Ridge
     regression_ridge = Ridge(alpha=1.0).fit(X_train, y_train)
     y_pred = regression_ridge.predict(X_test)
     print("Ridge Regession score = ", regression_ridge.score(X_train, y_train))
+    y_train_pred = regression_ridge.predict(X_train)
 
 if False:
     import torch
@@ -201,3 +207,7 @@ plt.plot(y_test, y_pred, '.')
 plt.plot(range(2,14), range(2,14), '--')
 fig.savefig('temp.png', dpi=fig.dpi)
 
+fig_trained = plt.figure()
+plt.plot(y_train, y_train_pred, '.')
+plt.plot(range(2,14), range(2,14), '--')
+fig_trained.savefig('temp_train.png', dpi=fig.dpi)
