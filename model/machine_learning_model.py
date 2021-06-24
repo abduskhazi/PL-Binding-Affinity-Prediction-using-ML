@@ -63,6 +63,29 @@ def linear_regression_score():
     reg = LinearRegression().fit(X_train, y_train)
     return reg.score(X_test, y_test)
 
+
+from genetic_model import genetic_algorithm, onemax
+
+# define the total iterations
+n_iter = 100
+# bits
+n_bits = 500 #20
+# define the population size
+n_pop = n_bits * 5 #100
+# crossover rate
+r_cross = 0.9
+# mutation rate
+r_mut = 1.0 / float(n_bits)
+# perform the genetic algorithm search
+best, score = genetic_algorithm(onemax, n_bits, n_iter, n_pop, r_cross, r_mut)
+print('Done!')
+print('f(%s) = %f' % (best, score))
+
+exit()
+###################################################################################
+# PLOTTING 
+###################################################################################
+
 import matplotlib
 import matplotlib.pyplot as plt
 
@@ -71,7 +94,6 @@ plt.plot(y_test, y_pred, '.')
 plt.plot(range(2,14), range(2,14), '--')
 fig.savefig('temp.png', dpi=fig.dpi)
 
-exit()
 
 ###################################################################################
 # MACHINE LEARNING MODEL BEGINS
