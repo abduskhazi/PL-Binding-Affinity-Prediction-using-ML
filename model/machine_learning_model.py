@@ -44,11 +44,7 @@ for row in input_list:
         else:
             temp += [row_ligand[i]]
     row_ligand = temp
-    # print(row_protein)
-    # print(row_ligand)
-    # exit()
     x_i = [row_protein + row_ligand]
-    #if 'nan' not in x_i:
     X += x_i
     y += [regression[complex_name]]
 
@@ -56,6 +52,26 @@ X = np.asarray(X, dtype='float64')
 y = np.asarray(y, dtype='float64')
 print("Len of X = ", np.shape(X))
 print("Len of y = ", np.shape(y))
+
+
+def linear_regression_score():
+    from sklearn.linear_model import LinearRegression
+    from sklearn.model_selection import train_test_split
+    from sklearn.preprocessing import PolynomialFeatures
+
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.10, random_state=42)
+    reg = LinearRegression().fit(X_train, y_train)
+    return reg.score(X_test, y_test)
+
+import matplotlib
+import matplotlib.pyplot as plt
+
+fig = plt.figure()
+plt.plot(y_test, y_pred, '.')
+plt.plot(range(2,14), range(2,14), '--')
+fig.savefig('temp.png', dpi=fig.dpi)
+
+exit()
 
 ###################################################################################
 # MACHINE LEARNING MODEL BEGINS
@@ -70,7 +86,7 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.10, random
 print(X_train.shape)
 print(X_test.shape)
 
-if True:
+if False:
     degree = 2
     poly = PolynomialFeatures(degree, include_bias=False)
     X = poly.fit_transform(X)
@@ -181,11 +197,12 @@ if False:
     y_pred = y_pred.detach().numpy()
 
 
-import matplotlib
-import matplotlib.pyplot as plt
+if False:
+    import matplotlib
+    import matplotlib.pyplot as plt
 
-fig = plt.figure()
-plt.plot(y_test, y_pred, '.')
-plt.plot(range(2,14), range(2,14), '--')
-fig.savefig('temp.png', dpi=fig.dpi)
+    fig = plt.figure()
+    plt.plot(y_test, y_pred, '.')
+    plt.plot(range(2,14), range(2,14), '--')
+    fig.savefig('temp.png', dpi=fig.dpi)
 
