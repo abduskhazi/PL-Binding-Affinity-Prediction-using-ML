@@ -47,24 +47,28 @@ print("Len of X = ", np.shape(X))
 print("Len of y = ", np.shape(y))
 
 
-def linear_regression_score(feature_selection, X, y):
+def linear_regression_score(population, X, y):
     from sklearn.linear_model import LinearRegression
     from sklearn.model_selection import train_test_split
     from sklearn.preprocessing import PolynomialFeatures
 
-    feature_selection = np.asarray(feature_selection)
-    feature_selection = feature_selection[np.newaxis, :]
-    #print(feature_selection.shape)
+    population = np.asarray(population)
+    population = population[:, np.newaxis, :]
 
-    # Use broadcasting for the selection of columns
-    X_local = X * feature_selection
+    score_list = []
+    for feature_selection in population:
+        # Use broadcasting for the selection of columns
+        X_local = X * feature_selection
 
-    idx = np.argwhere(np.all(X_local[..., :] == 0, axis=0))
-    X_local = np.delete(X_local, idx, axis=1)
+        idx = np.argwhere(np.all(X_local[..., :] == 0, axis=1))
+        X_local = np.delete(X_local, idx, axis=1)
 
-    X_train, X_test, y_train, y_test = train_test_split(X_local, y, test_size=0.10, random_state=42)
-    reg = LinearRegression().fit(X_train, y_train)
-    return -reg.score(X_test, y_test)
+        X_train, X_test, y_train, y_test = train_test_split(X_local, y, test_size=0.10, random_state=42)
+
+        reg = LinearRegression().fit(X_train, y_train)
+        score_list += [-reg.score(X_test, y_test)]
+
+    return score_list
 
 from genetic_model import genetic_algorithm, onemax
 
