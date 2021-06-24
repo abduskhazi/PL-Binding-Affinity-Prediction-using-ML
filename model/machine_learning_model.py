@@ -63,13 +63,12 @@ def linear_regression_score():
     reg = LinearRegression().fit(X_train, y_train)
     return reg.score(X_test, y_test)
 
-
 from genetic_model import genetic_algorithm, onemax
 
 # define the total iterations
 n_iter = 100
 # bits
-n_bits = 500 #20
+n_bits = 20 #20
 # define the population size
 n_pop = n_bits * 5 #100
 # crossover rate

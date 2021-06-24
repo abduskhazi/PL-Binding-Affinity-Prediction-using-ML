@@ -69,18 +69,19 @@ def genetic_algorithm(objective, n_bits, n_iter, n_pop, r_cross, r_mut):
 		# replace population
 		pop = children
 	return [best, best_eval]
- 
-# define the total iterations
-n_iter = 100
-# bits
-n_bits = 500 #20
-# define the population size
-n_pop = n_bits * 5 #100
-# crossover rate
-r_cross = 0.9
-# mutation rate
-r_mut = 1.0 / float(n_bits)
-# perform the genetic algorithm search
-best, score = genetic_algorithm(onemax, n_bits, n_iter, n_pop, r_cross, r_mut)
-print('Done!')
-print('f(%s) = %f' % (best, score))
+
+if False:
+    # define the total iterations
+    n_iter = 100
+    # bits
+    n_bits = 500 #20
+    # define the population size
+    n_pop = n_bits * 5 #100
+    # crossover rate
+    r_cross = 0.9
+    # mutation rate
+    r_mut = 1.0 / float(n_bits)
+    # perform the genetic algorithm search
+    best, score = genetic_algorithm(onemax, n_bits, n_iter, n_pop, r_cross, r_mut)
+    print('Done!')
+    print('f(%s) = %f' % (best, score))
