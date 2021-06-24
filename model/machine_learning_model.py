@@ -81,7 +81,20 @@ best, score = genetic_algorithm(linear_regression_score, X, y, n_bits, n_iter, n
 print('Done!')
 print('f(%s) = %f' % (best, score))
 
-exit()
+best = np.asarray(best)
+best = best[np.newaxis, :]
+
+# Use broadcasting for the selection of columns
+X_local = X * feature_selection
+
+idx = np.argwhere(np.all(X_local[..., :] == 0, axis=0))
+X_local = np.delete(X_local, idx, axis=1)
+
+X_train, X_test, y_train, y_test = train_test_split(X_local, y, test_size=0.10, random_state=42)
+reg = LinearRegression().fit(X_train, y_train)
+
+y_pred = reg.predict(X_test)
+
 ###################################################################################
 # PLOTTING 
 ###################################################################################
@@ -94,6 +107,8 @@ plt.plot(y_test, y_pred, '.')
 plt.plot(range(2,14), range(2,14), '--')
 fig.savefig('temp.png', dpi=fig.dpi)
 
+# Ending the script here.
+exit()
 
 ###################################################################################
 # MACHINE LEARNING MODEL BEGINS
