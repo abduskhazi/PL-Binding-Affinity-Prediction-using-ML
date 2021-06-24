@@ -1,0 +1,3 @@
+Exam registration - 
+Pruefungsleistung registration ==> Success.
+Studienleistung registration ==> Not a Success.
