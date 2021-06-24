@@ -45,12 +45,22 @@ print("Len of X = ", np.shape(X))
 print("Len of y = ", np.shape(y))
 
 
-def linear_regression_score():
+def linear_regression_score(feature_selection, X, y):
     from sklearn.linear_model import LinearRegression
     from sklearn.model_selection import train_test_split
     from sklearn.preprocessing import PolynomialFeatures
 
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.10, random_state=42)
+    feature_selection = np.asarray(feature_selection)
+    feature_selection = feature_selection[np.newaxis, :]
+    #print(feature_selection.shape)
+
+    # Use broadcasting for the selection of columns
+    X_local = X * feature_selection
+
+    idx = np.argwhere(np.all(X_local[..., :] == 0, axis=0))
+    X_local = np.delete(X_local, idx, axis=1)
+
+    X_train, X_test, y_train, y_test = train_test_split(X_local, y, test_size=0.10, random_state=42)
     reg = LinearRegression().fit(X_train, y_train)
     return -reg.score(X_test, y_test)
 
@@ -61,13 +71,13 @@ n_iter = 100
 # bits
 n_bits = X.shape[1] #20
 # define the population size
-n_pop = n_bits * 6 #100
+n_pop = 100 # n_bits * 6 #100
 # crossover rate
 r_cross = 0.9
 # mutation rate
 r_mut = 1.0 / float(n_bits)
 # perform the genetic algorithm search
-best, score = genetic_algorithm(onemax, n_bits, n_iter, n_pop, r_cross, r_mut)
+best, score = genetic_algorithm(linear_regression_score, X, y, n_bits, n_iter, n_pop, r_cross, r_mut)
 print('Done!')
 print('f(%s) = %f' % (best, score))
 
