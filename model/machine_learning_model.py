@@ -24,27 +24,18 @@ with open(input_var_file) as input_f:
     input_list = [r.strip() for r in input_f.readlines()]
 
 ###
-# Do direct feature selection here as this will get rid of strings as well.
+# Get rid of strings from the rows.
 ###
 
 for row in input_list:
     row_values = row.split()
     complex_name = row_values[0][:4]
-    # Feature selection. According to spearman coeffecient
-    protein_indexes = sorted([17, 30, 18, 15, 16, 10, 13, 25, 47, 56, 11, 3, 31, 6, 49, 5, 9, 26, 28, 19])
-    ligand_indexes = sorted([121, 2, 120, 208, 112, 111, 182, 210, 235, 79, 90, 249, 205, 239, 233, 206, 1, 209, 212, 207])
     row_protein = row_values[:57]
     row_ligand = row_values[57:]
-    row_protein = [row_protein[i] for i in protein_indexes]
-    temp = []
-    for i in ligand_indexes:
-        # since IPC has huge values we have to use a logorithmic scale. Otherwise Value 235 should be removed
-        if i == 235:
-            temp += [np.log(float(row_ligand[i]))]
-        else:
-            temp += [row_ligand[i]]
-    row_ligand = temp
-    x_i = [row_protein + row_ligand]
+    # since IPC has huge values we have to use a logorithmic scale. Otherwise Value 235 should be removed
+    row_ligand[235] = np.log(float(row_ligand[235]))
+    # Get rid of the string columns
+    x_i = [row_protein[2:] + row_ligand[1:]]
     X += x_i
     y += [regression[complex_name]]
 
@@ -61,16 +52,16 @@ def linear_regression_score():
 
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.10, random_state=42)
     reg = LinearRegression().fit(X_train, y_train)
-    return reg.score(X_test, y_test)
+    return -reg.score(X_test, y_test)
 
 from genetic_model import genetic_algorithm, onemax
 
 # define the total iterations
 n_iter = 100
 # bits
-n_bits = 20 #20
+n_bits = X.shape[1] #20
 # define the population size
-n_pop = n_bits * 5 #100
+n_pop = n_bits * 6 #100
 # crossover rate
 r_cross = 0.9
 # mutation rate
