@@ -1,5 +1,7 @@
 import sys
 import numpy as np
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LinearRegression
 
 # First get the output variable value
 output_var_file = "regression_var.data"
@@ -82,10 +84,10 @@ print('Done!')
 print('f(%s) = %f' % (best, score))
 
 best = np.asarray(best)
-best = best[np.newaxis, :]
+best_features = best[np.newaxis, :]
 
 # Use broadcasting for the selection of columns
-X_local = X * feature_selection
+X_local = X * best_features
 
 idx = np.argwhere(np.all(X_local[..., :] == 0, axis=0))
 X_local = np.delete(X_local, idx, axis=1)
