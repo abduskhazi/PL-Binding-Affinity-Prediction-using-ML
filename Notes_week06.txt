@@ -1,3 +1,19 @@
 Exam registration - 
 Pruefungsleistung registration ==> Success.
 Studienleistung registration ==> Not a Success.
+
+
+Rationale for the usage of genetic algorithms -
+1. Our problem is a dichotonomous problem.
+2. The data is small enough to be trained with 10 seconds or less.
+3. The selection of features in both the proteins and the ligands must be complementory.
+4. There are 2 possible solutions to this -
+        a. Combinatorial optimization.
+        b. Genetics Algorithm optimization.
+
+
+
+References used to read this week:
+https://towardsdatascience.com/introduction-to-optimization-with-genetic-algorithm-2f5001d9964b
+https://www.neuraldesigner.com/blog/genetic_algorithms_for_feature_selection
+https://machinelearningmastery.com/simple-genetic-algorithm-from-scratch-in-python/
