@@ -45,6 +45,7 @@ def genetic_algorithm(objective, X, y, n_bits, n_iter, n_pop, r_cross, r_mut):
 	best, best_eval = 0, 100 #objective(pop[0], X, y)
 	# enumerate generations
 	for gen in range(n_iter):
+		print("Generation - ", gen)
 		# evaluate all candidates in the population
 		scores = objective(pop, X, y)
 		# check for new best solution

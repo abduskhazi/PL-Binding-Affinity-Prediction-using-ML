@@ -96,7 +96,7 @@ X_local = X * best_features
 idx = np.argwhere(np.all(X_local[..., :] == 0, axis=0))
 X_local = np.delete(X_local, idx, axis=1)
 
-X_train, X_test, y_train, y_test = train_test_split(X_local, y, test_size=0.10, random_state=42)
+X_train, X_test, y_train, y_test = train_test_split(X_local, y, test_size=0.10) #, random_state=42)
 reg = LinearRegression().fit(X_train, y_train)
 
 y_pred = reg.predict(X_test)
