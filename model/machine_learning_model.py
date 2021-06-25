@@ -51,33 +51,47 @@ def linear_regression_score(population, X, y):
     from sklearn.linear_model import LinearRegression
     from sklearn.model_selection import train_test_split
     from sklearn.preprocessing import PolynomialFeatures
+    import random
 
-    population = np.asarray(population)
-    population = population[:, np.newaxis, :]
+    def model_score(data_bundle):
+        fs, X, y, random_state = data_bundle
 
-    score_list = []
-    for feature_selection in population:
+        fs = np.asarray(fs)
+        fs = fs[np.newaxis, :]
+
         # Use broadcasting for the selection of columns
-        X_local = X * feature_selection
+        X_local = X * fs
 
-        idx = np.argwhere(np.all(X_local[..., :] == 0, axis=1))
-        X_local = np.delete(X_local, idx, axis=1)
+        # Ignoring the delete here.
+        # idx = np.argwhere(np.all(X_local[..., :] == 0, axis=1))
+        # X_local = np.delete(X_local, idx, axis=1)
 
-        X_train, X_test, y_train, y_test = train_test_split(X_local, y, test_size=0.10, random_state=42)
+        X_train, X_test, y_train, y_test = train_test_split(X_local, y, test_size=0.10, random_state=random_state)
 
         reg = LinearRegression().fit(X_train, y_train)
-        score_list += [-reg.score(X_test, y_test)]
+        return -reg.score(X_test, y_test)
+
+
+    # Same random state to be used for the whole generation
+    random_state = random.randint(0,10000000)
+    argument_list = []
+    for p in population:
+        argument_list += [(p, X, y, random_state)]
+
+    from pathos.multiprocessing import ProcessingPool as pool
+    with pool(5) as p:
+        score_list = p.map(model_score, argument_list)
 
     return score_list
 
 from genetic_model import genetic_algorithm, onemax
 
 # define the total iterations
-n_iter = 100
+n_iter = 30
 # bits
 n_bits = X.shape[1] #20
 # define the population size
-n_pop = 100 # n_bits * 6 #100
+n_pop = n_bits * 4 # * 4 #100
 # crossover rate
 r_cross = 0.9
 # mutation rate
