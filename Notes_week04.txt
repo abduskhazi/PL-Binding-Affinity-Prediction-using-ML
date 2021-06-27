@@ -8,7 +8,7 @@ There are 2 type of problems
     LBS - Ligand binding site prediction
     Ligand affinity prediction
 
-Both the above probles are a dichotomous problem.
+Both the above problems are a dichotomous problem.
     Thus the accuracy measure of the protien LBS prediction is the same as the dichotomous problems in math.
 
 LBS (Ligand binding side) prediction can be classified into 3 types -
