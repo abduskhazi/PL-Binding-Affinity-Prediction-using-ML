@@ -60,10 +60,11 @@ def linear_regression_score(population, X, y):
         # Use broadcasting for the selection of columns
         X_local = X * feature_selection
 
-        idx = np.argwhere(np.all(X_local[..., :] == 0, axis=1))
-        X_local = np.delete(X_local, idx, axis=1)
-
-        X_train, X_test, y_train, y_test = train_test_split(X_local, y, test_size=0.10, random_state=42)
+        # Not working have to fix this.
+        #idx = np.argwhere(np.all(X_local[..., :] == 0, axis=1))
+        #X_local = np.delete(X_local, idx, axis=1)
+        
+        X_train, X_test, y_train, y_test = train_test_split(X_local, y, test_size=0.10)#, random_state=42)
 
         reg = LinearRegression().fit(X_train, y_train)
         score_list += [-reg.score(X_test, y_test)]
@@ -86,6 +87,20 @@ r_mut = 1.0 / float(n_bits)
 best, score = genetic_algorithm(linear_regression_score, X, y, n_bits, n_iter, n_pop, r_cross, r_mut)
 print('Done!')
 print('f(%s) = %f' % (best, score))
+
+with open("names_protein_descriptors.txt") as names_f:
+    names_desc_prot = [n.strip() for n in names_f.readlines()]
+
+with open("names_ligand_descriptors.txt") as c:
+    ligand_columns = c.readlines()
+
+combined_columns = names_desc_prot[3:] + ligand_columns[1:]
+
+print("Number of selected features = ", sum(best))
+#Printing the best with column names - 
+for f in range(len(best)):
+    if best[f] != 0:
+        print(combined_columns[f])
 
 best = np.asarray(best)
 best_features = best[np.newaxis, :]
