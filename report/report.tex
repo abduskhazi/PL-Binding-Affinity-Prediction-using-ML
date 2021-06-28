@@ -54,7 +54,7 @@ Hence the study of this data is very helpful for biologists and bioinformatician
 
 ....TALK about drug discovery here ...
 
-\subsection{Representation of molecules and complexes in the pdb bind data set}
+\subsection{Representation of molecules and complexes in the PDB bind data set}
 
 PDB format is used to represent the protein molecules (macro molecules).
 It contains information regarding the coordinates of atoms like the XYZ format in Armstrong units.
@@ -104,7 +104,7 @@ The reason this is helpful is because 3D structural features of proteins are ver
 the proteins and ligands as proteins and ligand interactions can be considered as
 machines of 2 parts interacting with each other.
 
-\subsection{fpocket / dpocket descriptors}
+\subsection{fpocket/dpocket descriptors}
 We extract the features of a pocket using dpocket tool (a submodule in the fpocket toolchain).
 fpocket uses veronoi tessalation (3D) to find out pockets in our protein structure.
 To get the descriptors/features of the pockets at which ligands bind we use the dpocket (aka descriptors pocket).
@@ -123,8 +123,8 @@ We use both fpocketp and explicitp descriptors to train our model.
 There are in total 55 descriptors in total obtained using dpocket descriptors.
 
 \subsection{DataSet}
-Protein databank has been created by experiments all around the world.
-From this databank, a PBD bind dataset has been created which provides data about all the protein-ligand complexes.
+Protein Databank has been created by experiments all around the world.
+From this Databank, a PBD bind dataset has been created which provides data about all the protein-ligand complexes.
 In our study, we propose a method to predict the protein binding affinity of novel proteins and ligands using the data given by PBD bind dataset.
 
 \subsection{Dichotomous problem}
@@ -134,16 +134,55 @@ The data if it is complementary is better for solving the problem.
 The accuracy measure of the protein LBS prediction is the same as the dichotomous problems in math.
 
 \section{feature selection}
-\label{fs}
-Various feature selection mechanisms were used to
+As we are dealing with a dichotomous problem we have to select features of the protein and the ligand separately.
+This helps us make our model plug and play w.r.t the proteins and ligands.
+The following feature selection mechanisms were used to select features -
 
-\subsection{Algorithm}
+\begin{itemize}
+\item Each feature of both protein and ligand were correlated with the output i.e the Dissociation constant.
+We used both pearson and spearmann correlation to calculate this.
+The assumption to be made when taking these correlations is that of monotonic increase of
+the feature with respect to the output.
+The features with the highest correlation were taken from both proteins and ligands as
+inputs.
+\item By using genetic algorithms\cite{genetic_algorithm}.
+Here each feature is represented by a binary number.
+1 indicating inclusion and 0 indicating exclusion from the input of our model.
+A binary string of 456 binary numbers (401 for ligands + 55 for proteins) is called a chromosome.
+See pseudocode below
+\item Features selected by expert. Given by Simon Bray. (Yet to do)
+\end{itemize}
 
+\label{Genetic_Algo}
 \begin{algorithm}
-\caption{Selection of features in our model}
+\caption{Selection of features in our model using genetic algorithm \cite{genetic_algorithm}}
 \begin{algorithmic}[1]
-\Procedure{SELECT\_FEATURES\_BASED\_ON\_CORRELATION\_BASED\_SELECTOR}{}
-\State Todo... Complete this description
+\Procedure{GENETIC\_ALGORITHM\_BASED\_SELECTOR}{}
+\State model\_type $\gets$ Linear Regression
+\State $ population = \{C_1, C_2, C_3... C_n\}$ $\in$ $\mathbb{B}^{456}$ (initial chromosomes).
+\State best $\gets C_1$ 
+\State $i \gets 0$
+\State $gen \gets$ number of generations to run.
+      \For{\texttt{$i < gen$}}
+          \State Fit model\_type for each feature selection (chromosome). 
+          \State Let $\{S_1, S_2, S_3... S_n\}$ $\in$ $\mathbb{R}$ be scores for each chromosome.
+          \State best $\gets$ $C_i$ with the highest score $S_i$
+          \For{\texttt{$j < len(population)$}}
+              \State Set $\gets$ 3 random chromosomes from $population$
+              \State $c \gets best($Set$)$
+              \State $genetically\_better\_population.add(c)$
+          \EndFor
+          \State $population \gets genetically\_better\_population$
+          \For{\texttt{$j < len(population)$ with step 2}}
+              \State $P_1, P_2$ $\gets$ $population[j], population[j+1]$
+              \State $c_1, c_2 \gets crossover(P_1, P_2)$
+              \State $c_1 \gets mutation(c_1)$
+              \State $c_2 \gets mutation(c_2)$
+              \State $children.add(c_1, c_2)$
+          \EndFor
+      \State $new\_population \gets population$
+      \EndFor
+\State return best
 \EndProcedure
 \end{algorithmic}
 \end{algorithm}
