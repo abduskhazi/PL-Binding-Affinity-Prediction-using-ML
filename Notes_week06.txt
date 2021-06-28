@@ -12,6 +12,24 @@ Rationale for the usage of genetic algorithms -
         b. Genetics Algorithm optimization.
 
 
+--->
+Started writing report.
+Did not use polynomial regression - too many parameters to handle.
+The score is better than the correlation calculator - with the problem that there are a lot of features (200+)
+    However, we are getting good results with half of the features.
+
+
+Suggestion -
+    Genetic Algo - Start with 25 % selection of features --> before applying penalty.
+    Balance between protein and ligand features.....
+        2 crossovers maybe good for the balancing.
+
+Find out the CPU resource it takes ...
+   CPU days/hours ...
+
+Benchmarking or comparisons ...
+   extracting features from the sequences ...
+
 
 References used to read this week:
 https://towardsdatascience.com/introduction-to-optimization-with-genetic-algorithm-2f5001d9964b
