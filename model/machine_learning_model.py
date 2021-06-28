@@ -94,12 +94,13 @@ with open("names_protein_descriptors.txt") as names_f:
 with open("names_ligand_descriptors.txt") as c:
     ligand_columns = c.readlines()
 
-combined_columns = names_desc_prot[3:] + ligand_columns[1:]
+combined_columns = names_desc_prot[2:] + ligand_columns[1:]
 
 print("Number of selected features = ", sum(best))
 #Printing the best with column names - 
 for f in range(len(best)):
     if best[f] != 0:
+        #print(f)
         print(combined_columns[f])
 
 best = np.asarray(best)
