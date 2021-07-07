@@ -68,7 +68,7 @@ def genetic_algorithm(objective, X, y, n_bits, n_iter, n_pop, r_cross, r_mut):
 			if scores[i] < best_eval:
 				best, best_eval = pop[i], scores[i]
 				#print(">%d, new best f(%s) = %.3f" % (gen,  pop[i], scores[i]))
-				print(">%d, new best = %.3f" % (gen, scores[i]))
+				print(">%d, new best = %.3f. Features(%d, %d)" % (gen, scores[i], sum(best[:55]), sum(best[55:])))
 		# select parents
 		selected = [selection(pop, scores) for _ in range(n_pop)]
 		# create the next generation
