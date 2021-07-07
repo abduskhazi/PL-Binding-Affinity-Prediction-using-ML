@@ -53,7 +53,9 @@ def genetic_algorithm(objective, X, y, n_bits, n_iter, n_pop, r_cross, r_mut):
 	    protein_feature_selection = get_binary_vals(0.273, 55)
 	    ligand_feature_selection = get_binary_vals(0.273/8, n_bits - 55)
 	    pop += [protein_feature_selection + ligand_feature_selection]
-	print("Average number of features selected = ", sum([sum(_) for _ in pop])/len(pop))
+	protein_f_s = sum([sum(_[:55]) for _ in pop])/len(pop)
+	ligand_f_s = sum([sum(_[55:]) for _ in pop])/len(pop)
+	print("Average number of features(protein, ligand) selected = (", protein_f_s, ", ", ligand_f_s, ")")
 	# keep track of best solution
 	best, best_eval = 0, 100 #objective(pop[0], X, y)
 	# enumerate generations
