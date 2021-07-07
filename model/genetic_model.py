@@ -29,13 +29,21 @@ def crossover(p1, p2, r_cross):
 		c2 = p2[:pt] + p1[pt:]
 	return [c1, c2]
  
-# mutation operator
+# mutation operator --> r_mut is unused so does not afect us
 def mutation(bitstring, r_mut):
-	for i in range(len(bitstring)):
-		# check for a mutation
-		if rand() < r_mut:
-			# flip the bit
-			bitstring[i] = 1 - bitstring[i]
+    import random
+    if random.uniform(0, 1) < 0.5:
+        # Mutation in proteins features.
+        for i in range(55):
+            if rand() < 1/55:
+                # flip the bit
+                bitstring[i] = 1 - bitstring[i]
+    else:
+        # Mutation in the ligand features.
+        for i in range(55, len(bitstring)):
+            if rand() < 1/(len(bitstring) - 55):
+                # flip the bit
+                bitstring[i] = 1 - bitstring[i]
 
 def get_binary_vals(percent, num_bits):
     import random
