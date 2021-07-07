@@ -66,10 +66,10 @@ def linear_regression_score(population, X, y):
         X_local = X * feature_selection
 
         # Not working have to fix this.
-        #idx = np.argwhere(np.all(X_local[..., :] == 0, axis=1))
-        #X_local = np.delete(X_local, idx, axis=1)
+        idx = np.argwhere(np.all(X_local[..., :] == 0, axis=0))
+        X_local = np.delete(X_local, idx, axis=1)
 
-        print("Finished - ", i, end="\r")
+        print("Finished - ", i, ", Features = ", np.sum(feature_selection), "X_local.shape = ", X_local.shape, end="\r")
         i = i + 1
 
         X_train, X_test, y_train, y_test = train_test_split(X_local, y, test_size=0.10, random_state=seed)
@@ -82,11 +82,11 @@ def linear_regression_score(population, X, y):
 from genetic_model import genetic_algorithm, onemax
 
 # define the total iterations
-n_iter = 100
+n_iter = 50
 # bits
 n_bits = X.shape[1] #20
 # define the population size
-n_pop = 100 # n_bits * 6 #100
+n_pop = n_bits * 6 #100
 # crossover rate
 r_cross = 0.9
 # mutation rate
