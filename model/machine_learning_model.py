@@ -55,6 +55,10 @@ def linear_regression_score(population, X, y):
     population = np.asarray(population)
     population = population[:, np.newaxis, :]
 
+    # Use the same train set for population
+    import random
+    seed = random.randint(0,2**32)
+
     score_list = []
     for feature_selection in population:
         # Use broadcasting for the selection of columns
@@ -64,7 +68,7 @@ def linear_regression_score(population, X, y):
         #idx = np.argwhere(np.all(X_local[..., :] == 0, axis=1))
         #X_local = np.delete(X_local, idx, axis=1)
         
-        X_train, X_test, y_train, y_test = train_test_split(X_local, y, test_size=0.10)#, random_state=42)
+        X_train, X_test, y_train, y_test = train_test_split(X_local, y, test_size=0.10, random_state=seed)
 
         reg = LinearRegression().fit(X_train, y_train)
         score_list += [-reg.score(X_test, y_test)]
