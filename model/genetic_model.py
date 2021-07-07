@@ -36,11 +36,23 @@ def mutation(bitstring, r_mut):
 		if rand() < r_mut:
 			# flip the bit
 			bitstring[i] = 1 - bitstring[i]
- 
+
+def get_binary_vals(percent, num_bits):
+    import random
+    ret_val = [0] * num_bits
+    for i in range(num_bits):
+        if random.uniform(0, 1) < percent:
+            ret_val[i] = 1
+    return ret_val
+
 # genetic algorithm
 def genetic_algorithm(objective, X, y, n_bits, n_iter, n_pop, r_cross, r_mut):
 	# initial population of random bitstring
-	pop = [randint(0, 2, n_bits).tolist() for _ in range(n_pop)]
+	pop = []
+	for _ in range(n_pop):
+	    protein_feature_selection = get_binary_vals(0.273, 55)
+	    ligand_feature_selection = get_binary_vals(0.273/8, n_bits - 55)
+	    pop += [protein_feature_selection + ligand_feature_selection]
 	# keep track of best solution
 	best, best_eval = 0, 100 #objective(pop[0], X, y)
 	# enumerate generations
