@@ -5,7 +5,6 @@ from sklearn.linear_model import LinearRegression
 from sklearn.preprocessing import PolynomialFeatures
 from data_bakery import bake_Xy
 
-
 X, y = bake_Xy()
 
 print("X.shape =", X.shape)
@@ -52,7 +51,6 @@ def linear_regression_score(population, X, y):
         # Use broadcasting for the selection of columns
         X_local = X * feature_selection
 
-        # Not working have to fix this.
         idx = np.argwhere(np.all(X_local[..., :] == 0, axis=0))
         X_local = np.delete(X_local, idx, axis=1)
 
