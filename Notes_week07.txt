@@ -1,0 +1,134 @@
+There is balance between the 0s and 1s because on average we flip 1 bit per all bits.
+    So On average they remain the same.
+
+    Analysis ?
+      Selection of the population is based on a fitness...
+      ---- Run longer test longer generations... ... (Analysis should be)
+      The process of selection is not random because of cross-over.
+
+multiprose --> pickling erro
+pathos...
+
+We can fix the number of 
+
+Other approaches to test -
+   Use integers for chromosomes. (Still reading about this)
+
+Maybe if our approach does not work -->
+** proteins features -- [3,56,7,2,1,67,8]
+** ligands features -- [3,56,7,2,1,67,8]
+
+
+Better to use penatly if there is balance in our score function.. ?
+
+
+Some literature review.
+https://bmcbioinformatics.biomedcentral.com/articles/10.1186/s12859-020-3400-6
+
+
+============================================================
+------- Update from the previous day ----------
+============================================================
+Parallelization is not necessary as it is done by linear regression library of sklearn.
+Keeping the fitness fucntion constant is crucial
+Used the index approach
+
+Bit rate increase pattern... check bit_inc_pattern.txt
+Explain the new quantification of fitness
+    Features as indices.
+    Elitism (Still testing)
+
+Explain the testing and exclusion of randomness
+    The function changes due to randomness
+    It is better to keep the function the same -- Leads to overfitting??
+
+Time required to run - 
+100 Generations of 100 populations on the server - 14m12.790s
+real	14m12.790s
+user	51m1.480s
+sys	5m26.119s
+
+
+**************** SVR , random forest is better most of the time... why different for us????
+    --> Maybe the data is not enough...
+    R^2 score for all models (-INF, 1) ===> 0.5 / 0.6 for refined data..
+
+Complexity --> O(g*p)
+Check this for running script at the background --> TMUX.
+
+Record best feature selected for every generation
+
+It is using 4 cores by default - Top result
+PID USER      PR  NI    VIRT    RES    SHR S  %CPU  %MEM     TIME+ COMMAND  
+4114 user      20   0  839404 362764  43696 R 397.4   4.4   9:50.19 python 
+
+Mutation ration vs cross over....
+--> inversly proportional
+--> Depend on the diversity..
+--> How to encode diversity???
+        Edit distance between 2 feature selections....
+
+Penalty -->
+   for selection of feature selection ...
+
+Particle swarm optimization... later...
+
+Diversity -->
+   child1 --> [00011111]
+   child2 --> [00111111]
+
+Keep objective function constant with constant features
+Number of selected features =  30
+mean_as_ray
+apol_as_prop
+mean_loc_hyd_dens
+hydrophobicity_score
+volume_score
+polarity_score
+polarity_score_norm
+as_max_dst_norm
+convex_hull_volume
+surf_apol_vdw14
+n_abpa
+ASP
+GLN
+SER
+VAL
+AUTOCORR2D_16
+
+AUTOCORR2D_166
+
+AUTOCORR2D_21
+
+FpDensityMorgan2
+
+MinPartialCharge
+
+NumSaturatedRings
+
+PEOE_VSA2
+
+PEOE_VSA7
+
+SlogP_VSA11
+
+fr_Al_OH
+
+fr_Ar_COO
+
+fr_C_O
+
+fr_pyridine
+
+fr_sulfonamd
+
+qed 
+
+
+NEXT steps -->
+Scoring mechanism check others...
+    RMS
+    Check other models like SVR, random forest.. for regression.
+    
+git hub share the Alireza....
+Report share with Alireza....
