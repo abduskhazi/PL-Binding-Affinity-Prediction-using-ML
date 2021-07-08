@@ -8,7 +8,7 @@ def onemax(x):
 	return -sum(x)
  
 # tournament selection
-def selection(pop, scores, k=3):
+def selection(pop, scores, k=10):
 	# first random selection
 	selection_ix = randint(len(pop))
 	for ix in randint(0, len(pop), k-1):

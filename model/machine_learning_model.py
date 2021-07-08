@@ -2,6 +2,7 @@ import sys
 import numpy as np
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LinearRegression
+from sklearn.preprocessing import PolynomialFeatures
 
 # First get the output variable value
 output_var_file = "regression_var.data"
@@ -58,7 +59,7 @@ seed = random.randint(0,2**32)
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.10, random_state=seed)
 
 reg = LinearRegression().fit(X_train, y_train)
-print("With all features, linear regression score = ", -reg.score(X_test, y_test))
+print("With all features, linear regression score = ", -reg.score(X_train, y_train))
 
 ##################################################################################
 
@@ -80,7 +81,6 @@ def linear_regression_score(population, X, y):
     population = population[:, np.newaxis, :]
 
     # Use the same train set for population
-    seed = random.randint(0,2**32)
 
     score_list = []
     i = 1
@@ -98,7 +98,7 @@ def linear_regression_score(population, X, y):
         X_train, X_test, y_train, y_test = train_test_split(X_local, y, test_size=0.10, random_state=seed)
 
         reg = LinearRegression().fit(X_train, y_train)
-        score_list += [-reg.score(X_test, y_test)]
+        score_list += [-reg.score(X_train, y_train)]
         
         # This is too slow for running GA
         # from sklearn.svm import SVR
@@ -180,7 +180,6 @@ exit()
 ### Model 1 --> ordinary least squares
 from sklearn.linear_model import LinearRegression
 from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import PolynomialFeatures
 
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.10, random_state=42)
 
