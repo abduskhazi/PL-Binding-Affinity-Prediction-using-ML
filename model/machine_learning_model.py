@@ -46,6 +46,21 @@ y = np.asarray(y, dtype='float64')
 print("Len of X = ", np.shape(X))
 print("Len of y = ", np.shape(y))
 
+##################################################################################
+# Trying feature elimination before jumping into GA
+##################################################################################
+
+bitstring = [1] * X.shape[1]
+
+import random
+seed = random.randint(0,2**32)
+
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.10, random_state=seed)
+
+reg = LinearRegression().fit(X_train, y_train)
+print("With all features, linear regression score = ", -reg.score(X_test, y_test))
+
+##################################################################################
 
 def linear_regression_score(population, X, y):
     from sklearn.linear_model import LinearRegression
@@ -56,7 +71,6 @@ def linear_regression_score(population, X, y):
     population = population[:, np.newaxis, :]
 
     # Use the same train set for population
-    import random
     seed = random.randint(0,2**32)
 
     score_list = []

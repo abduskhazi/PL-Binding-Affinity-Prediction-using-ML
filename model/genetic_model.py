@@ -40,10 +40,18 @@ def mutation(bitstring, r_mut):
                 bitstring[i] = 1 - bitstring[i]
     else:
         # Mutation in the ligand features.
+        flipped = False
+        bit = 0
         for i in range(55, len(bitstring)):
             if rand() < 1/(len(bitstring) - 55):
                 # flip the bit
+                bit = bitstring[i]
                 bitstring[i] = 1 - bitstring[i]
+        if flipped:
+            i_prime = random.randint(55, len(bitstring))
+            while bitstring[i_prime] != bit:
+                i_prime = random.randint(55, len(bitstring))
+            bitstring[i_prime] = bit
 
 def get_binary_vals(percent, num_bits):
     import random
