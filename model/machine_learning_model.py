@@ -3,9 +3,9 @@ import numpy as np
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LinearRegression
 from sklearn.preprocessing import PolynomialFeatures
-from data_bakery import bake_Xy
+from data_bakery import bake_train_Xy
 
-X, y = bake_Xy()
+X, y = bake_train_Xy()
 
 print("X.shape =", X.shape)
 print("y.shape =", y.shape)
