@@ -3,49 +3,13 @@ import numpy as np
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LinearRegression
 from sklearn.preprocessing import PolynomialFeatures
+from data_bakery import bake_Xy
 
-# First get the output variable value
-output_var_file = "regression_var.data"
 
-print("Enter input variable file name : ", file=sys.stderr)
-input_var_file = input()
+X, y = bake_Xy()
 
-with open(output_var_file) as regression_f:
-    regression_list = [r.strip() for r in regression_f.readlines()]
-
-regression = {}
-
-for r in regression_list:
-    if r[0] != "#":
-        key = r.split()[0]
-        regression[key] = float(r.split()[1])
-
-X = []
-y = []
-
-with open(input_var_file) as input_f:
-    input_list = [r.strip() for r in input_f.readlines()]
-
-###
-# Get rid of strings from the rows.
-###
-
-for row in input_list:
-    row_values = row.split()
-    complex_name = row_values[0][:4]
-    row_protein = row_values[:57]
-    row_ligand = row_values[57:]
-    # since IPC has huge values we have to use a logorithmic scale. Otherwise Value 235 should be removed
-    row_ligand[235] = np.log(float(row_ligand[235]))
-    # Get rid of the string columns
-    x_i = [row_protein[2:] + row_ligand[1:]]
-    X += x_i
-    y += [regression[complex_name]]
-
-X = np.asarray(X, dtype='float64')
-y = np.asarray(y, dtype='float64')
-print("Len of X = ", np.shape(X))
-print("Len of y = ", np.shape(y))
+print("X.shape =", X.shape)
+print("y.shape =", y.shape)
 
 ##################################################################################
 # Trying feature elimination before jumping into GA
