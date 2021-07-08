@@ -67,6 +67,15 @@ def linear_regression_score(population, X, y):
     from sklearn.model_selection import train_test_split
     from sklearn.preprocessing import PolynomialFeatures
 
+    # Converting index to actual bit strings
+    temp = []
+    for p in population:
+        p_bin = [0] * X.shape[1]
+        for index in p:
+            p_bin[index] = 1
+        temp += [p_bin]
+    population = temp
+
     population = np.asarray(population)
     population = population[:, np.newaxis, :]
 
@@ -90,13 +99,19 @@ def linear_regression_score(population, X, y):
 
         reg = LinearRegression().fit(X_train, y_train)
         score_list += [-reg.score(X_test, y_test)]
+        
+        # This is too slow for running GA
+        # from sklearn.svm import SVR
+        # regressor = SVR(kernel = 'rbf')
+        # regressor.fit(X_train, y_train)
+        # score_list += [-regressor.score(X_train, y_train)]
 
     return score_list
 
 from genetic_model import genetic_algorithm, onemax
 
 # define the total iterations
-n_iter = 50
+n_iter = 200
 # bits
 n_bits = X.shape[1] #20
 # define the population size
@@ -104,11 +119,16 @@ n_pop = n_bits * 6 #100
 # crossover rate
 r_cross = 0.9
 # mutation rate
-r_mut = 1.0 / float(n_bits)
+r_mut = 1 # THis is differnt for the index and the bit string version # 1.0 / float(n_bits)
 # perform the genetic algorithm search
 best, score = genetic_algorithm(linear_regression_score, X, y, n_bits, n_iter, n_pop, r_cross, r_mut)
 print('Done!')
 print('f(%s) = %f' % (best, score))
+
+p_bin = [0] * X.shape[1]
+for index in best:
+    p_bin[index] = 1
+best = p_bin
 
 with open("names_protein_descriptors.txt") as names_f:
     names_desc_prot = [n.strip() for n in names_f.readlines()]

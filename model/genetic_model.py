@@ -1,6 +1,7 @@
 # genetic algorithm search of the one max optimization problem
 from numpy.random import randint
 from numpy.random import rand
+import random
  
 # objective function
 def onemax(x):
@@ -31,7 +32,6 @@ def crossover(p1, p2, r_cross):
  
 # mutation operator --> r_mut is unused so does not afect us
 def mutation(bitstring, r_mut):
-    import random
     if random.uniform(0, 1) < 0.5:
         # Mutation in proteins features.
         for i in range(55):
@@ -53,6 +53,30 @@ def mutation(bitstring, r_mut):
                 i_prime = random.randint(55, len(bitstring))
             bitstring[i_prime] = bit
 
+def get_index_vals(num, start, end):
+    ret_list = []
+    for i in range(num):
+        new_val = random.randint(start, end)
+        while new_val in ret_list:
+            new_val = random.randint(start, end)
+        ret_list += [new_val]
+    return sorted(ret_list)
+
+# r_mut here signifies how many indices to change per population element
+def mutation_with_index(index_list, r_mut):
+    mutation_rate = r_mut / len(index_list)
+    for i in range(len(index_list)):
+        if random.uniform(0, 1) < mutation_rate:
+            if(index_list[i] < 55):
+                new_val = random.randint(0, 55-1)
+                while new_val in index_list:
+                    new_val = random.randint(0, 55-1)
+            else:
+                new_val = random.randint(55, 457-1)
+                while new_val in index_list:
+                    new_val = random.randint(55, 457-1)
+            index_list[i] = new_val
+
 def get_binary_vals(percent, num_bits):
     import random
     ret_val = [0] * num_bits
@@ -61,17 +85,15 @@ def get_binary_vals(percent, num_bits):
             ret_val[i] = 1
     return ret_val
 
+
 # genetic algorithm
 def genetic_algorithm(objective, X, y, n_bits, n_iter, n_pop, r_cross, r_mut):
 	# initial population of random bitstring
 	pop = []
 	for _ in range(n_pop):
-	    protein_feature_selection = get_binary_vals(0.273, 55)
-	    ligand_feature_selection = get_binary_vals(0.273/8, n_bits - 55)
+	    protein_feature_selection = get_index_vals(15, 0, 55-1)
+	    ligand_feature_selection = get_index_vals(15, 55, n_bits-1)
 	    pop += [protein_feature_selection + ligand_feature_selection]
-	protein_f_s = sum([sum(_[:55]) for _ in pop])/len(pop)
-	ligand_f_s = sum([sum(_[55:]) for _ in pop])/len(pop)
-	print("Average number of features(protein, ligand) selected = (", protein_f_s, ", ", ligand_f_s, ")")
 	# keep track of best solution
 	best, best_eval = 0, 100 #objective(pop[0], X, y)
 	# enumerate generations
@@ -84,7 +106,7 @@ def genetic_algorithm(objective, X, y, n_bits, n_iter, n_pop, r_cross, r_mut):
 			if scores[i] < best_eval:
 				best, best_eval = pop[i], scores[i]
 				#print(">%d, new best f(%s) = %.3f" % (gen,  pop[i], scores[i]))
-				print(">%d, new best = %.3f. Features(%d, %d)" % (gen, scores[i], sum(best[:55]), sum(best[55:])))
+				print(">%d, new best = %.3f." % (gen, scores[i]))
 		# select parents
 		selected = [selection(pop, scores) for _ in range(n_pop)]
 		# create the next generation
@@ -95,7 +117,7 @@ def genetic_algorithm(objective, X, y, n_bits, n_iter, n_pop, r_cross, r_mut):
 			# crossover and mutation
 			for c in crossover(p1, p2, r_cross):
 				# mutation
-				mutation(c, r_mut)
+				mutation_with_index(c, r_mut)
 				# store for next generation
 				children.append(c)
 		# replace population
