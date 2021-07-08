@@ -1,8 +1,6 @@
 import numpy as np
 
-def bake_Xy():
-    output_variable_file = "regression_var.data"
-    input_variable_file = "../data/train/train_model_input_all_proteins_mol2_fp_no_nan.data"
+def bake_Xy(output_variable_file, input_variable_file):
 
     with open(output_variable_file) as regression_file:
         regression_list = [r.strip() for r in regression_file.readlines()]
@@ -39,7 +37,21 @@ def bake_Xy():
 
     return X, y
 
+def bake_train_Xy():
+    output_variable_file = "regression_var.data"
+    input_variable_file = "../data/train/train_model_input_all_proteins_mol2_fp_no_nan.data"
+    return bake_Xy(output_variable_file, input_variable_file)
+
+def bake_test_Xy():
+    output_variable_file = "regression_var.data"
+    input_variable_file = "../data/test/test_model_input_all_proteins_mol2_fp_no_nan.data"
+    return bake_Xy(output_variable_file, input_variable_file)
+
 if __name__ == "__main__":
-    X, y = bake_Xy()
-    print("X.shape =", X.shape)
-    print("y.shape =", y.shape)
+    X_train, y_train = bake_train_Xy()
+    print("X_train.shape =", X_train.shape)
+    print("y_train.shape =", y_train.shape)
+
+    X_test, y_test = bake_test_Xy()
+    print("X_test.shape =", X_test.shape)
+    print("y_test.shape =", y_test.shape)
