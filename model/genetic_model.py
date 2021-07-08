@@ -111,6 +111,12 @@ def genetic_algorithm(objective, X, y, n_bits, n_iter, n_pop, r_cross, r_mut):
 		selected = [selection(pop, scores) for _ in range(n_pop)]
 		# create the next generation
 		children = list()
+		# Adding the best 5 --> Elitism.
+		# This may leed us to a local minima.
+		elite_indices = sorted(range(len(scores)), key=lambda i: scores[i])[:5]
+		for i in elite_indices:
+		    children.append(pop[i])
+
 		for i in range(0, n_pop, 2):
 			# get selected parents in pairs
 			p1, p2 = selected[i], selected[i+1]
