@@ -13,11 +13,11 @@ print("y.shape =", y.shape)
 seed = random.randint(0,2**32)
 X_train, X_validate, y_train, y_validate = train_test_split(X, y, test_size=0.2, random_state=seed)
 
-regressor = RandomForestRegressor(n_estimators=10)
+regressor = RandomForestRegressor(n_estimators=100, oob_score = True, n_jobs=-1)
 regressor.fit(X_train, y_train)
 
 y_pred = regressor.predict(X_validate)
-print("Validation r2 score = ", r2_score(y_validate, y_pred))
+print("oob score = ", regressor.oob_score_, "Validation r2 score = ", r2_score(y_validate, y_pred))
 
 #Plotting to visualize the accuracy of our model.
 import matplotlib
