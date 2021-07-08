@@ -12,7 +12,7 @@ print("X.shape =", X.shape)
 print("y.shape =", y.shape)
 
 ##################################################################################
-# Trying feature elimination before jumping into GA
+# Reporting Linear Regression accuracy with all features included (R^2 score)
 ##################################################################################
 
 bitstring = [1] * X.shape[1]
