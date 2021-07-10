@@ -17,8 +17,6 @@ print("y.shape =", y.shape)
 # Reporting Linear Regression accuracy with all features included (R^2 score)
 ##################################################################################
 
-bitstring = [1] * X.shape[1]
-
 import random
 seed = random.randint(0,2**32)
 

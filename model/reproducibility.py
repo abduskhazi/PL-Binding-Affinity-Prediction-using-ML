@@ -7,8 +7,6 @@ import torch
 # When will this break?
 #     If the data provided to the program is not in the same order or the data file has been changed,
 #     we cannot reproduce the results!!
-# Note - We have seen small numerical differences e.g in the 15th decimal place even after controlling all
-#        randomness. Please ignore these.
 
 # This function needs to be the called before any function that uses randomness
 def make_program_reproducible():
