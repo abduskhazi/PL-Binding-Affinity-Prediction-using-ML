@@ -13,7 +13,8 @@ Please read the weekly notes committed to get an idea about the work done till n
 ## Running the model.
 * Go to the folder model. `cd model`
 * Run any model of your choice. At this time the Random Forest Regressor gives the best result.  
-``python random_forest_regresser.py``
+``python random_forest_regresser.py [Execution ID]``  
+The Execution ID is optional. Use the same number to reproduce your results.
 * The above should create 2 plots plotting *predicted y value* vs *expected y value*.  
 `temp_validate.png` - Shows how good the model fits on our validation data.  
 `temp_train.png` - Shows how good the model fits on our test data.
