@@ -1,23 +1,15 @@
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import r2_score
+from data_bakery import bake_train_Xy
+import reproducibility
 import matplotlib
 import matplotlib.pyplot as plt
 import random
 import numpy as np
-from data_bakery import bake_train_Xy
 
-################################################################################################################
-#                        CONTROLLING RANDOMNESS FOR REPRODUCIBILITY
-################################################################################################################
-# Note - We have seen small numerical differences e.g in the 15th decimal place. Please ignore these.
-
-seed = random.randint(0,2**32)
-print("Random seed =", seed)
-print("Please replace `seed = random.randint(0,2**32)` by `seed = %d` to reproduce this result exactly." % (seed))
-
-np.random.seed(seed)
-################################################################################################################
+# Firstly ...
+reproducibility.make_program_reproducible()
 
 # Obtain data for our random forest regressor.
 X, y = bake_train_Xy()
@@ -63,5 +55,5 @@ print(sorted_indices)
 
 from sklearn.inspection import permutation_importance
 X_validate = np.copy(X_validate_backup)
-impt = permutation_importance(regressor, X_validate, y_validate, n_repeats=30, n_jobs=-1, random_state=seed)
+impt = permutation_importance(regressor, X_validate, y_validate, n_repeats=30, n_jobs=-1)
 print(impt.importances_mean.argsort()[::-1])
