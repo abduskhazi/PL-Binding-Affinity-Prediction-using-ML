@@ -47,7 +47,7 @@ X_validate = np.copy(X_validate_backup)
 print("r2 score (backup value) =", r2_score(y_validate, regressor.predict(X_validate)))
 
 print("Shuffling ligand columns")
-for i in range(55, 457):
+for i in range(55, X.shape[1]):
     np.random.shuffle(X_validate[:,i])
 print("r2 score (shuffled ligand columns) =", r2_score(y_validate, regressor.predict(X_validate)))
 
