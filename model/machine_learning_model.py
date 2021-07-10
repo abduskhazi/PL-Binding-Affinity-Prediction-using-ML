@@ -6,7 +6,7 @@ from sklearn.preprocessing import PolynomialFeatures
 from data_bakery import bake_train_Xy
 import reproducibility
 
-reproducibility.make_program_reproducible()
+reproducibility.reproduce()
 
 X, y = bake_train_Xy()
 

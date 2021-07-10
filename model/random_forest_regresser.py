@@ -9,7 +9,7 @@ import random
 import numpy as np
 
 # Firstly ...
-reproducibility.make_program_reproducible()
+reproducibility.reproduce()
 
 # Obtain data for our random forest regressor.
 X, y = bake_train_Xy()
