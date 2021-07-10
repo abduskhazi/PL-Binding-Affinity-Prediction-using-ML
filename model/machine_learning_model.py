@@ -4,6 +4,9 @@ from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LinearRegression
 from sklearn.preprocessing import PolynomialFeatures
 from data_bakery import bake_train_Xy
+import reproducibility
+
+reproducibility.make_program_reproducible()
 
 X, y = bake_train_Xy()
 

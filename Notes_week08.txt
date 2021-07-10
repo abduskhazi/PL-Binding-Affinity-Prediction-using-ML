@@ -1,6 +1,6 @@
 Reproducability -
     For reproduciblity I print the random seed on the first line.
-    If we use this seed. We can reproduce the result exactly.
+    If we re-use this seed. We can reproduce the result exactly.
 
 Observation -
     Random Forest regresser is giving a very high accuracy of R^2 score > 0.75
