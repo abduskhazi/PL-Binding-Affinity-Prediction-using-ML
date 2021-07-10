@@ -1,0 +1,26 @@
+Reproducability -
+    For reproduciblity I print the random seed on the first line.
+    If we use this seed. We can reproduce the result exactly.
+
+Observation -
+    Random Forest regresser is giving a very high accuracy of R^2 score > 0.75
+    Out of bag score is also 0.75 consistently.
+    The oob score ~= R^2 score on the validation set if we use ~200 tries in our emsemble.
+    Why is this model predicting things so accurately - Still researching.
+
+How to know if the protein/ligand features are being taken into account?
+    Random shuffle the protein features and check the result.
+    Random shuffle the ligand features and check the result.
+
+Observation
+    Ligand features have a huge impact on the regressor.
+
+For feature importance calculation -
+    Using permutation feature importance calculation.
+    THe issue with this is correlation between features. (There needs to be a clustering of features that are correlated.)
+
+Good resource
+https://towardsdatascience.com/explaining-feature-importance-by-example-of-a-random-forest-d9166011959e
+Computational complexity - https://christophm.github.io/interpretable-ml-book/feature-importance.html
+https://scikit-learn.org/stable/modules/generated/sklearn.inspection.permutation_importance.html
+
