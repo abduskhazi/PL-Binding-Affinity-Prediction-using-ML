@@ -8,7 +8,7 @@ import torch
 #     If the data provided to the program is not in the same order or the data file has been changed,
 #     we cannot reproduce the results!!
 
-# This function needs to be the called before any function that uses randomness
+# This function needs to be called before any function that uses randomness.
 def reproduce(seed = None):
     if seed == None:
         seed = random.randint(0,2**32)
