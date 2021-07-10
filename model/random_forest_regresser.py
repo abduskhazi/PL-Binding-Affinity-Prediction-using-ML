@@ -27,7 +27,7 @@ import matplotlib.pyplot as plt
 fig = plt.figure()
 plt.plot(y_validate, y_pred, '.')
 plt.plot(range(2,14), range(2,14), '--')
-fig.savefig('temp.png', dpi=fig.dpi)
+fig.savefig('temp_validate.png', dpi=fig.dpi)
 
 fig = plt.figure()
 plt.plot(y_train, regressor.predict(X_train), '.')
