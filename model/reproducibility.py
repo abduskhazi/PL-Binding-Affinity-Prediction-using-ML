@@ -17,7 +17,7 @@ def reproduce(seed = None):
     print("Use the above Execution ID to reproduce the results.")
 
     random.seed(seed)
-    np.random.seed(seed)
-    torch.manual_seed(seed)
+    np.random.seed(seed + 1)
+    torch.manual_seed(seed + 2)
     if torch.cuda.is_available():
-        torch.cuda.manual_seed_all(seed)
+        torch.cuda.manual_seed_all(seed + 3)
