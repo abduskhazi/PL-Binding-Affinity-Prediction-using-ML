@@ -12,10 +12,11 @@ Please read the weekly notes committed to get an idea about the work done till n
 
 ## Running the model.
 * Go to the folder model. `cd model`
-* Run any model of your choice. At this time the Random Forest Regressor gives the best result. ``python random_forest_regresser.py``
+* Run any model of your choice. At this time the Random Forest Regressor gives the best result.  
+``python random_forest_regresser.py``
 * The above should create 2 plots plotting *predicted y value* vs - *expected y value*.  
 `temp_validate.png` - Shows how good the model fits on our validation data.  
 `temp_train.png` - Shows how good the model fits on our test data.
 
-## Reporting Issues
-* You may use the following link to report any issues `https://github.com/abduskhazi/MSc-Project/issues`
+## Reporting Issues / Requesting Features
+* Please use [Report issue or request feature](https://github.com/abduskhazi/MSc-Project/issues "Named link title") for this purpose.
