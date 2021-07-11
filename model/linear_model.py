@@ -12,9 +12,7 @@ if len(sys.argv) > 1:
     ExecutionID = int(sys.argv[1])
 ExecutionID = reproducibility.reproduce(ExecutionID)
 
-
 X, y, features = bake_train_Xy()
-
 print("X.shape =", X.shape)
 print("y.shape =", y.shape)
 
