@@ -23,8 +23,10 @@ print("y.shape =", y.shape)
 
 X_train, X_validate, y_train, y_validate = train_test_split(X, y, test_size=0.2)
 
+print("Fitting the Random Forest Regressor...")
 regressor = RandomForestRegressor(n_estimators=100, oob_score = True, n_jobs=-1)
 regressor.fit(X_train, y_train)
+print("Fitting completed.")
 
 y_pred = regressor.predict(X_validate)
 print("oob score = ", regressor.oob_score_, ", Validation r2 score = ", r2_score(y_validate, y_pred))
@@ -87,6 +89,7 @@ print("Important features based on decrease in entropy (Gini Importance)")
 for i in impt_indices[:30]:
     print(features[i])
 
+print("Calculating importance of features using permuation importance...")
 # Permutation Importance
 from sklearn.inspection import permutation_importance
 impt = permutation_importance(regressor, X_validate, y_validate, n_repeats=30, n_jobs=-1)
@@ -111,3 +114,5 @@ fig.savefig('Permutation_importance.png', dpi=fig.dpi)
 print("Important features based on permutation")
 for i in impt_indices[:30]:
     print(features[i])
+
+print("Program finished.")
