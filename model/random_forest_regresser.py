@@ -85,7 +85,7 @@ ax.set_xlabel("Execution ID = " + str(ExecutionID))
 ax.set_title("Gini Importances of features.")
 fig.savefig('Gini_importance.png', dpi=fig.dpi)
 
-print("Important features based on decrease in entropy (Gini Importance)")
+print("Important features based on decrease in entropy (Gini Importance).", "Check Gini_importance.png")
 for i in impt_indices[:30]:
     print(features[i])
 
@@ -111,7 +111,7 @@ ax.set_xlabel("Execution ID = " + str(ExecutionID))
 ax.set_title("Permutation Importances of features.")
 fig.savefig('Permutation_importance.png', dpi=fig.dpi)
 
-print("Important features based on permutation")
+print("Important features based on permutation.", "Check Permutation_importance.png")
 for i in impt_indices[:30]:
     print(features[i])
 
