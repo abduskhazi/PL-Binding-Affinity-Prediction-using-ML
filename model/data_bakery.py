@@ -69,4 +69,4 @@ if __name__ == "__main__":
     print("OVERVIEW :")
     print("\tLength of feature column names =", len(features))
     print("\t0 ->", features[0], " ... 54 ->", features[54])
-    print("\t55 ->", features[55], " ... 456 ->", features[456])
+    print("\t55 ->", features[55], " ... %d ->" % (len(features)-1), features[-1])
