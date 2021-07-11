@@ -16,33 +16,24 @@ X, y, features = bake_train_Xy()
 print("X.shape =", X.shape)
 print("y.shape =", y.shape)
 
-##################################################################################
-# Reporting Linear Regression accuracy with all features included (R^2 score)
-##################################################################################
-
+# This is to control the randomness when selecting train-validation set
+# If you change the training set, the function fitted to the data changes. We want to avoid this.
 import random
 seed = random.randint(0,2**32)
 
+# Reporting Linear Regression accuracy with all features included (R^2 score)
 X_train, _, y_train, _ = train_test_split(X, y, test_size=0.10, random_state=seed)
-
 reg = LinearRegression().fit(X_train, y_train)
-print("With all features, linear regression score = ", -reg.score(X_train, y_train))
+score = -reg.score(X_train, y_train)
+print("Linear regression score (raw) = ", score)
 
-##################################################################################
+# Our optimization function = score * (X.shape[1] - num_selected_features)
+print("Linear regression score (Used for optimization)= ", score * (X.shape[1] - X.shape[1]))
+
 
 def linear_regression_score(population, X, y):
     from sklearn.linear_model import LinearRegression
     from sklearn.model_selection import train_test_split
-    from sklearn.preprocessing import PolynomialFeatures
-
-    # Converting index to actual bit strings
-    temp = []
-    for p in population:
-        p_bin = [0] * X.shape[1]
-        for index in p:
-            p_bin[index] = 1
-        temp += [p_bin]
-    population = temp
 
     population = np.asarray(population)
     population = population[:, np.newaxis, :]
@@ -61,17 +52,13 @@ def linear_regression_score(population, X, y):
         print("Finished - ", i, ", Features = ", np.sum(feature_selection), "X_local.shape = ", X_local.shape, end="\r")
         i = i + 1
 
-        X_train, X_test, y_train, y_test = train_test_split(X_local, y, test_size=0.10, random_state=seed)
+        X_train, _, y_train, _ = train_test_split(X_local, y, test_size=0.10, random_state=seed)
 
-        reg = LinearRegression().fit(X_train, y_train)
-        score_list += [-reg.score(X_train, y_train)]
-        
-        # This is too slow for running GA
-        # from sklearn.svm import SVR
-        # regressor = SVR(kernel = 'rbf')
-        # regressor.fit(X_train, y_train)
-        # score_list += [-regressor.score(X_train, y_train)]
+        reg = LinearRegression(n_jobs=-1).fit(X_train, y_train)
+        score = -reg.score(X_train, y_train)
+        score_list += [ score * (X.shape[1] - np.sum(feature_selection))]
 
+    print()
     return score_list
 
 from genetic_model import genetic_algorithm, onemax
@@ -81,11 +68,11 @@ n_iter = 200
 # bits
 n_bits = X.shape[1] #20
 # define the population size
-n_pop = n_bits * 6 #100
+n_pop = 250 # n_bits * 6 #100
 # crossover rate
 r_cross = 0.9
 # mutation rate
-r_mut = 1 # THis is differnt for the index and the bit string version # 1.0 / float(n_bits)
+r_mut = 1.0 / float(n_bits) #1 # THis is differnt for the index and the bit string version # 1.0 / float(n_bits)
 # perform the genetic algorithm search
 best, score = genetic_algorithm(linear_regression_score, X, y, n_bits, n_iter, n_pop, r_cross, r_mut)
 print('Done!')
