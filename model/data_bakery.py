@@ -20,6 +20,9 @@ def bake_Xy(output_variable_file, input_variable_file):
     X = []
     y = []
 
+    protein_start = 2
+    ligand_start = 1 # Use 193 for ignoring auto curr 2d descriptors
+
     for row in input_list:
         row_values = row.split()
         complex_name = row_values[0][:4]
@@ -28,7 +31,7 @@ def bake_Xy(output_variable_file, input_variable_file):
         # since IPC has huge values we have to use a logorithmic scale. Otherwise Value 235 should be removed
         row_ligand[235] = np.log(float(row_ligand[235]))
         # Get rid of the string columns
-        x_i = [row_protein[2:] + row_ligand[1:]]
+        x_i = [row_protein[protein_start:] + row_ligand[ligand_start:]]
         X += x_i
         y += [regression[complex_name]]
 
