@@ -13,7 +13,7 @@ if len(sys.argv) > 1:
 reproducibility.reproduce(ExecutionID)
 
 
-X, y = bake_train_Xy()
+X, y, features = bake_train_Xy()
 
 print("X.shape =", X.shape)
 print("y.shape =", y.shape)
@@ -98,14 +98,12 @@ for index in best:
     p_bin[index] = 1
 best = p_bin
 
-combined_columns = data_bakery.get_feature_names()
-
 print("Number of selected features = ", sum(best))
 #Printing the best with column names - 
 for f in range(len(best)):
     if best[f] != 0:
         #print(f)
-        print(combined_columns[f])
+        print(features[f])
 
 best = np.asarray(best)
 best_features = best[np.newaxis, :]

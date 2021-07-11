@@ -38,16 +38,16 @@ def bake_Xy(output_variable_file, input_variable_file):
     X = np.asarray(X, dtype='float64')
     y = np.asarray(y, dtype='float64')
 
-    return X, y
+    return X, y, get_feature_names(protein_start, ligand_start)
 
-def get_feature_names():
+def get_feature_names(protein_start, ligand_start):
     with open("../data/protein_descriptors.txt") as names_f:
         names_desc_prot = ["protein." + n.strip() for n in names_f.readlines()]
 
     with open("../data/ligand_descriptors.txt") as c:
         ligand_columns = ["ligand." + i.strip() for i in c.readlines()]
 
-    return names_desc_prot[2:] + ligand_columns[1:]
+    return names_desc_prot[protein_start:] + ligand_columns[ligand_start:]
 
 def bake_train_Xy():
     output_variable_file = "../data/regression_varible.data"

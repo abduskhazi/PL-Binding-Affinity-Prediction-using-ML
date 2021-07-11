@@ -17,7 +17,7 @@ reproducibility.reproduce(ExecutionID)
 
 
 # Obtain data for our random forest regressor.
-X, y = bakery.bake_train_Xy()
+X, y, features = bakery.bake_train_Xy()
 print("X.shape =", X.shape)
 print("y.shape =", y.shape)
 
@@ -57,9 +57,6 @@ print("r2 score (shuffled ligand columns) =", r2_score(y_validate, regressor.pre
 
 # Getting the original X_validate for further checking
 X_validate = np.copy(X_validate_backup)
-
-# Printing the most important features
-features = bakery.get_feature_names()
 
 # Gini Importance (Sorting in the decreasing order of importance)
 impt_indices = regressor.feature_importances_.argsort()[::-1]
