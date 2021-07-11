@@ -126,10 +126,20 @@ y_pred = reg.predict(X_validate)
 import matplotlib
 import matplotlib.pyplot as plt
 
+#Plotting to visualize the accuracy of our model.
 fig = plt.figure()
-plt.plot(y_test, y_pred, '.')
+plt.plot(y_validate, y_pred, '.')
+plt.xlabel("y_validate")
+plt.ylabel("y_validate_pred")
 plt.plot(range(2,14), range(2,14), '--')
-fig.savefig('temp.png', dpi=fig.dpi)
+fig.savefig('accuracy_validate.png', dpi=fig.dpi)
+
+fig = plt.figure()
+plt.plot(y_train, reg.predict(X_train), '.')
+plt.xlabel("y_train")
+plt.ylabel("y_train_pred")
+plt.plot(range(2,14), range(2,14), '--')
+fig.savefig('accuracy_train.png', dpi=fig.dpi)
 
 # Ending the script here.
 exit()
