@@ -55,17 +55,28 @@ for i in range(55, X.shape[1]):
     np.random.shuffle(X_validate[:,i])
 print("r2 score (shuffled ligand columns) =", r2_score(y_validate, regressor.predict(X_validate)))
 
+# Getting the original X_validate for further checking
+X_validate = np.copy(X_validate_backup)
+
 # Printing the most important features
 features = bakery.get_feature_names()
 
 # Gini Importance (Sorting in the decreasing order of importance)
 impt_indices = regressor.feature_importances_.argsort()[::-1]
 
+print("Gini impt ->", [regressor.feature_importances_[i] for i in impt_indices[:5]])
+
 print("Important features based on decrease in entropy (Gini Importance)")
-for i in impt_indices[:40]:
+for i in impt_indices[:30]:
     print(features[i])
 
+# Permutation Importance
 from sklearn.inspection import permutation_importance
-X_validate = np.copy(X_validate_backup)
 impt = permutation_importance(regressor, X_validate, y_validate, n_repeats=30, n_jobs=-1)
-print(impt.importances_mean.argsort()[::-1])
+impt_indices = impt.importances_mean.argsort()[::-1]
+
+print("Permuation impt ->", [impt.importances_mean[i] for i in impt_indices[:5]])
+
+print("Important features based on permutation")
+for i in impt_indices[:30]:
+    print(features[i])
