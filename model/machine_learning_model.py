@@ -25,7 +25,7 @@ print("y.shape =", y.shape)
 import random
 seed = random.randint(0,2**32)
 
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.10, random_state=seed)
+X_train, _, y_train, _ = train_test_split(X, y, test_size=0.10, random_state=seed)
 
 reg = LinearRegression().fit(X_train, y_train)
 print("With all features, linear regression score = ", -reg.score(X_train, y_train))
@@ -116,10 +116,10 @@ X_local = X * best_features
 idx = np.argwhere(np.all(X_local[..., :] == 0, axis=0))
 X_local = np.delete(X_local, idx, axis=1)
 
-X_train, X_test, y_train, y_test = train_test_split(X_local, y, test_size=0.10) #, random_state=42)
+X_train, X_validate, y_train, y_validate = train_test_split(X_local, y, test_size=0.10) #, random_state=42)
 reg = LinearRegression().fit(X_train, y_train)
 
-y_pred = reg.predict(X_test)
+y_pred = reg.predict(X_validate)
 
 ###################################################################################
 # PLOTTING 
