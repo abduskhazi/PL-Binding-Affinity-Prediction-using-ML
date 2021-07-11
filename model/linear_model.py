@@ -66,9 +66,9 @@ from genetic_model import genetic_algorithm, onemax
 # define the total iterations
 n_iter = 200
 # bits
-n_bits = X.shape[1] #20
+n_bits = X.shape[1]
 # define the population size
-n_pop = 250 # n_bits * 6 #100
+n_pop = n_bits # * 6 #100
 # crossover rate
 r_cross = 0.9
 # mutation rate
@@ -78,16 +78,9 @@ best, score = genetic_algorithm(linear_regression_score, X, y, n_bits, n_iter, n
 print('Done!')
 print('f(%s) = %f' % (best, score))
 
-p_bin = [0] * X.shape[1]
-for index in best:
-    p_bin[index] = 1
-best = p_bin
-
 print("Number of selected features = ", sum(best))
-#Printing the best with column names - 
 for f in range(len(best)):
     if best[f] != 0:
-        #print(f)
         print(features[f])
 
 best = np.asarray(best)

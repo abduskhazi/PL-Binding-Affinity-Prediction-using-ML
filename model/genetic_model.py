@@ -39,8 +39,15 @@ def mutation(bitstring, r_mut):
 
 # genetic algorithm
 def genetic_algorithm(objective, X, y, n_bits, n_iter, n_pop, r_cross, r_mut):
-	# initial population of random bitstring
-	pop = [randint(0, 2, n_bits).tolist() for _ in range(n_pop)]
+	# initial population consisting of most 1's.
+	# We would like to eliminate features so we start from all selection --> low selection
+	pop = []
+	for i in range(n_bits):
+	    population_element = [1] * n_bits
+	    population_element[i] = 0
+	    pop += [population_element]
+	if n_bits % 2 != 0:
+	    pop += [[1]*n_bits]
 	# keep track of best solution
 	best, best_eval = 0, 100 #objective(pop[0], X, y)
 	# enumerate generations
