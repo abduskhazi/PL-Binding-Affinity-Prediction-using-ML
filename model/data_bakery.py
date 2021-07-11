@@ -38,12 +38,12 @@ def bake_Xy(output_variable_file, input_variable_file):
     return X, y
 
 def bake_train_Xy():
-    output_variable_file = "regression_var.data"
+    output_variable_file = "../data/regression_varible.data"
     input_variable_file = "../data/train/train_model_input_all_proteins_mol2_fp_no_nan.data"
     return bake_Xy(output_variable_file, input_variable_file)
 
 def bake_test_Xy():
-    output_variable_file = "regression_var.data"
+    output_variable_file = "../data/regression_varible.data"
     input_variable_file = "../data/test/test_model_input_all_proteins_mol2_fp_no_nan.data"
     return bake_Xy(output_variable_file, input_variable_file)
 
