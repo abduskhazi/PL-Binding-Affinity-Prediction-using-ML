@@ -16,8 +16,8 @@ Please read the weekly notes committed to get an idea about the work done till n
 ``python random_forest_regresser.py [Execution ID]``  
 The Execution ID is optional. Use the same number to reproduce your results.
 * The above should create 2 plots plotting *predicted y value* vs *expected y value*.  
-`temp_validate.png` - Shows how good the model fits on our validation data.  
-`temp_train.png` - Shows how good the model fits on our training data.
+`accuracy_validate.png` - Shows how good the model fits on our validation data.  
+`accuracy_train.png` - Shows how good the model fits on our training data.
 
 ## Reporting Issues / Requesting Features
 * Please use [Report issue or request feature](https://github.com/abduskhazi/MSc-Project/issues "Named link title") for this purpose.
