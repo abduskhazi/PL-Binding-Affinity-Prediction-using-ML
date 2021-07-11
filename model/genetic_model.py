@@ -61,6 +61,9 @@ def genetic_algorithm(objective, X, y, n_bits, n_iter, n_pop, r_cross, r_mut):
 				best, best_eval = pop[i], scores[i]
 				#print(">%d, new best f(%s) = %.3f" % (gen,  pop[i], scores[i]))
 				print(">%d, new best = %.3f." % (gen, scores[i]))
+				import json
+				with open('best_feature_selection.json', 'w') as f:
+				    json.dump(pop[i], f)
 		# select parents
 		selected = [selection(pop, scores) for _ in range(n_pop)]
 		# create the next generation
@@ -76,6 +79,9 @@ def genetic_algorithm(objective, X, y, n_bits, n_iter, n_pop, r_cross, r_mut):
 				children.append(c)
 		# replace population
 		pop = children
+		import json
+		with open("generation_info.data", "w") as f:
+		    json.dump(["Generation = " + str(gen), pop], f)
 	return [best, best_eval]
 
 if False:
