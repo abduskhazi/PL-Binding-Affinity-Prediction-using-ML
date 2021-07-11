@@ -1,7 +1,7 @@
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import r2_score
-from data_bakery import bake_train_Xy
+import data_bakery as bakery
 import reproducibility
 import matplotlib
 import matplotlib.pyplot as plt
@@ -17,7 +17,7 @@ reproducibility.reproduce(ExecutionID)
 
 
 # Obtain data for our random forest regressor.
-X, y = bake_train_Xy()
+X, y = bakery.bake_train_Xy()
 print("X.shape =", X.shape)
 print("y.shape =", y.shape)
 
@@ -55,8 +55,15 @@ for i in range(55, X.shape[1]):
     np.random.shuffle(X_validate[:,i])
 print("r2 score (shuffled ligand columns) =", r2_score(y_validate, regressor.predict(X_validate)))
 
-sorted_indices = np.argsort(regressor.feature_importances_)
-print(sorted_indices)
+# Printing the most important features
+features = bakery.get_feature_names()
+
+# Gini Importance (Sorting in the decreasing order of importance)
+impt_indices = regressor.feature_importances_.argsort()[::-1]
+
+print("Important features based on decrease in entropy (Gini Importance)")
+for i in impt_indices[:40]:
+    print(features[i])
 
 from sklearn.inspection import permutation_importance
 X_validate = np.copy(X_validate_backup)
