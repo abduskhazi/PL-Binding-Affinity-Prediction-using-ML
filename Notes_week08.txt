@@ -6,6 +6,7 @@ Observation -
     Random Forest regresser is giving a very high accuracy of R^2 score > 0.75
     Out of bag score is also 0.75 consistently.
     The oob score ~= R^2 score on the validation set if we use ~200 trees in our emsemble.
+    When we use exp data --> This is signifantly bad ~ 0.55. Still do not know why
     Why is this model predicting things so accurately - Still researching.
 
 How to know if the protein/ligand features are being taken into account?

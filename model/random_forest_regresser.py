@@ -13,7 +13,7 @@ import sys
 ExecutionID = None
 if len(sys.argv) > 1:
     ExecutionID = int(sys.argv[1])
-reproducibility.reproduce(ExecutionID)
+ExecutionID = reproducibility.reproduce(ExecutionID)
 
 
 # Obtain data for our random forest regressor.
@@ -34,6 +34,7 @@ fig = plt.figure()
 plt.scatter(y_validate, y_pred, 1)
 plt.xlabel("y_validate")
 plt.ylabel("y_validate_pred")
+plt.title("Execution ID = " + str(ExecutionID))
 plt.plot(range(2,14), range(2,14), '--')
 fig.savefig('accuracy_validate.png', dpi=fig.dpi)
 
@@ -41,6 +42,7 @@ fig = plt.figure()
 plt.scatter(y_train, regressor.predict(X_train), 1)
 plt.xlabel("y_train")
 plt.ylabel("y_train_pred")
+plt.title("Execution ID = " + str(ExecutionID))
 plt.plot(range(2,14), range(2,14), '--')
 fig.savefig('accuracy_train.png', dpi=fig.dpi)
 
@@ -67,6 +69,20 @@ impt_indices = regressor.feature_importances_.argsort()[::-1]
 
 print("Gini impt ->", [regressor.feature_importances_[i] for i in impt_indices[:5]])
 
+fig = plt.figure()
+fig.subplots_adjust(left=0.35)
+ax = fig.add_subplot(111) #fig.add_axes([0,0,1,1])
+feature_names = [features[i] for i in impt_indices[:15]]
+importances = [regressor.feature_importances_[i] for i in impt_indices[:15]]
+y_pos = np.arange(len(importances))
+ax.barh(y_pos, importances, align='center')
+ax.set_yticks(y_pos)
+ax.set_yticklabels(feature_names)
+ax.invert_yaxis()  # labels read top-to-bottom
+ax.set_xlabel("Execution ID = " + str(ExecutionID))
+ax.set_title("Gini Importances of features.")
+fig.savefig('Gini_importance.png', dpi=fig.dpi)
+
 print("Important features based on decrease in entropy (Gini Importance)")
 for i in impt_indices[:30]:
     print(features[i])
@@ -77,6 +93,20 @@ impt = permutation_importance(regressor, X_validate, y_validate, n_repeats=30, n
 impt_indices = impt.importances_mean.argsort()[::-1]
 
 print("Permuation impt ->", [impt.importances_mean[i] for i in impt_indices[:5]])
+
+fig = plt.figure()
+fig.subplots_adjust(left=0.35)
+ax = fig.add_subplot(111) #fig.add_axes([0,0,1,1])
+feature_names = [features[i] for i in impt_indices[:15]]
+importances = [impt.importances_mean[i] for i in impt_indices[:15]]
+y_pos = np.arange(len(importances))
+ax.barh(y_pos, importances, align='center')
+ax.set_yticks(y_pos)
+ax.set_yticklabels(feature_names)
+ax.invert_yaxis()  # labels read top-to-bottom
+ax.set_xlabel("Execution ID = " + str(ExecutionID))
+ax.set_title("Permutation Importances of features.")
+fig.savefig('Permutation_importance.png', dpi=fig.dpi)
 
 print("Important features based on permutation")
 for i in impt_indices[:30]:

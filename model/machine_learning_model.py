@@ -10,7 +10,7 @@ import reproducibility
 ExecutionID = None
 if len(sys.argv) > 1:
     ExecutionID = int(sys.argv[1])
-reproducibility.reproduce(ExecutionID)
+ExecutionID = reproducibility.reproduce(ExecutionID)
 
 
 X, y, features = bake_train_Xy()

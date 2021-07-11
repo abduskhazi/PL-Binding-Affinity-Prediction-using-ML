@@ -21,3 +21,5 @@ def reproduce(seed = None):
     torch.manual_seed(seed + 2)
     if torch.cuda.is_available():
         torch.cuda.manual_seed_all(seed + 3)
+
+    return seed
