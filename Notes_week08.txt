@@ -5,19 +5,21 @@ Reproducability -
 Observation -
     Random Forest regresser is giving a very high accuracy of R^2 score > 0.75
     Out of bag score is also 0.75 consistently.
-    The oob score ~= R^2 score on the validation set if we use ~200 tries in our emsemble.
+    The oob score ~= R^2 score on the validation set if we use ~200 trees in our emsemble.
     Why is this model predicting things so accurately - Still researching.
 
 How to know if the protein/ligand features are being taken into account?
-    Random shuffle the protein features and check the result.
-    Random shuffle the ligand features and check the result.
+    Fit the model using all the feature
+    Random shuffle the protein features of the X_validate variable and check the prediction.
+    Do the same thing to check the usage of ligand features.
 
 Observation
     Ligand features have a huge impact on the regressor.
 
 For feature importance calculation -
-    Using permutation feature importance calculation.
-    THe issue with this is correlation between features. (There needs to be a clustering of features that are correlated.)
+    1. Using entropy reduction calculation (By default given by our regressor model)
+    2. Using permutation feature importance calculation.
+       The issue with this is correlation between features. (There needs to be a clustering of features that are correlated.)
 
 Good resource
 https://towardsdatascience.com/explaining-feature-importance-by-example-of-a-random-forest-d9166011959e
