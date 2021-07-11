@@ -98,13 +98,7 @@ for index in best:
     p_bin[index] = 1
 best = p_bin
 
-with open("names_protein_descriptors.txt") as names_f:
-    names_desc_prot = [n.strip() for n in names_f.readlines()]
-
-with open("names_ligand_descriptors.txt") as c:
-    ligand_columns = c.readlines()
-
-combined_columns = names_desc_prot[2:] + ligand_columns[1:]
+combined_columns = data_bakery.get_feature_names()
 
 print("Number of selected features = ", sum(best))
 #Printing the best with column names - 

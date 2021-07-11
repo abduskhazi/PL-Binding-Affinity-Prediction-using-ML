@@ -37,6 +37,15 @@ def bake_Xy(output_variable_file, input_variable_file):
 
     return X, y
 
+def get_feature_names():
+    with open("../data/protein_descriptors.txt") as names_f:
+        names_desc_prot = ["protein." + n.strip() for n in names_f.readlines()]
+
+    with open("../data/ligand_descriptors.txt") as c:
+        ligand_columns = ["ligand." + i.strip() for i in c.readlines()]
+
+    return names_desc_prot[2:] + ligand_columns[1:]
+
 def bake_train_Xy():
     output_variable_file = "../data/regression_varible.data"
     input_variable_file = "../data/train/train_model_input_all_proteins_mol2_fp_no_nan.data"
@@ -55,3 +64,9 @@ if __name__ == "__main__":
     X_test, y_test = bake_test_Xy()
     print("X_test.shape =", X_test.shape)
     print("y_test.shape =", y_test.shape)
+
+    features = get_feature_names()
+    print("OVERVIEW :")
+    print("\tLength of feature column names =", len(features))
+    print("\t0 ->", features[0], " ... 54 ->", features[54])
+    print("\t55 ->", features[55], " ... 456 ->", features[456])
