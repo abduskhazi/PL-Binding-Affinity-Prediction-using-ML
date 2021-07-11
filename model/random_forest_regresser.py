@@ -31,14 +31,14 @@ print("oob score = ", regressor.oob_score_, ", Validation r2 score = ", r2_score
 
 #Plotting to visualize the accuracy of our model.
 fig = plt.figure()
-plt.plot(y_validate, y_pred, '.')
+plt.scatter(y_validate, y_pred, 1)
 plt.xlabel("y_validate")
 plt.ylabel("y_validate_pred")
 plt.plot(range(2,14), range(2,14), '--')
 fig.savefig('accuracy_validate.png', dpi=fig.dpi)
 
 fig = plt.figure()
-plt.plot(y_train, regressor.predict(X_train), '.')
+plt.scatter(y_train, regressor.predict(X_train), 1)
 plt.xlabel("y_train")
 plt.ylabel("y_train_pred")
 plt.plot(range(2,14), range(2,14), '--')
