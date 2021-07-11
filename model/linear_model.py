@@ -69,6 +69,8 @@ n_iter = 200
 n_bits = X.shape[1]
 # define the population size
 n_pop = n_bits # * 6 #100
+if X.shape[1] % 2 != 0:
+    n_pop += 1
 # crossover rate
 r_cross = 0.9
 # mutation rate
