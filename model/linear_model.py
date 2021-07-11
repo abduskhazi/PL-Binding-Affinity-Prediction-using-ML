@@ -64,7 +64,7 @@ def linear_regression_score(population, X, y):
 from genetic_model import genetic_algorithm, onemax
 
 # define the total iterations
-n_iter = 200
+n_iter = 2000
 # bits
 n_bits = X.shape[1]
 # define the population size
