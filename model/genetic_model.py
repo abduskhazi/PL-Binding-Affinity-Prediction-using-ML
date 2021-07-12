@@ -39,15 +39,8 @@ def mutation(bitstring, r_mut):
 
 # genetic algorithm
 def genetic_algorithm(objective, X, y, n_bits, n_iter, n_pop, r_cross, r_mut):
-	# initial population consisting of most 1's.
-	# We would like to eliminate features so we start from all selection --> low selection
-	pop = []
-	for i in range(n_bits):
-	    population_element = [1] * n_bits
-	    population_element[i] = 0
-	    pop += [population_element]
-	if n_bits % 2 != 0:
-	    pop += [[1]*n_bits]
+	# initial population of random bitstring
+	pop = [randint(0, 2, n_bits).tolist() for _ in range(n_pop)]
 	# keep track of best solution
 	best, best_eval = 0, 100 #objective(pop[0], X, y)
 	# enumerate generations
@@ -62,8 +55,8 @@ def genetic_algorithm(objective, X, y, n_bits, n_iter, n_pop, r_cross, r_mut):
 				#print(">%d, new best f(%s) = %.3f" % (gen,  pop[i], scores[i]))
 				print(">%d, new best = %.3f." % (gen, scores[i]))
 				import json
-				with open('best_feature_selection.json', 'w') as f:
-				    json.dump(pop[i], f)
+				with open('genetic_feature_selection.json', 'w') as f:
+				    json.dump((scores[i], pop[i]), f)
 		# select parents
 		selected = [selection(pop, scores) for _ in range(n_pop)]
 		# create the next generation
@@ -80,7 +73,7 @@ def genetic_algorithm(objective, X, y, n_bits, n_iter, n_pop, r_cross, r_mut):
 		# replace population
 		pop = children
 		import json
-		with open("generation_info.data", "w") as f:
+		with open("genetic_generation_info.data", "w") as f:
 		    json.dump(["Generation = " + str(gen), pop], f)
 	return [best, best_eval]
 
