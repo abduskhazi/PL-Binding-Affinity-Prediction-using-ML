@@ -1,3 +1,11 @@
+Long running of genetic algorithms -
+    With specific initialization (2000 generations, population = 457),
+       - We stuck into a local minima -> check best_feature_selection.json and
+        generation_info.json
+    With random Initization (500 generations, population = 2400)
+        - The program was started . Results should be found in genetic_feature_selection.json and
+          genetic_generation_info.json
+
 Reproducability -
     For reproduciblity I print the random seed on the first line.
     If we re-use this seed. We can reproduce the result exactly.
