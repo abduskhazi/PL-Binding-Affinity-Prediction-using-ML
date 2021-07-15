@@ -35,3 +35,24 @@ https://towardsdatascience.com/explaining-feature-importance-by-example-of-a-ran
 Computational complexity - https://christophm.github.io/interpretable-ml-book/feature-importance.html
 https://scikit-learn.org/stable/modules/generated/sklearn.inspection.permutation_importance.html
 
+
+THINGS TO DO NEXT - 
+1. Using the infrastructure to do feature selection for random forest regression.
+    Fitting is expensive, checking is not so expensive.
+    We can use Shuffling concept as used by permuation importance selection.
+2. Report R^2 score for genetic algorithm runs. (Accuracy is more important) *******
+    ==> Number of feature selected is secondary.
+3. Support vector regressor with different parameters...
+4.
+5.
+6.
+7.
+8. ***** Report Writing I am lagging behind - I will do it next
+9. Found out a python library called DEAP for doing genetic libraries
+
+NEXT STEPS -
+Feature selection (just not genetic algorithms)-
+    From Alireza .... ANT COLONY, SWARM optimization ...
+==> Manual feature selection and compare our results. (Concrete features for interpretability)
+* Maybe 2D features extracted from the proteins..
+* Fingerprint - Chemoinformatics? Read about this....
