@@ -289,6 +289,31 @@ See pseudocode below
 \end{algorithmic}
 \end{algorithm}
 
+\section{Machine Learning Models}
+
+\subsection{Testing strategy}
+Our problem is a regression problem.
+The input space of our model is multi-dimensional.
+Hence we cannot fully visualize our model as a function of the input space.
+To get around this we use $R^2$ score,  coefficient of determination, of to test the quality of the models.
+
+$$R^2(y, \hat{y}) = 1 - \frac{\sum_{i=1}^{n} (y_i - \hat{y}_i)^2}{\sum_{i=1}^{n} (y_i - \bar{y})^2}$$
+
+Where
+$\bar{y} = \frac{1}{n} \sum_{i=1}^{n} y_i$ 
+and 
+$\sum_{i=1}^{n} (y_i - \hat{y}_i)^2 = \sum_{i=1}^{n} \epsilon_i^2$
+
+
+Various machine learning models were trained using the extracted data.
+We tried out Linear Regression,
+Support Vector Regression,
+A small Neural Network,
+as well as a Random Forest Regression.
+But far the most impressive performance was given by Random Forest Regression.
+
+\subsection{Random Forest Regression}
+
 
 \section{Discussion}
 
