@@ -39,22 +39,82 @@
 \subsection{Biological Background}
 Proteins are the work horses of our body.
 Every main function is carried out by a protein or a collection of proteins.
-Ligands are molecules that bind to proteins to form protein ligand complexes.
-Ligands can be molecules that the protein transports like in the case of the haemoglobin
-transporter.
+Ligands are molecules that bind to proteins to form protein-ligand complexes.
+They can be molecules that the protein transports. e.g Haemoglobin transporter.
+In addition to this, they can also act as stimulating agents or 
+be agents that start/stop the protein function.
+The correct functioning of these protein-ligand complexes is very essential for any living organism.
+
+The study of protein-ligand complexes is an intrinsic part of the drug discovery field.
+This is because drugs are small molecules which act as ligands.
+As the drug molecules (ligands) bind to the target proteins, they can artificially influence
+the protein behaviour which causes a therapeutic effect.
 
 \includegraphics[scale=0.15]{pl_complex}
 \cite{PL_complex_introduction}
 
 
-They can also be stimulators or agents that start or stop the functioning of the protein.
-When ligands and proteins bind with each other, they form a protein-ligand complex.
-The correct functions of these complexes is very essential for our body.
-Hence the study of this data is very helpful for biologists and bioinformaticians...
+When one proposes a target drug candidate, he has to answer questions
+like - How easily does the drug bind to the target protein?
+Does it bind to any other protein - If so is it desirable?
+Does it have any unforseen effect on the protein function?
+etc.
+To answer these questions biologists and pharmacists conduct wet lab experiments which are expensive.
 
-....TALK about drug discovery here ...
+One way to reduce the cost of these experiments is to make a data driven selection of the drugs.
+Using experimental data collected over many years, one can build build models to predict the
+behaviour of the proposed drug computationally.
+These 'In-Silico' computational methods can aid in the elimination of undesirable drugs as well
+as guide the selection process based on past experience.
 
-\subsection{Representation of molecules and complexes in the PDB bind data set}
+Our project aims to answer one of the above questions - How well does a given drug bind to the target protein?
+We determine this computationally by building a machine learning model that is trained on the previous data.
+We hope that this model will be helpful in reducing the costs of drug discovery.
+But from where do we get the data to build our model?
+
+\subsection{PDBBind Dataset}
+Over the course of the last few decades, researchers have been successful in building a single data archive for proteins.
+This archive, called protein data bank, holds 3-D structural data of the proteins determined by experiments
+like X-ray crystallographic, Nuclear magnetic resonance (NMR) and cryoelectron microscopy (cryoEM).
+A subset of this data also contains the information about how well a given protein and ligand bind together.
+This is called binding affinity between a protein and ligands.
+(It also contains data about protein-protein complexes which are not dealt with in our project)
+\cite{pdbank_history}
+
+As we are studying the protein-ligand binding affinity, we would like to filter out this data
+from the protein data bank.
+This is what is done by the maintainers of the PDBBind Databank.
+\cite{pdbbind_introduction}
+Using the curated protein-ligand affinity data present in the PDBBind data bank, we build a machine learning
+model that learns to predict the affinity.
+But how is the binding affinity quantified?
+
+\subsection{Understanding Binding Affinity}
+A binding affinity between a protein and a ligand is quantified by the $K_d$, $K_i$ and $IC_{50}$ measures in the
+PDBBind Databank.
+Here $K_d$ refers to dissasociation constant, $K_i$ referes to the inhibition constant and $IC_{50}$ referes to 
+inhibitory concentration 50\%.
+The reason for having different measurements is because it is not possible to use the same measurement techniques
+for all biological complexes/processes.
+
+To understand $K_d$, consider a protein and a ligand binding and unbinding continously in a kinetic system.
+Consider a system in which $[P]$, $[L]$ and $[PL]$ represent the concentrations of the Protein, Ligands 
+and the protein-ligand complex respectively.
+This system can be represented by the equation.
+$$[P] + [L] \rightleftharpoons [PL]$$
+We can quantify the binding affinity $K_d$ by using the concentrations of the above system at equillibrium.
+$$K_d = \frac{[P][L]}{[PL]} = \frac{k_{-1}}{k_1}$$
+where $k_{-1}$ is the dissassociation rate constant and $k_1$ is the association rate constant.
+
+Similarly, $K_i$ and $IC_{50}$ are defined using concentration albeit non-trivially. Please refer
+\cite{binding_affinity_description}
+
+Our problem, hence, boils down to this - Given $K_d$/$K_i$/$IC_{50}$ for various complexes in the PDBBind Databank,
+can we predict this affinity measure for new protein/ligand complexes?
+The next questions that arise are - how exactly are the proteins and ligands represented in the PDBBind databank?
+How do we extract the properties of proteins and ligands for predicting this affinity?
+
+\subsection{Representation of molecules and complexes in the PDBBind data set}
 
 PDB format is used to represent the protein molecules (macro molecules).
 It contains information regarding the coordinates of atoms like the XYZ format in Armstrong units.
