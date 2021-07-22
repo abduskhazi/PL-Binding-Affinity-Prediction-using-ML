@@ -19,6 +19,8 @@
         Abdus Salam Khazi\\
         \href{mailto:abdus.khazi@students.uni-freiburg.de}
                 {abdus.khazi@students.uni-freiburg.de}\\ \\
+        \href{https://github.com/abduskhazi/MSc-Project}
+                {Github Repository} \cite{github_repository} \\ \\
         Supervisors:
         \begin{tabular}{ll}
 			Simon Bray \&
@@ -105,14 +107,16 @@ $$[P] + [L] \rightleftharpoons [PL]$$
 We can quantify the binding affinity $K_d$ by using the concentrations of the above system at equillibrium.
 $$K_d = \frac{[P][L]}{[PL]} = \frac{k_{-1}}{k_1}$$
 where $k_{-1}$ is the dissassociation rate constant and $k_1$ is the association rate constant.
-
-Similarly, $K_i$ and $IC_{50}$ are defined using concentration albeit non-trivially. Please refer
+Similarly, $K_i$ and $IC_{50}$ are defined using concentration albeit non-trivially. 
 \cite{binding_affinity_description}
 
 Our problem, hence, boils down to this - Given $K_d$/$K_i$/$IC_{50}$ for various complexes in the PDBBind Databank,
-can we predict this affinity measure for new protein/ligand complexes?
-The next questions that arise are - how exactly are the proteins and ligands represented in the PDBBind databank?
+can we predict this affinity measure for new protein-ligand complexes?
+
+The next questions that need to be answered before we build our agent are - how exactly are the proteins and ligands represented in the PDBBind Databank?
 How do we extract the properties of proteins and ligands for predicting this affinity?
+
+\section{Problem Setup and Formulation}
 
 \subsection{Representation of molecules and complexes in the PDBBind data set}
 
@@ -133,7 +137,8 @@ Mol2 format file is also a file similar to the sdf format.
 We chose to use this format because we could extract the features of more molecules
 using this format as compared to the sdf format.
 
-\section{Problem Formulation}
+
+\subsection{Problem Formulation}
 Protein-Ligand complex problems can be broadly classified into 2 types -
 \begin{itemize}
 \item LBS - Ligand binding site prediction.
@@ -182,10 +187,6 @@ Here the overlap feature is always 100\%.
 We use both fpocketp and explicitp descriptors to train our model.
 There are in total 55 descriptors in total obtained using dpocket descriptors.
 
-\subsection{DataSet}
-Protein Databank has been created by experiments all around the world.
-From this Databank, a PBD bind dataset has been created which provides data about all the protein-ligand complexes.
-In our study, we propose a method to predict the protein binding affinity of novel proteins and ligands using the data given by PBD bind dataset.
 
 \subsection{Dichotomous problem}
 Since the protein and the ligand are equally responsible for the affinity between them, our problem (also the binding site prediction problems) can be classified as a dichotomous problem in which we need data from both
