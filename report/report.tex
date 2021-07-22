@@ -6,6 +6,7 @@
 \usepackage{graphicx}
 \graphicspath{ {./images/} }
 \usepackage{hyperref}
+\usepackage{siunitx}
 
 \hypersetup{
     colorlinks=true,
@@ -42,9 +43,10 @@
 Proteins are the workhorses of our body.
 Every main function is carried out by a protein or a collection of proteins.
 Ligands are molecules that bind to proteins to form protein-ligand complexes.
-They can be molecules that the protein transports e.g. Haemoglobin transporter.
-In addition to this, they can also act as stimulating agents or be agents that start/stop the protein function.
-The correct functioning of these protein-ligand complexes is very essential for any living organism.
+They can be molecules that the protein transports e.g. Haemoglobin transporter
+or they can act as stimulating agents.
+In addition to this, they can also start/stop the protein from doing its function.
+The correct functioning of these protein-ligand complexes is essential for any living organism.
 
 The study of protein-ligand complexes is an intrinsic part of the drug discovery field.
 This is because drugs are small molecules that act as ligands.
@@ -64,8 +66,7 @@ To answer these questions biologists and pharmacists conduct wet-lab experiments
 One way to reduce the cost of these experiments is to make a data-driven selection of the drugs.
 Using experimental data collected over many years, one can build models to predict the
 behavior of the proposed drug computationally.
-These 'In-Silico' computational methods can aid in the elimination of undesirable drugs as well
-as a guide, the selection process is based on past experience.
+These 'In-Silico' computational methods can aid in the elimination of undesirable drugs as well guide the drug selection process.
 
 Our project aims to answer one of the above questions - How well does a given drug bind to the target protein?
 We determine this computationally by building a machine learning model that is trained on the previous data.
@@ -74,16 +75,15 @@ But from where do we get the data to build our model?
 
 \subsection{PDBBind Dataset}
 Over the last few decades, researchers have been successful in building a single data archive for proteins.
-This archive, called protein data bank, holds 3-D structural data of the proteins determined by experiments
+This archive, called \textbf{Protein Data bank} \cite{pdb_homepage} , holds 3-D structural data of the proteins determined by experiments
 like X-ray crystallographic, Nuclear magnetic resonance (NMR), and cryoelectron microscopy (cryoEM).
 A subset of this data also contains information about how well a given protein and ligand bind together.
 It is called binding affinity between a protein and ligands.
 (It also contains data about protein-protein complexes which isn't dealt with in our project)
 \cite{pdbank_history}
 
-As we are studying the protein-ligand binding affinity, we would like to filter out this data
-from the protein data bank.
-It is what is done by the maintainers of the PDBBind Data bank.
+As we are studying the protein-ligand binding affinity, we would like to filter out this data from the protein data bank.
+It is what is done by the maintainers of the \textbf{PDBBind Data bank}.
 \cite{pdbbind_introduction}
 Using the curated protein-ligand affinity data present in the PDBBind Data bank, we build a machine learning model that learns to predict the affinity.
 But how is the binding affinity quantified?
@@ -96,11 +96,11 @@ The reason for having different measurements is because it is not possible to us
 for all biological complexes/processes.
 
 To understand $K_d$, consider a protein and a ligand binding and unbinding continuously in a kinetic system.
-Consider a system in which $[P]$, $[L]$ and $[PL]$ represent the concentrations of the Protein, Ligands 
+In this system let $[P]$, $[L]$ and $[PL]$ represent the concentrations of the Protein, Ligands 
 and the protein-ligand complex respectively.
 This system can be represented by the equation.
 $$[P] + [L] \rightleftharpoons [PL]$$
-We can quantify the binding affinity $K_d$ by using the concentrations of the above system at equilibrium.
+We can quantify the binding affinity $K_d$ by using the concentrations in the above system at equilibrium.
 $$K_d = \frac{[P][L]}{[PL]} = \frac{k_{-1}}{k_1}$$
 where $k_{-1}$ is the disassociation rate constant and $k_1$ is the association rate constant.
 Similarly, $K_i$ and $IC_{50}$ are defined using concentration albeit non-trivially. 
@@ -114,15 +114,61 @@ How do we extract the properties of proteins and ligands for predicting this aff
 
 \section{Problem Set-up and Formulation}
 
-\subsection{Representation of molecules and complexes in the PDBBind data set}
+The binding of proteins and ligands is heavily influenced by their respective 3D structures.
+The \textbf{PDBBind Data bank} extracts information about these complexes from the \textbf{Protein Data bank} and creates the following files for every complex
+\begin{itemize}
+\item \textbf{PDB Format} - For the Protein.
+\item  \textbf{Mol2} - For the ligand.
+\item \textbf{SDF} - For the ligand.
+\end{itemize}
 
-PDB format is used to represent the protein molecules (macro molecules).
-It contains information regarding the coordinates of atoms like the XYZ format in Armstrong units.
-It contains information regarding protein secondary structures.
+All of the above formats contain the 3D information that is essential in the prediction of the binding affinity.
+The 3D representation of the proteins and ligands is encoded like in the \textbf{XYZ format}.
+
+\subsection{XYZ format}
+
+XYZ format is a chemical file format that is used to represent the geometry of a molecule.
+It specifies the number of atoms and their Cartesian X, Y, Z coordinates hence the name XYZ format.
+These coordinates given are relative to each other hence, translation and rotation do not change the molecule's representation. 
+The following text shows the XYZ format representation and an example.
+\cite{XYZ_format}
+
+\begin{verbatim}
+<number of atoms>
+comment line
+<element> <X> <Y> <Z>
+...
+\end{verbatim}
+
+The units of distance used is Angstrom (\si{\angstrom}).  \SI{1}{\angstrom} $ = 10^{-10}$ m.
+For example, the pyridine molecule is represented in the following format.
+\cite{XYZ_format}
+
+\begin{verbatim}
+11
+
+C       -0.180226841      0.360945118     -1.120304970
+C       -0.180226841      1.559292118     -0.407860970
+C       -0.180226841      1.503191118      0.986935030
+N       -0.180226841      0.360945118      1.29018350
+C       -0.180226841     -0.781300882      0.986935030
+C       -0.180226841     -0.837401882     -0.407860970
+H       -0.180226841      0.360945118     -2.206546970
+H       -0.180226841      2.517950118     -0.917077970
+H       -0.180226841      2.421289118      1.572099030
+H       -0.180226841     -1.699398882      1.572099030
+H       -0.180226841     -1.796059882     -0.917077970
+\end{verbatim}
+
+\subsection{PDB, SDF and Mol2 formats}
+
+PDB format is a human readable file format used to represent the protein molecules (macro molecules).
+In addition to the 3D information of atoms,
+it contains information regarding protein's primary, secondary, tertiary
+and the quaternary structures.
 Because of the presence of 3D positional data, molecular visualization is possible using specialized software. 
-The format has to be column specific if we want it to work with legacy software.
-\href{https://www.youtube.com/watch?v=_1q7sfjl2Kw}{Video Link}.
-\href{https://en.wikipedia.org/wiki/Protein_Data_Bank_(file_format)}{PDB format}\\
+\cite{pdb_file_format}
+\cite{understanding_pdb_format}
 
 SDF format file is a type of molecular descriptive file which contains x,y,z format similar to pdb format.
 It also contains bond information.
@@ -156,7 +202,7 @@ In our problem we take care of the following 2 things
 \item We do not take the features of the whole protein
 but take the features of the location of the protein which binds to the ligand.
 This is called a pocket.
-\item We try to keep the features of proteins and ligands dintinct till the input so that we can have a plug and play sort of input for our model.
+\item We try to keep the features of proteins and ligands distinct till the input so that we can have a plug and play sort of input for our model.
 The binding affinity of any protein or ligand can be found out because of this property of our modelling.
 \end{itemize}
 
@@ -184,13 +230,14 @@ We use both fpocketp and explicitp descriptors to train our model.
 There are in total 55 descriptors in total obtained using dpocket descriptors.
 
 
+
+\section{Feature selection}
+
 \subsection{Dichotomous problem}
 Since the protein and the ligand are equally responsible for the affinity between them, our problem (also the binding site prediction problems) can be classified as a dichotomous problem in which we need data from both
 the protein and the ligand.
 The data if it is complementary is better for solving the problem.
 The accuracy measure of the protein LBS prediction is the same as the dichotomous problems in math.
-
-\section{feature selection}
 As we are dealing with a dichotomous problem we have to select features of the protein and the ligand separately.
 This helps us make our model plug and play w.r.t the proteins and ligands.
 The following feature selection mechanisms were used to select features -
