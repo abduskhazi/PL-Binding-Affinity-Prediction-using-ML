@@ -175,9 +175,8 @@ It also contains bond information.
 This data can be used to create a graph using which SMILES string can be created.
 \href{https://en.wikipedia.org/wiki/Chemical_table_file}{SDF format}
 
-Mol2 format file is also a file similar to the sdf format.
-We chose to use this format because we could extract the features of more molecules
-using this format as compared to the sdf format.
+Mol2 format file is also a file similar to the sdf format used to represent the ligands.
+We chose to use this format because we could extract the features of more molecules using this format.
 
 
 \subsection{Problem Formulation}
@@ -194,9 +193,7 @@ LBS (Ligand binding side) prediction can be further classified into 3 types -
 \item Sequence based
 \end{itemize}
 
-The problem that we deal is Binding affinity prediction. 
-The protein ligand complex binding affinity is defined by a number Kd which is called dissociation constant.
-This constant is given for all pl complexes in the pdb bind dataset.
+The deal with binding affinity prediction in our project.
 In our problem we take care of the following 2 things
 \begin{itemize}
 \item We do not take the features of the whole protein
@@ -213,7 +210,7 @@ machines of 2 parts interacting with each other.
 
 \subsection{fpocket/dpocket descriptors}
 We extract the features of a pocket using dpocket tool (a submodule in the fpocket toolchain).
-fpocket uses veronoi tessalation (3D) to find out pockets in our protein structure.
+fpocket uses voronoi tessalation (3D) to find out pockets in our protein structure.
 To get the descriptors/features of the pockets at which ligands bind we use the dpocket (aka descriptors pocket).
 dpocket creates 3 types of descriptors for the pockets in the protein -
 \begin{itemize}
@@ -238,6 +235,7 @@ Since the protein and the ligand are equally responsible for the affinity betwee
 the protein and the ligand.
 The data if it is complementary is better for solving the problem.
 The accuracy measure of the protein LBS prediction is the same as the dichotomous problems in math.
+
 As we are dealing with a dichotomous problem we have to select features of the protein and the ligand separately.
 This helps us make our model plug and play w.r.t the proteins and ligands.
 The following feature selection mechanisms were used to select features -
