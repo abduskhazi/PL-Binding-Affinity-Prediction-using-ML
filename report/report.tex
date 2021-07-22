@@ -289,13 +289,13 @@ See pseudocode below
 \end{algorithmic}
 \end{algorithm}
 
-\section{Machine Learning Models}
-
-\subsection{Testing strategy}
+\section{Testing strategy}
 Our problem is a regression problem.
 The input space of our model is multi-dimensional.
 Hence we cannot fully visualize our model as a function of the input space.
 To get around this we use $R^2$ score,  coefficient of determination, of to test the quality of the models.
+$ R^2  \in (- \infty, 1.0]$ where $1.0$ is the best score.
+\cite{r_squared_score}
 
 $$R^2(y, \hat{y}) = 1 - \frac{\sum_{i=1}^{n} (y_i - \hat{y}_i)^2}{\sum_{i=1}^{n} (y_i - \bar{y})^2}$$
 
@@ -304,6 +304,17 @@ $\bar{y} = \frac{1}{n} \sum_{i=1}^{n} y_i$
 and 
 $\sum_{i=1}^{n} (y_i - \hat{y}_i)^2 = \sum_{i=1}^{n} \epsilon_i^2$
 
+For visualizing the results given by our regression model,
+we plot a graph of $y_{predicted}$ vs $y_{actual}$.
+This is plotted for both the training and the validation data.
+
+\includegraphics[scale=0.7]{accuracy_validate}
+
+\includegraphics[scale=0.7]{accuracy_train}
+
+The perfect model would have all the points in the graph on the $y = x$ line.
+
+\section{Machine Learning Models}
 
 Various machine learning models were trained using the extracted data.
 We tried out Linear Regression,
@@ -312,8 +323,40 @@ A small Neural Network,
 as well as a Random Forest Regression.
 But far the most impressive performance was given by Random Forest Regression.
 
-\subsection{Random Forest Regression}
+\subsection{Simple linear regression}
+This is the most computationally cheap model that we used to fit our model.
+The $R^2$ score for this model we got $\approx 0.455$ when we used all the
+features of the ligands and the proteins.
+Since the fitting of the model was very cheap, we tried to use the validation
+score of the model as a fitness score for our genetic algorithm.
 
+
+\subsection{Random Forest Regression}
+A random forest regression is an ensemble model which uses an ensemble of trees
+to calculate the output variable.
+Each node in the tree reduces tries to reduce the entropy of the data at hand.
+The $R^2$ score we got was $> 0.75$ for an ensemble of $100$ trees.
+
+\subsubsection{Feature Importance calculation}
+The Random Forest regression model fitting is very expensive as compared to the simple linear regression.
+Hence the same strategy cannot be used for feature selection as used in the linear models.
+We used 2 main methods to determine the importance of features in the model
+\begin{itemize}
+\item \textbf{Gini Importance} - This is given by default by the model. The model 
+calculates the amount of entropy reduction of that each feature does when it divides the data using the OOB score. (Out of bag Score)
+\item \textbf{Permutation Importance} - This is a model agnostic method to determine the importance of features in a regression. 
+It tries to calculate the reduction in the accuracy we shuffle each column.
+\end{itemize}
+\includegraphics[scale=0.7]{Gini_importance}
+
+\includegraphics[scale=0.7]{Permutation_importance}
+
+The issue with the above methods is that if there is any hidden correlation between input features then it will reduce the importance of the correlated features.
+
+\subsection{Permutation Importance and genetic algorithm}
+To overcome the issue with the above feature importance selection, we plan to use a combination of the concepts of permutation importance and genetic algorithm to find out the importance of the selected features.
+
+Results - YET TO IMPLEMENT
 
 \section{Discussion}
 
