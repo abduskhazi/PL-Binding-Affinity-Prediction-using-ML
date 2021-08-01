@@ -268,27 +268,31 @@ Reproducible ML models are very crucial for verifying any project or research re
 We use the second approach in our project. Every script, when executed, reports an execution ID. This is the random seed used during the execution. If we want to reproduce the exact results, we give this execution ID to the script as the first argument.
 
 \subsection{Model Quality Analysis}
-Due to the 
 We are trying to predict the following function
 $$ \textrm{Binding affinity prediction} : \mathbf{R}^n \mapsto \mathbf{R} \;\; \textrm{where} \;\; n \in \mathbf{I}^+$$
 Since the input space is multi-dimensional, we cannot fully visualize our model as a function of the input space.
 To get around this using the following methods
 \begin{itemize}
-\item Coefficient of determination, $R^2  \in (- \infty, 1.0]$ where $1.0$ is the best score. \cite{r_squared_score}
+\item We report \textit{Coefficient of determination}, $R^2  \in (- \infty, 1.0]$ where $1.0$ is the best score. \cite{r_squared_score}
 $$R^2(y, \hat{y}) = 1 - \frac{\sum_{i=1}^{n} (y_i - \hat{y}_i)^2}{\sum_{i=1}^{n} (y_i - \bar{y})^2} \;\; \textrm{where} \;\; \bar{y} = \frac{1}{n} \sum_{i=1}^{n} y_i \;\;
 \textrm{and} \;\; \sum_{i=1}^{n} (y_i - \hat{y}_i)^2 = \sum_{i=1}^{n} \epsilon_i^2$$
 
-\item For visualizing the results given by our regression model,
-we plot a graph of $y_{predicted}$ vs $y_{actual}$.
-This is plotted for both the training and the validation data.
+\item For visualizing the results,  we plot a 2D plot of expected values against the output given by the model.  A perfect model would have all the points in the graph on the $y = x$ line.  This corresponds to $R^2$ score of $1.0$
+\end{itemize}
 
-\includegraphics[scale=0.7]{accuracy_validate}
+Figure~\ref{fig:modelQualityVisualization},  shows the validation accuracy of \textit{Random Forest Regressor} model.
+
+\begin{figure}[htb]
+  \centering
+    \includegraphics[width=1.0\textwidth]{images/accuracy_validate}
+    \caption{Validation Accuracy.  $R^2 \approx 0.805$.}
+    \label{fig:modelQualityVisualization}
+\end{figure}
+
+%\includegraphics[scale=0.7]{accuracy_validate}
 
 %\includegraphics[scale=0.7]{accuracy_train}
 
-The perfect model would have all the points in the graph on the $y = x$ line.
-
-\end{itemize}
 
 \section{Machine Learning Models}
 
