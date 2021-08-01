@@ -177,7 +177,14 @@ The smiles format itself is not very helpful for us as we lose the 3D structural
 \cite{smilesformat}
 
 \subsection{Extraction of features}
-\subsubsection{Ligand Featuers using RDKit}
+As the file formats are different for proteins and ligands,  we use different tools to extract their features.
+\subsubsection{Ligand Features using RDKit}
+RDKit is an open-source cheminformatics software \cite{rdkitofficalpage}.
+The core data structures and algorithms of RDKit are written in C++ and the
+python wrappers are generated using Boost.Python.
+Using the module, \textit{RDKit.Chem.Descriptors} we extract $402$ features for each ligand \cite{rdkitbioinformaticsfreiburg}.
+Each descriptor value is taken as a real number,  hence the input space of ligand features is $\mathbf{R}^{402}$ before any feature elimination.
+
 \subsubsection{Protein Features using fpocket/dpocket descriptors}
 We extract the features of a pocket using dpocket tool (a submodule in the fpocket toolchain).
 fpocket uses voronoi tessalation (3D) to find out pockets in our protein structure.
