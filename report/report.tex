@@ -150,21 +150,16 @@ Using this graph the SMILES string for the molecule can be generated.
 The smiles format itself is not very helpful for us as we lose the 3D structural information after converting to it.
 \cite{smilesformat}
 
-\subsection{Problem Formulation}
-Protein-Ligand complex problems are classified into two types -
-\begin{itemize}
-\item LBS - Ligand binding site prediction.
-\item Ligand affinity prediction.
-\end{itemize} 
+\subsection{Problem Overview}
+Figure~\ref{fig:modelQualityVisualization} shows how the Protein-Ligand problems can be classified.
 
-LBS (Ligand binding side) prediction can be further classified into 3 types -
-\begin{itemize}
-\item 3D structure based
-\item Template based
-\item Sequence based
-\end{itemize}
+\begin{figure}[htb]
+  \centering
+    \includegraphics[scale=0.35]{images/pl_problem_classification}
+    \caption{Protein-Ligand problem classifcation.}
+    \label{fig:plproblemclassification}
+\end{figure}
 
-We deal with binding affinity prediction in our project.
 In our problem, we take care of the following two things
 \begin{itemize}
 \item We take the features of the pocket in the protein structure that binds to the ligand. It is the site where the ligand is bound to the protein, just like a key is attaching to a lock.
