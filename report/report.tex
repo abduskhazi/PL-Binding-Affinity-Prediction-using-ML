@@ -86,7 +86,7 @@ Using the curated protein-ligand affinity data present in the PDBBind Data bank,
 \subsection{Problem Overview}
 The problem that we are solving is - \textit{Given $K_d$/$K_i$/$IC_{50}$ for various complexes in the PDBBind Data bank,
 can we predict this affinity measure for new protein-ligand complexes?}
-Figure~\ref{fig:modelQualityVisualization} shows how the Protein-Ligand problems can be classified.
+Figure~\ref{fig:plproblemclassification} shows how the Protein-Ligand problem can be classified.
 
 \begin{figure}[htb]
   \centering
@@ -95,30 +95,40 @@ Figure~\ref{fig:modelQualityVisualization} shows how the Protein-Ligand problems
     \label{fig:plproblemclassification}
 \end{figure}
 
-In our problem, we take care of the following two things
-\begin{itemize}
-\item We take the features of the pocket in the protein structure that binds to the ligand. It is the site where the ligand is bound to the protein, just like a key is attaching to a lock.
-\item To get a plug-and-play input to our model, we keep the features of proteins and ligands distinct till the input step.
-It helps our model to provide the binding affinity between any protein and ligand.
-\end{itemize}
-
-However, for this, we make use of the existing 3D structure-based LBS toolchain called fpocket.
-It is because 3D structural features of proteins are very crucial for protein-ligand binding. The Proteins-Ligand interactions can be seen as two parts of a machine interacting with each other.
-
-
 The binding of proteins and ligands is heavily influenced by their respective 3D structures.
-The \textbf{PDBBind Data bank} extracts information about these complexes from the \textbf{Protein Data bank} and creates the following files for every complex
+Figure~\ref{fig:lockandkey} illustrates a hypothesis called \textit{Lock and Key}.
+As you can see it is very crucial that the shape of the protein's binding location and the shape of the ligand be complementary for the binding.
+
+\begin{figure}[htb]
+  \centering
+    \includegraphics[scale=0.7]{images/lock_and_key}
+    \caption{Lock and Key hypothesis in molecular docking.  \cite{lockandkeyformatpng}}
+    \label{fig:lockandkey}
+\end{figure}
+
+The other parts of the protein are not involved in the binding process directly.
+Hence,  we only get the features of the binding location.
+Any potential binding location in the 3D structure of a protein is called a pocket.
+We use a 3D based LBS prediction package called \textit{fpocket} to find the potential pockets.
+A submodule in the package called \textit{dpocket} is used to extract the binding pocket's features.
+
+To give a plug-and-play input to our model, we keep the features of proteins and ligands distinct till the training phase.
+That is,  we do not use the combined features in any pre-processing of the ML pipeline e.g.  feature reduction.
+This helps our model to provide the binding affinity between any protein and any ligand.
+
+
+
+\subsection{Overview of file formats}
+The \textbf{PDBBind Data bank} extracts information about the PL complexes from the \textbf{Protein Data bank} and creates the following files for every complex
 \begin{itemize}
 \item \textbf{PDB Format} - For the Protein.
 \item  \textbf{Mol2} - For the ligand.
 \item \textbf{SDF} - For the ligand.
 \end{itemize}
 
-All of the above formats contain 3D information that is essential in the prediction of the binding affinity.
-The 3D representation of the proteins and ligands is similar to the \textbf{XYZ format}.
-[See \ref{xyz_format}]
+All of the above formats contain the 3D information that is essential in the prediction of the binding affinity.
+All the above mentioned formats use the \textbf{XYZ format} internally to represent the 3D structure of their molecules.
 
-\subsection{Overview of file formats}
 \subsubsection{XYZ format}
 \label{xyz_format}
 XYZ format is a chemical file format that represents the geometry of a molecule.
@@ -273,14 +283,14 @@ $$R^2(y, \hat{y}) = 1 - \frac{\sum_{i=1}^{n} (y_i - \hat{y}_i)^2}{\sum_{i=1}^{n}
 \end{itemize}
 
 A perfect model would have all the points on the $y = x$ line.  This corresponds to $R^2$ score of $1.0$. 
-Figure~\ref{fig:modelQualityVisualization},  shows the validation accuracy of a \textit{Random Forest Regressor} model.
+Figure~\ref{fig:modelQualityVisualization},  shows the validation accuracy of a sample \textit{Random Forest Regressor} model.
 $y\_validate$ ($x$ axis) represents the actual validation data.
 $y\_validate\_pred$ ($y$ axis) represents the predicted output from the model.
 
 \begin{figure}[htb]
   \centering
     \includegraphics[width=1.0\textwidth]{images/accuracy_validate}
-    \caption{Validation Accuracy.  $R^2 \approx 0.805$.}
+    \caption{Sample validation accuracy.  $R^2 \approx 0.805$.}
     \label{fig:modelQualityVisualization}
 \end{figure}
 
