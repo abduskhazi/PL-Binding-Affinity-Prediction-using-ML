@@ -37,15 +37,19 @@
 \newpage
 
 \section{Introduction}
-.....TOBE REFINED AFTER COMPLETING THE FULL REPORT.....
 
 \subsection{Biological Background}
 Proteins are the workhorses of our body.  They are necessary for many important functions in the body.  Ligands are molecules that bind to proteins to form protein-ligand complexes.  They can be molecules that the protein transports (e.g., a Haemoglobin transporter) or act as stimulating agents.  In addition to this, they can also start/stop the protein from doing its function.  The correct functioning of these protein-ligand complexes is essential for any living organism.
 
 The study of protein-ligand complexes is an intrinsic part of the drug discovery field.  It is because drugs are small molecules that act as ligands.  As the drug molecules (ligands) bind to the target proteins, they can artificially influence the protein behavior.  This causes a therapeutic effect.
 
-\includegraphics[scale=0.15]{pl_complex}
-\cite{PL_complex_introduction}
+\begin{figure}[htb]
+  \centering
+    \includegraphics[scale=0.15]{images/pl_complex}
+    \caption{Haemoglobin transporter protein.  \cite{PL_complex_introduction}}
+    \label{fig:HaemoglobinTransporterImage}
+\end{figure}
+
 
 When we find a target drug candidate, we have to answer questions like - How easily does the drug bind to the target protein? Does it bind to any other protein - If so, is it desirable? Does it have any unforeseen effect on the protein function? etc...  To answer these questions biologists and pharmacists conduct wet-lab experiments that are expensive.
 
@@ -104,9 +108,9 @@ The 3D representation of the proteins and ligands is similar to the \textbf{XYZ 
 XYZ format is a chemical file format that represents the geometry of a molecule.
 It specifies the number of atoms and their Cartesian X, Y, Z coordinates hence the name XYZ format.
 The coordinates are relative to each other. Hence, translation and rotation do not change the molecule's representation. 
-The following text illustrates the XYZ format with an example.
+The following text illustrates the XYZ format.
+Section \ref{XYZFileexampleref} gives an example.
 \cite{XYZ_format}
-
 \begin{verbatim}
 <number of atoms>
 comment line
@@ -115,45 +119,36 @@ comment line
 \end{verbatim}
 
 The unit of distance used is Angstrom (\si{\angstrom}).  \SI{1}{\angstrom} $ = 10^{-10}$ m.
-For example, the following format represents the pyridine molecule.
 \cite{XYZ_format}
-
-\begin{verbatim}
-11
-
-C       -0.180226841      0.360945118     -1.120304970
-C       -0.180226841      1.559292118     -0.407860970
-C       -0.180226841      1.503191118      0.986935030
-N       -0.180226841      0.360945118      1.29018350
-C       -0.180226841     -0.781300882      0.986935030
-C       -0.180226841     -0.837401882     -0.407860970
-H       -0.180226841      0.360945118     -2.206546970
-H       -0.180226841      2.517950118     -0.917077970
-H       -0.180226841      2.421289118      1.572099030
-H       -0.180226841     -1.699398882      1.572099030
-H       -0.180226841     -1.796059882     -0.917077970
-\end{verbatim}
 
 \subsubsection{PDB format}
 PDB format is a human-readable file format used to represent the protein molecules (macromolecules).
-Within the PDB format,  the coordinates of atoms are represented like the XYZ format. [see \ref{xyz_format}].
-Because of the 3D information in this format,  molecular visualization of proteins is possible using specialized software. 
-In addition this it also contains information about atomic connectivity and the protein's primary,  secondary,  tertiary,  and quaternary structures.
+Within the PDB format,  the coordinates of atoms are represented like the XYZ format [see \ref{xyz_format}].
+Because of the 3D information in this format,  molecular visualization of proteins is possible with specialized software. 
+It also contains information about atomic connectivity and the protein's primary,  secondary,  tertiary,  and quaternary structures.
 \cite{pdb_file_format}
 \cite{understanding_pdb_format}
+Please see \cite{examplePDBFile} for an example pdb file.
 
-\subsubsection{SDF format}
+
+\subsubsection{Structure Data File (SDF) Format}
+SDF format file is a Chemical Table file (CT File) that contains structure of the molecule in the X,Y,Z format.
+It contains information like atomic bonds,  connectivity information,  molecular weight,  and molecular formula. \cite{SDFformat}
+Section \ref{SDFFileexampleref} illustrates the SDF file format.
 
 \subsubsection{Mol2 format}
+Similar to SDF format,  Mol2 also represents the 3D structure of a molecule in the X,Y,Z format.
+It contains the atomic bond and connectivity information but does not contain the other data like molecular weight and formula.
+We use the ligands given in this format because more ligands in mol2 format could be processed with the RDKit feature extractor.
+Section \ref{MOL2Fileexampleref} illustrates the Mol2 file format.
 
-SDF format file is a molecule description file that contains x,y,z format similar to PDB format.
-It also contains atomic bond information.
-This data can be used to create an atomic graph. Using this graph SMILES string can be generated.
-\href{https://en.wikipedia.org/wiki/Chemical_table_file}{SDF format}
-
-Mol2 format file is also a file similar to the SDF format used to represent the ligands.
-We chose to use this format because we could extract the features of more molecules from this format.
-
+\subsubsection{SMILES format}
+SMILES is an acronym for Simplified Molecular-Input Line-Entry System.
+It represents a molecule using an ASCII string.
+Using the 3D data in SDF and Mol2 formats,  we can create an atomic graph representation.
+Using this graph the SMILES string for the molecule can be generated.
+The smiles format itself is not very helpful for us as we lose the 3D structural information after converting to it.
+\cite{smilesformat}
 
 \subsection{Problem Formulation}
 Protein-Ligand complex problems are classified into two types -
@@ -180,7 +175,9 @@ It helps our model to provide the binding affinity between any protein and ligan
 However, for this, we make use of the existing 3D structure-based LBS toolchain called fpocket.
 It is because 3D structural features of proteins are very crucial for protein-ligand binding. The Proteins-Ligand interactions can be seen as two parts of a machine interacting with each other.
 
-\subsection{fpocket/dpocket descriptors}
+\subsection{Extraction of features}
+\subsubsection{Ligand Featuers using RDKit}
+\subsubsection{Protein Features using fpocket/dpocket descriptors}
 We extract the features of a pocket using dpocket tool (a submodule in the fpocket toolchain).
 fpocket uses voronoi tessalation (3D) to find out pockets in our protein structure.
 To get the descriptors/features of the pockets at which ligands bind we use the dpocket (aka descriptors pocket).
@@ -347,5 +344,87 @@ Results - YET TO IMPLEMENT
 
 \bibliographystyle{plain}
 \bibliography{references}
+
+\section{Appendix}
+\subsection{XYZ File format}
+\label{XYZFileexampleref}
+The following represents the pyridine molecule in the XYZ format.
+\begin{verbatim}
+11
+
+C       -0.180226841      0.360945118     -1.120304970
+C       -0.180226841      1.559292118     -0.407860970
+C       -0.180226841      1.503191118      0.986935030
+N       -0.180226841      0.360945118      1.29018350
+C       -0.180226841     -0.781300882      0.986935030
+C       -0.180226841     -0.837401882     -0.407860970
+H       -0.180226841      0.360945118     -2.206546970
+H       -0.180226841      2.517950118     -0.917077970
+H       -0.180226841      2.421289118      1.572099030
+H       -0.180226841     -1.699398882      1.572099030
+H       -0.180226841     -1.796059882     -0.917077970
+\end{verbatim}
+
+\subsection{SDF File format}
+\label{SDFFileexampleref}
+\begin{verbatim}
+2uzn_ligand
+
+Created by X-TOOL on Fri Nov 18 14:55:27 2016
+ 37 39  0  0  0  0  0  0  0  0999 V2000
+    7.1480   60.4530    6.6830  O 0  0  0  1  0  1
+    6.0470   60.1670    7.5640  S 0  0  0  1  0  4
+    .......
+    .......
+   -2.6338   67.4589    8.1225  H 0  0  0  1  0  1
+  1  2  2  0  0  2
+  2  3  2  0  0  2
+  .......
+  .......
+ 23 37  1  0  0  2
+M  END
+> <MOLECULAR_FORMULA>
+C15H13N3O4S2
+
+> <MOLECULAR_WEIGHT>
+363.3
+
+> <NUM_HB_ATOMS>
+7  
+
+> <NUM_ROTOR>
+1  
+
+> <XLOGP2>
+1.31 
+\end{verbatim}
+
+\subsection{MOL2 File Format}
+\label{MOL2Fileexampleref}
+\begin{verbatim}
+### 
+### Created by X-TOOL on Fri Sep 26 17:34:18 2014
+### 
+
+@<TRIPOS>MOLECULE
+1fo2_ligand
+   25    25     1     0     0
+SMALL
+GAST_HUCK
+
+
+@<TRIPOS>ATOM
+      1 C4         39.0090   40.2680   25.5130 C.3       1 DMJ         0.1280
+      2 O4         39.2170   40.5810   26.8980 O.3       1 DMJ        -0.3835
+     .......
+     25 H14        38.0787   41.8134   21.3802 H         1 DMJ         0.2097
+@<TRIPOS>BOND
+     1    1    9 1  
+     2    1    3 1  
+    .......
+    25   11   25 1  
+@<TRIPOS>SUBSTRUCTURE
+     1 DMJ         1
+\end{verbatim}
 
 \end{document}
