@@ -62,16 +62,15 @@ As we study the protein-ligand binding affinity here, we would like to filter ou
 Using the curated protein-ligand affinity data present in the PDBBind Data bank, we build a machine learning model that learns to predict the affinity.  But how is the binding affinity quantified?
 
 \subsection{Understanding Binding Affinity}
-A binding affinity between a protein and a ligand is quantified by the $K_d$, $K_i$ and $IC_{50}$ measures in the PDBBind Data bank.
-Here $K_d$ refers to disassociation constant, $K_i$ refers to the inhibition constant and $IC_{50}$ refers to 
+The binding affinity between a protein and a ligand is quantified by the $K_d$, $K_i$ and $IC_{50}$ measures in the PDBBind Data bank.
+Here $K_d$ refers to disassociation constant, $K_i$ refers to the inhibition constant, and $IC_{50}$ refers to 
 inhibitory concentration 50\%.
 The reason for having different measurements is because it is not possible to use the same measurement techniques
 for all biological complexes/processes.
 
 To understand $K_d$, consider a protein and a ligand binding and unbinding continuously in a kinetic system.
-In this system let $[P]$, $[L]$ and $[PL]$ represent the concentrations of the Protein, Ligands 
-and the protein-ligand complex respectively.
-This system can be represented by the equation.
+In this system, let $[P]$, $[L]$, and $[PL]$ represent the concentrations of the Protein, the Ligand, and the Protein-Ligand complex respectively.
+This is represented by the following equation:
 $$[P] + [L] \rightleftharpoons [PL]$$
 We can quantify the binding affinity $K_d$ by using the concentrations in the above system at equilibrium.
 $$K_d = \frac{[P][L]}{[PL]} = \frac{k_{-1}}{k_1}$$
@@ -82,7 +81,7 @@ Similarly, $K_i$ and $IC_{50}$ are defined using concentration albeit non-trivia
 Our problem, hence, boils down to this - Given $K_d$/$K_i$/$IC_{50}$ for various complexes in the PDBBind Data bank,
 can we predict this affinity measure for new protein-ligand complexes?
 
-The next questions that need to be answered before we build our agent are - how exactly are the proteins and ligands represented in the PDBBind Data bank?
+The next questions that need to be addressed before we build our agent are - how exactly are the proteins and ligands represented in the PDBBind Data bank?
 How do we extract the properties of proteins and ligands for predicting this affinity?
 
 \section{Problem Set-up and Formulation}
