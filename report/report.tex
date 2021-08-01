@@ -134,25 +134,24 @@ H       -0.180226841     -1.796059882     -0.917077970
 
 \subsection{PDB, SDF and Mol2 formats}
 
-PDB format is a human readable file format used to represent the protein molecules (macro molecules).
+PDB format is a human-readable file format used to represent the protein molecules (macromolecules).
 In addition to the 3D information of atoms,
-it contains information regarding protein's primary, secondary, tertiary
-and the quaternary structures.
+it contains information regarding protein's primary, secondary, tertiary, and quaternary structures.
 Because of the presence of 3D positional data, molecular visualization is possible using specialized software. 
 \cite{pdb_file_format}
 \cite{understanding_pdb_format}
 
-SDF format file is a type of molecular descriptive file which contains x,y,z format similar to pdb format.
-It also contains bond information.
-This data can be used to create a graph using which SMILES string can be created.
+SDF format file is a molecule description file that contains x,y,z format similar to PDB format.
+It also contains atomic bond information.
+This data can be used to create an atomic graph. Using this graph SMILES string can be generated.
 \href{https://en.wikipedia.org/wiki/Chemical_table_file}{SDF format}
 
-Mol2 format file is also a file similar to the sdf format used to represent the ligands.
-We chose to use this format because we could extract the features of more molecules using this format.
+Mol2 format file is also a file similar to the SDF format used to represent the ligands.
+We chose to use this format because we could extract the features of more molecules from this format.
 
 
 \subsection{Problem Formulation}
-Protein-Ligand complex problems can be broadly classified into 2 types -
+Protein-Ligand complex problems are classified into two types -
 \begin{itemize}
 \item LBS - Ligand binding site prediction.
 \item Ligand affinity prediction.
@@ -165,20 +164,16 @@ LBS (Ligand binding side) prediction can be further classified into 3 types -
 \item Sequence based
 \end{itemize}
 
-The deal with binding affinity prediction in our project.
-In our problem we take care of the following 2 things
+We deal with binding affinity prediction in our project.
+In our problem, we take care of the following two things
 \begin{itemize}
-\item We do not take the features of the whole protein
-but take the features of the location of the protein which binds to the ligand.
-This is called a pocket.
-\item We try to keep the features of proteins and ligands distinct till the input so that we can have a plug and play sort of input for our model.
-The binding affinity of any protein or ligand can be found out because of this property of our modelling.
+\item We take the features of the pocket in the protein structure that binds to the ligand. It is the site where the ligand is bound to the protein, just like a key is attaching to a lock.
+\item To get a plug-and-play input to our model, we keep the features of proteins and ligands distinct till the input step.
+It helps our model to provide the binding affinity between any protein and ligand.
 \end{itemize}
 
-However for this we make use of existing 3D structure based LBS tool chain called fpocket.
-The reason this is helpful is because 3D structural features of proteins are very crucial for the binding between 
-the proteins and ligands as proteins and ligand interactions can be considered as
-machines of 2 parts interacting with each other.
+However, for this, we make use of the existing 3D structure-based LBS toolchain called fpocket.
+It is because 3D structural features of proteins are very crucial for protein-ligand binding. The Proteins-Ligand interactions can be seen as two parts of a machine interacting with each other.
 
 \subsection{fpocket/dpocket descriptors}
 We extract the features of a pocket using dpocket tool (a submodule in the fpocket toolchain).
