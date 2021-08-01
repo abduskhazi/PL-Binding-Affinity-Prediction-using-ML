@@ -278,10 +278,13 @@ To get around this using the following methods
 $$R^2(y, \hat{y}) = 1 - \frac{\sum_{i=1}^{n} (y_i - \hat{y}_i)^2}{\sum_{i=1}^{n} (y_i - \bar{y})^2} \;\; \textrm{where} \;\; \bar{y} = \frac{1}{n} \sum_{i=1}^{n} y_i \;\;
 \textrm{and} \;\; \sum_{i=1}^{n} (y_i - \hat{y}_i)^2 = \sum_{i=1}^{n} \epsilon_i^2$$
 
-\item For visualizing the results,  we plot a 2D plot of expected values against the output given by the model.  A perfect model would have all the points in the graph on the $y = x$ line.  This corresponds to $R^2$ score of $1.0$
+\item For visualizing the results,  we plot a 2D plot of expected values against the model's output. 
 \end{itemize}
 
-Figure~\ref{fig:modelQualityVisualization},  shows the validation accuracy of \textit{Random Forest Regressor} model.
+A perfect model would have all the points on the $y = x$ line.  This corresponds to $R^2$ score of $1.0$. 
+Figure~\ref{fig:modelQualityVisualization},  shows the validation accuracy of a \textit{Random Forest Regressor} model.
+$y\_validate$ ($x$ axis) represents the actual validation data.
+$y\_validate\_pred$ ($y$ axis) represents the predicted output from the model.
 
 \begin{figure}[htb]
   \centering
