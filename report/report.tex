@@ -54,19 +54,12 @@ One way to reduce the cost of these experiments is to make a data-driven selecti
 Our project aims to answer one of the above questions - How well does a given drug bind to the target protein? We determine this computationally by building a machine learning model that trains on the previous data.  We hope that this model will help reduce the costs of drug discovery.  But from where do we get the data to build our model?
 
 \subsection{PDBBind Dataset}
-Over the last few decades, researchers have been successful in building a single data archive for proteins.
-This archive, called \textbf{Protein Data bank} \cite{pdb_homepage} , holds 3-D structural data of the proteins determined by experiments
-like X-ray crystallographic, Nuclear magnetic resonance (NMR), and cryoelectron microscopy (cryoEM).
-A subset of this data also contains information about how well a given protein and ligand bind together.
-It is called binding affinity between a protein and ligands.
-(It also contains data about protein-protein complexes that our project does not deal with)
+Over the last few decades, researchers have been successful in building a single data archive for proteins.  This archive, called \textbf{Protein Data bank} \cite{pdb_homepage} , holds 3-D structural data of the proteins determined by experiments like X-ray crystallographic, Nuclear magnetic resonance (NMR), and cryoelectron microscopy (cryoEM).  A subset of this data also contains information about how well a given protein and ligand bind together.  It is called binding affinity between a protein and ligands.  (It also contains data about protein-protein complexes that our project does not deal with)
 \cite{pdbank_history}
 
-As we study the protein-ligand binding affinity here, we would like to filter out this data from the protein data bank.
-It is what is done by the maintainers of the \textbf{PDBBind Data bank}.
+As we study the protein-ligand binding affinity here, we would like to filter out this data from the protein data bank.  It is what is done by the maintainers of the \textbf{PDBBind Data bank}.
 \cite{pdbbind_introduction}
-Using the curated protein-ligand affinity data present in the PDBBind Data bank, we build a machine learning model that learns to predict the affinity.
-But how is the binding affinity quantified?
+Using the curated protein-ligand affinity data present in the PDBBind Data bank, we build a machine learning model that learns to predict the affinity.  But how is the binding affinity quantified?
 
 \subsection{Understanding Binding Affinity}
 A binding affinity between a protein and a ligand is quantified by the $K_d$, $K_i$ and $IC_{50}$ measures in the PDBBind Data bank.
