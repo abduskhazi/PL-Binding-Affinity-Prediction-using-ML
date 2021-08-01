@@ -82,13 +82,29 @@ where $k_{-1}$ is the disassociation rate constant and $k_1$ is the association 
 Similarly, $K_i$ and $IC_{50}$ are defined using concentration albeit non-trivially. 
 \cite{binding_affinity_description}
 
-Our problem, hence, boils down to this - Given $K_d$/$K_i$/$IC_{50}$ for various complexes in the PDBBind Data bank,
-can we predict this affinity measure for new protein-ligand complexes?
+\section{Problem Formulation}
+\subsection{Problem Overview}
+The problem that we are solving is - \textit{Given $K_d$/$K_i$/$IC_{50}$ for various complexes in the PDBBind Data bank,
+can we predict this affinity measure for new protein-ligand complexes?}
+Figure~\ref{fig:modelQualityVisualization} shows how the Protein-Ligand problems can be classified.
 
-The next questions that need to be addressed before we build our agent are - how exactly are the proteins and ligands represented in the PDBBind Data bank?
-How do we extract the properties of proteins and ligands for predicting this affinity?
+\begin{figure}[htb]
+  \centering
+    \includegraphics[scale=0.35]{images/pl_problem_classification}
+    \caption{Protein-Ligand problem classifcation.}
+    \label{fig:plproblemclassification}
+\end{figure}
 
-\section{Problem Set-up and Formulation}
+In our problem, we take care of the following two things
+\begin{itemize}
+\item We take the features of the pocket in the protein structure that binds to the ligand. It is the site where the ligand is bound to the protein, just like a key is attaching to a lock.
+\item To get a plug-and-play input to our model, we keep the features of proteins and ligands distinct till the input step.
+It helps our model to provide the binding affinity between any protein and ligand.
+\end{itemize}
+
+However, for this, we make use of the existing 3D structure-based LBS toolchain called fpocket.
+It is because 3D structural features of proteins are very crucial for protein-ligand binding. The Proteins-Ligand interactions can be seen as two parts of a machine interacting with each other.
+
 
 The binding of proteins and ligands is heavily influenced by their respective 3D structures.
 The \textbf{PDBBind Data bank} extracts information about these complexes from the \textbf{Protein Data bank} and creates the following files for every complex
@@ -149,26 +165,6 @@ Using the 3D data in SDF and Mol2 formats,  we can create an atomic graph repres
 Using this graph the SMILES string for the molecule can be generated.
 The smiles format itself is not very helpful for us as we lose the 3D structural information after converting to it.
 \cite{smilesformat}
-
-\subsection{Problem Overview}
-Figure~\ref{fig:modelQualityVisualization} shows how the Protein-Ligand problems can be classified.
-
-\begin{figure}[htb]
-  \centering
-    \includegraphics[scale=0.35]{images/pl_problem_classification}
-    \caption{Protein-Ligand problem classifcation.}
-    \label{fig:plproblemclassification}
-\end{figure}
-
-In our problem, we take care of the following two things
-\begin{itemize}
-\item We take the features of the pocket in the protein structure that binds to the ligand. It is the site where the ligand is bound to the protein, just like a key is attaching to a lock.
-\item To get a plug-and-play input to our model, we keep the features of proteins and ligands distinct till the input step.
-It helps our model to provide the binding affinity between any protein and ligand.
-\end{itemize}
-
-However, for this, we make use of the existing 3D structure-based LBS toolchain called fpocket.
-It is because 3D structural features of proteins are very crucial for protein-ligand binding. The Proteins-Ligand interactions can be seen as two parts of a machine interacting with each other.
 
 \subsection{Extraction of features}
 \subsubsection{Ligand Featuers using RDKit}
