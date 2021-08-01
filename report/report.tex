@@ -98,7 +98,8 @@ All of the above formats contain 3D information that is essential in the predict
 The 3D representation of the proteins and ligands is similar to the \textbf{XYZ format}.
 [See \ref{xyz_format}]
 
-\subsection{XYZ format}
+\subsection{Overview of file formats}
+\subsubsection{XYZ format}
 \label{xyz_format}
 XYZ format is a chemical file format that represents the geometry of a molecule.
 It specifies the number of atoms and their Cartesian X, Y, Z coordinates hence the name XYZ format.
@@ -133,14 +134,17 @@ H       -0.180226841     -1.699398882      1.572099030
 H       -0.180226841     -1.796059882     -0.917077970
 \end{verbatim}
 
-\subsection{PDB, SDF and Mol2 formats}
-
+\subsubsection{PDB format}
 PDB format is a human-readable file format used to represent the protein molecules (macromolecules).
-In addition to the 3D information of atoms,
-it contains information regarding protein's primary, secondary, tertiary, and quaternary structures.
-Because of the presence of 3D positional data, molecular visualization is possible using specialized software. 
+Within the PDB format,  the coordinates of atoms are represented like the XYZ format. [see \ref{xyz_format}].
+Because of the 3D information in this format,  molecular visualization of proteins is possible using specialized software. 
+In addition this it also contains information about atomic connectivity and the protein's primary,  secondary,  tertiary,  and quaternary structures.
 \cite{pdb_file_format}
 \cite{understanding_pdb_format}
+
+\subsubsection{SDF format}
+
+\subsubsection{Mol2 format}
 
 SDF format file is a molecule description file that contains x,y,z format similar to PDB format.
 It also contains atomic bond information.
@@ -290,9 +294,7 @@ Figure~\ref{fig:modelQualityVisualization},  shows the validation accuracy of \t
 \end{figure}
 
 %\includegraphics[scale=0.7]{accuracy_validate}
-
 %\includegraphics[scale=0.7]{accuracy_train}
-
 
 \section{Machine Learning Models}
 
