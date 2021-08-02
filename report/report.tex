@@ -189,23 +189,23 @@ Each descriptor value is taken as a real number,  hence the input space of ligan
 \textit{Fpocket} stands for "Find pocket" whereas \textit{Dpocket} stands for "Describe pocket".
 \textit{Fpocket} uses 3D Voronoi tessalation and the concepts of "Alpha Spheres" to find out pockets in the protein structure \cite{fpocketmanual} \cite{voronoitesselationshortvideo}.
 Given a protein PDB file, we can extract the descriptors of all pockets in the protein.
-For every pocket we get 55 descriptors in total.
+For every pocket, we get 55 descriptors in total.
 
-To get the descriptors of the ligand binding pockets,  we use \textit{Dpocket}.
+To get the descriptors of the ligand-binding pockets,  we use \textit{Dpocket}.
 \textit{Dpocket} is provided with the protein PDB file and the ligand ID of the PL complex as input.
 It generates 3 files as output files,  namely,  dpout\_fpocketp.txt, dpout\_fpocketnp.txt,  and  dpout\_explicitp.txt.
 \begin{itemize}
 \item \textbf{dpout\_fpocketp.txt}.
-This file contains the descriptors (a.k.a features) of all pockets that are considered to be binding pockets based on a binding criteria.
+This file contains the descriptors (a.k.a features) of all pockets that are considered to be binding pockets based on a binding criterion.
 Multiple pockets can bind with the same ligand.
 Hence,  there may be features of more than 1 pocket in this file.
-\item \textbf{dpout\_fpocketnp.txt}.  This file contains the descriptors of all pockets that were found to be non-binding according to the criteria.
+\item \textbf{dpout\_fpocketnp.txt}.  This file contains the descriptors of all pockets that are non-binding according to the criteria.
 \item \textbf{dpout\_explicitp.txt}.  An explicit pocket is defined as a pocket consisting of all vertices/atoms situated at a specific distance from the ligand in the PL complex.
 This distance is 4 \r{A} by default.
 This file contains the descriptors of all explicit pockets in the PL complex. 
 \end{itemize}
 
-In our project we do not use dpout\_fpocketnp.txt as they contain non-binding pockets.
+In our project, we do not use dpout\_fpocketnp.txt as they contain non-binding pockets.
 In the other 2 files,  we prefer using pocket descriptors given by dpout\_fpocketp.txt as explicitly defined pockets are heavily biased towards the ligand.
 
 \section{Feature selection}
