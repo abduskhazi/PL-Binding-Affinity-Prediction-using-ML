@@ -189,7 +189,9 @@ Each descriptor value is taken as a real number,  hence the input space of ligan
 \textit{Fpocket} stands for "Find pocket" whereas \textit{Dpocket} stands for "Describe pocket".
 \textit{Fpocket} uses 3D Voronoi tessalation and the concepts of "Alpha Spheres" to find out pockets in the protein structure \cite{fpocketmanual} \cite{voronoitesselationshortvideo}.
 Given a protein PDB file, we can extract the descriptors of all pockets in the protein.
-For every pocket, we get 55 descriptors in total.
+For every pocket, we get 55 descriptors in total which are take as $\mathbf{R}$ values.
+Hence the input space for protein features is $\mathbf{R}^{55}$.
+
 
 To get the descriptors of the ligand-binding pockets,  we use \textit{Dpocket}.
 \textit{Dpocket} is provided with the protein PDB file and the ligand ID of the PL complex as input.
