@@ -7,6 +7,7 @@
 \graphicspath{ {./images/} }
 \usepackage{hyperref}
 \usepackage{siunitx}
+\usepackage{amsmath}
 
 \hypersetup{
     colorlinks=true,
@@ -84,6 +85,7 @@ Using the curated protein-ligand affinity data present in the PDBBind Data bank,
 
 \section{Problem Formulation}
 \subsection{Problem Overview}
+\label{ProblemOverviewlabel}
 The problem that we are solving is - \textit{Given $K_d$/$K_i$/$IC_{50}$ for various complexes in the PDBBind Data bank,
 can we predict this affinity measure for new protein-ligand complexes?}
 Figure~\ref{fig:plproblemclassification} shows how the Protein-Ligand problem can be classified.
@@ -211,31 +213,42 @@ In our project, we do not use dpout\_fpocketnp.txt as they contain non-binding p
 In the other 2 files,  we prefer using pocket descriptors given by dpout\_fpocketp.txt as explicitly defined pockets are heavily biased towards the ligand.
 
 \section{Feature selection}
-
-\subsection{Dichotomous problem}
-Since the protein and the ligand are equally responsible for the affinity between them, our problem (also the binding site prediction problems) can be classified as a dichotomous problem in which we need data from both
-the protein and the ligand.
-The data if it is complementary is better for solving the problem.
-The accuracy measure of the protein LBS prediction is the same as the dichotomous problems in math.
-
-As we are dealing with a dichotomous problem we have to select features of the protein and the ligand separately.
-This helps us make our model plug and play w.r.t the proteins and ligands.
-The following feature selection mechanisms were used to select features -
-
+\subsection{Requirement of feature selection}
+Both the protein and the ligand are equally responsible for the affinity of the PL complex.
+Hence we concatenate their descriptors to get a high dementional $\mathbf{R}^{457}$ input for our model.
+There are a couple of issues with using all of the descriptors.
 \begin{itemize}
-\item Each feature of both protein and ligand were correlated with the output i.e the Dissociation constant.
-We used both pearson and spearmann correlation to calculate this.
-The assumption to be made when taking these correlations is that of monotonic increase of
-the feature with respect to the output.
-The features with the highest correlation were taken from both proteins and ligands as
-inputs.
-\item By using genetic algorithms\cite{genetic_algorithm}.
-Here each feature is represented by a binary number.
+\item The amount of data is not very large. 
+For example,  we could only get $\approx$ 35000 data points after concatenating the ligand features with the \textit{fpocketp} pocket descriptors.
+\item The number of ligand descriptors $>>$ protein descriptors.
+This creates a data imbalance and may lead the model to select only ligand features for their prediction.
+\end{itemize}
+Hence we need some methods to reduce the input dimensions.
+
+\subsection{Feature Selection Strategies}
+
+%The data if it is complementary is better for solving the problem.
+%The accuracy measure of the protein LBS prediction is the same as the dichotomous problems in math.
+
+We try to select features of the protein and the ligand separately.
+This helps us make our model plug-and-play as discussed in section \ref{ProblemOverviewlabel}.
+The best combination,  i.e Global Optima,  cannot be obtained practically by brute force algorithms.
+This is because we would have to try $\binom{402}{k_1} * \binom{55}{k_1}$ ($k_1, k_2 \in \mathbf{I}^+$) possibilities which is impractical.
+The following feature selection heuristics were used instead -
+
+\subsubsection{Selection by output correlation}
+The \textit{pearson} and \textit{spearmann} correlations of each feature were calculated against the output variable.
+We assumed that the features were either linearly related to the output (in the case of pearson correlation) or had a monotonic relationship (in the case of spearmann correlation).
+The features with the highest correlation were selected as inputs to the model.
+
+\subsubsection{Using genetic algorithms \cite{genetic_algorithm}}
+Here each feature is represented by a binary number
 1 indicating inclusion and 0 indicating exclusion from the input of our model.
 A binary string of 456 binary numbers (401 for ligands + 55 for proteins) is called a chromosome.
 See pseudocode below
-\item Features selected by expert. Given by Simon Bray. (Yet to do)
-\end{itemize}
+
+\subsubsection{Manual Feature selection}
+Features selected by expert. Given by Simon Bray. (Yet to do)
 
 \label{Genetic_Algo}
 \begin{algorithm}
