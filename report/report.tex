@@ -334,7 +334,7 @@ $y\_validate\_pred$ ($y$ axis) represents the predicted output from the model.
 \label{MachineLearningModelslabel}
 Various machine learning models were trained using the extracted data.
 We tried out Linear Regression,
-support Vector Regression,
+Support Vector Regression,
 a small Neural Network,
 as well as a Random Forest Regression.
 But by far the most impressive performance was given by Random Forest Regression.
@@ -386,7 +386,7 @@ The reason for the low $R^2$ score is that linear models assume a strong lineari
 This is not always true.
 
 \subsubsection{Score function of genetic feature selection}
-Since the fitting of linear regression model was very cheap, we could afford to refit the model every time in our genetic algorithm.
+Since the fitting of the linear regression model was very cheap, we could afford to refit the model every time in our genetic algorithm.
 We had 2 objectives at hand
 \begin{itemize}
 \item Get the best performing model.
@@ -397,15 +397,15 @@ This is because removing a feature that has no correlation (or random correlatio
 
 \footnotetext[1]{Approximately reproducible as the reproducibility module was introduced later.}
 
-Hence,  taking inspiration from the hypervolume based multi objective optimisation, we designed the following score function.
+Hence,  taking inspiration from the hypervolume-based multi-objective optimization, we designed the following score function.
 $$
 \textrm{score} = \mathbf{R}^2 * \textrm{Features Eliminated}
 $$
 Figure~\ref{fig:scorefunctionfigure} gives us an intuition about this function.
-Here the score function represents the area of square formed between a given point and the origin.
+Here the score function represents the area of the square formed between a given point and the origin.
 Trying to improve the score means,  it will try to eliminate more features as well as try to get a higher $R^2$ score.
 In the example below,  the point $a$ is preferred over $b$ as it gives almost the same $R^2$ score and eliminates a larger number of features.
-Another advantage of this score function is that the scale of both axis is irrevelant.
+Another advantage of this score function is that the scale of both axes is irrelevant.
 
 \begin{figure}[htb]
   \centering
@@ -420,7 +420,7 @@ Two main strategies were used to initialize the population for the genetic algor
 \item \textbf{Random Initialization}.  A population of $2400$ chromosomes was randomly initialized and run for $500$ generations.
 \item \textbf{Specific Initialization}.  Here,  the initial population was kept at $457$.
 The algorithm was run for $2000$ generations.
-Each chromosome in the population had 1 distinct feature excluded.  The following represent the initialization of the chromosomes.
+Each chromosome in the population had 1 distinct feature excluded.  The following represents the initialization of the chromosomes.
 
 $
 c_1 = [0 1 1 1 1 ......  1 1]
@@ -438,7 +438,7 @@ $
 c_{457} = [1 1 1 1 1 ......  1 0]
 $
 
-The rational was that,  using the above score function we could go to a local minima by eleminating the worst performing features rather than trying to select the best performing features as in the case of random initialisaton.
+The rationale was that using the above score function we could go to a local minimum by eliminating the worst performing features rather than trying to select the best performing features as in the case of random initialization.
 \end{itemize}
 
 Both the initialization strategies gave similar results as shown in Table~\ref{table:1}
