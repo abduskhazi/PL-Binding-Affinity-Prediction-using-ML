@@ -59,17 +59,52 @@ def bake_test_Xy():
     input_variable_file = "../data/test/test_model_input_all_proteins_mol2_fp_no_nan.data"
     return bake_Xy(output_variable_file, input_variable_file)
 
+def bake_train_Xy_manual_feature_selection():
+    X, y, feature_names = bake_train_Xy()
+
+    selected_features_list = []
+    with open("manual_ligand_features.csv") as f:
+        for l in f.readlines():
+            name, flag = l.strip().split(';')
+            name = "ligand." + name
+            if flag == '1': # Include the feature
+                selected_features_list += [name]
+
+    # Use all protein features and select the ligand features
+    best = [1] * len([ f for f in feature_names if "protein." in f])
+    best += [0] * len([ f for f in feature_names if "ligand." in f])
+    for i in range(len(feature_names)):
+        if feature_names[i] in selected_features_list:
+            best[i] = 1
+
+    best = np.asarray(best)
+    best_features = best[np.newaxis, :]
+
+    # Use broadcasting for zeroing all the unwanted columns
+    # Deleting the columns is a little complicated so not done here.
+    #    here are some selected columns that are zero by default.
+    X_selected = X * best_features
+
+    return X_selected, y, feature_names
+
 if __name__ == "__main__":
-    X_train, y_train = bake_train_Xy()
+    X_train, y_train, _ = bake_train_Xy()
     print("X_train.shape =", X_train.shape)
     print("y_train.shape =", y_train.shape)
 
-    X_test, y_test = bake_test_Xy()
+    X_test, y_test, _ = bake_test_Xy()
     print("X_test.shape =", X_test.shape)
     print("y_test.shape =", y_test.shape)
 
-    features = get_feature_names()
+    protein_start = 2
+    ligand_start = 1 # Use 193 for ignoring auto curr 2d descriptors
+
+    features = get_feature_names(protein_start, ligand_start)
     print("OVERVIEW :")
     print("\tLength of feature column names =", len(features))
     print("\t0 ->", features[0], " ... 54 ->", features[54])
     print("\t55 ->", features[55], " ... %d ->" % (len(features)-1), features[-1])
+
+    X_train, y, features = bake_train_Xy_manual_feature_selection()
+    print("X_train.shape =", X_train.shape)
+    print("y_train.shape =", y_train.shape)
