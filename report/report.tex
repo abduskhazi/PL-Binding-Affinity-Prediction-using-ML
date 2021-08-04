@@ -444,31 +444,82 @@ The rationale was that using the above score function we could go to a local min
 Both the initialization strategies gave similar results as shown in Table~\ref{table:1}
 
 \subsection{Random Forest Regression}
-A random forest regression is an ensemble model which uses an ensemble of trees
-to calculate the output variable.
-Each node in the tree reduces tries to reduce the entropy of the data at hand.
-The $R^2$ score we got was $> 0.75$ for an ensemble of $100$ trees.
+Random forest regression is an ensemble ML model of regression trees.
+When training each tree,  the algorithm finds out which feature value can divide the data into 2 groups to yield the lowest sum of squared values on both sides (The criterion can be different as well e.g. lowest absolute error).
+Then each of the sub-data is split recursively till a stopping criterion (e.g a set number of data points in the leaf).
+
+For each tree,  a subset of the data is used for training. 
+The subset of data is sampled with replacement a.k.a bagging.
+After training,  the bunch of "Experts" that are good at different data subsets predict the output of new given inputs.
+The average of the predicted outputs is the result of the whole random forest regressor.
+
+This model is non-linear.
+One advantage is that there is no need for any assumption about the data.
+Moreover,  random forests can handle categorical features together with the real-valued features very easily.
+On the negative side,  the function represented by the ensemble cannot be easily represented and has to be interpreted as a black-box function.
+
+Figure~\ref{fig:RFMModel} shows the validation and accuracy results obtained by a random forest of 100 trees when we use all the 457 features as input.
+As you can see,  this model far outperforms the linear one.
+
+
+\begin{figure}
+     \centering
+     \begin{subfigure}[b]{0.45\textwidth}
+         \centering
+         \includegraphics[scale=0.45]{images/accuracy_train_rfr}
+         \caption{Training Accuracy ($R^2 \approx 0.971$)}
+        \label{fig:TrainingAccuracyRFM}
+     \end{subfigure}
+     \hfill
+     \begin{subfigure}[b]{0.45\textwidth}
+         \centering
+         \includegraphics[scale=0.45]{images/accuracy_validate_rfr}
+        \caption{Validation Accuracy ($R^2 \approx 0.797$)}
+        \label{fig:ValidationAccuracyRFM}
+     \end{subfigure}
+     \caption{Random Forest Regressor with 457 features and 100 trees.}
+     \label{fig:RFMModel}
+\end{figure}
+
 
 \subsubsection{Feature Importance calculation}
 The Random Forest regression model fitting is very expensive as compared to the simple linear regression.
 Hence the same strategy cannot be used for feature selection as used in the linear models.
-We used 2 main methods to determine the importance of features in the model
+We used the following strategies to determine the importance of features in the model.
+
 \begin{itemize}
-\item \textbf{Gini Importance} - This is given by default by the model. The model 
-calculates the amount of entropy reduction of that each feature does when it divides the data using the OOB score. (Out of bag Score)
-\item \textbf{Permutation Importance} - This is a model agnostic method to determine the importance of features in a regression. 
-It tries to calculate the reduction in the accuracy we shuffle each column.
+\item \textbf{Gini Importance (or) Decrease in impurity}.  This is calculated by the model itself.
+For every feature,  it calculates how much decrease in the split criterion the feature contributes to the entire ensemble (i.e in every node its used in all the trees).
+The disadvantage is that they cannot be reliable when the features have a high cardinality.  Figure~\ref{fig:GiniImportanceLabel} illustrates this importance.
+\item \textbf{Permutation Importance} - This is a model agnostic method.
+It tries to calculate the reduction in the accuracy we shuffle each feature.
+The more the reduction the more important the feature is.
+The disadvantage is that since each feature is checked independently,  correlated input features make the results unreliable. 
+If feature $A$ and feature $B$ are correlated,  the shuffling of $A$ may not impact the model as the model can rely on $B$ for its prediction.  Figure~\ref{fig:PermutationImportanceLabel} illustrates this importance.
 \end{itemize}
-\includegraphics[scale=0.7]{Gini_importance}
 
-\includegraphics[scale=0.7]{Permutation_importance}
-
-The issue with the above methods is that if there is any hidden correlation between input features then it will reduce the importance of the correlated features.
+\begin{figure}
+     \centering
+     \begin{subfigure}[b]{0.45\textwidth}
+         \centering
+         \includegraphics[scale=0.45]{images/Gini_importance}
+         \caption{Gini importance}
+        \label{fig:GiniImportanceLabel}
+     \end{subfigure}
+     \hfill
+     \begin{subfigure}[b]{0.45\textwidth}
+         \centering
+         \includegraphics[scale=0.45]{images/Permutation_importance}
+        \caption{Permutation importance}
+        \label{fig:PermutationImportanceLabel}
+     \end{subfigure}
+     \caption{Feature Importance calculation of Random Forest Regressor}
+     \label{fig:RFMFILable}
+\end{figure}
 
 \subsection{Permutation Importance and genetic algorithm}
 To overcome the issue with the above feature importance selection, we plan to use a combination of the concepts of permutation importance and genetic algorithm to find out the importance of the selected features.
-
-Results - YET TO IMPLEMENT
+This is because it is very expensive to refit the model and cheap enough to check the results of shuffling the model.
 
 \section{Discussion}
 
