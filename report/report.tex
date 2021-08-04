@@ -403,7 +403,7 @@ $$
 $$
 Figure~\ref{fig:scorefunctionfigure} gives us an intuition about this function.
 Here the score function represents the area of square formed between a given point and the origin.
-Trying to improve the square means,  it will try to eliminate more features as well as try to get a higher $R^2$ score.
+Trying to improve the score means,  it will try to eliminate more features as well as try to get a higher $R^2$ score.
 In the example below,  the point $a$ is preferred over $b$ as it gives almost the same $R^2$ score and eliminates a larger number of features.
 Another advantage of this score function is that the scale of both axis is irrevelant.
 
@@ -413,6 +413,35 @@ Another advantage of this score function is that the scale of both axis is irrev
     \caption{Genetic Algorithm score function representation.}
     \label{fig:scorefunctionfigure}
 \end{figure}
+
+\subsubsection{Initialization strategies of population}
+Two main strategies were used to initialize the population for the genetic algorithm
+\begin{itemize}
+\item \textbf{Random Initialization}.  A population of $2400$ chromosomes was randomly initialized and run for $500$ generations.
+\item \textbf{Specific Initialization}.  Here,  the initial population was kept at $457$.
+The algorithm was run for $2000$ generations.
+Each chromosome in the population had 1 distinct feature excluded.  The following represent the initialization of the chromosomes.
+
+$
+c_1 = [0 1 1 1 1 ......  1 1]
+$ \\
+$
+c_2 = [1 0 1 1 1 ......  1 1]
+$ \\
+$
+c_3 = [1 1 0 1 1 ......  1 1]
+$ \\
+$
+... 
+$ \\
+$
+c_{457} = [1 1 1 1 1 ......  1 0]
+$
+
+The rational was that,  using the above score function we could go to a local minima by eleminating the worst performing features rather than trying to select the best performing features as in the case of random initialisaton.
+\end{itemize}
+
+Both the initialization strategies gave similar results as shown in Table~\ref{table:1}
 
 \subsection{Random Forest Regression}
 A random forest regression is an ensemble model which uses an ensemble of trees
