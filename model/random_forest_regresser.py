@@ -30,6 +30,7 @@ print("Fitting completed.")
 
 y_pred = regressor.predict(X_validate)
 print("oob score = ", regressor.oob_score_, ", Validation r2 score = ", r2_score(y_validate, y_pred))
+print("Training r2 score = ", r2_score(y_train, regressor.predict(X_train)))
 
 #Plotting to visualize the accuracy of our model.
 fig = plt.figure()
