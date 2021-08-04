@@ -8,6 +8,8 @@
 \usepackage{hyperref}
 \usepackage{siunitx}
 \usepackage{amsmath}
+\usepackage{caption}
+\usepackage{subcaption}
 
 \hypersetup{
     colorlinks=true,
@@ -321,7 +323,7 @@ $y\_validate\_pred$ ($y$ axis) represents the predicted output from the model.
 \begin{figure}[htb]
   \centering
     \includegraphics[width=1.0\textwidth]{images/accuracy_validate}
-    \caption{Sample validation accuracy.  $R^2 \approx 0.805$.}
+    \caption{(Sample) Visualizing accuracy.  $R^2 \approx 0.805$.}
     \label{fig:modelQualityVisualization}
 \end{figure}
 
@@ -332,18 +334,85 @@ $y\_validate\_pred$ ($y$ axis) represents the predicted output from the model.
 \label{MachineLearningModelslabel}
 Various machine learning models were trained using the extracted data.
 We tried out Linear Regression,
-Support Vector Regression,
-A small Neural Network,
+support Vector Regression,
+a small Neural Network,
 as well as a Random Forest Regression.
-But far the most impressive performance was given by Random Forest Regression.
+But by far the most impressive performance was given by Random Forest Regression.
 
-\subsection{Simple linear regression}
-This is the most computationally cheap model that we used to fit our model.
-The $R^2$ score for this model we got $\approx 0.455$ when we used all the
-features of the ligands and the proteins.
-Since the fitting of the model was very cheap, we tried to use the validation
-score of the model as a fitness score for our genetic algorithm.
+\subsection{Linear regression}
+Linear regression fits a linear model to a given data.
+It tries to minimize the square of errors between the predicted output value and the actual output value.
+This is the cheapest model (computationally) that we used to fit our data.
+Table~\ref{table:1} shows the overview of our analysis with this model.
+Figure~\ref{fig:BestLinearModel} shows the best results obtained with linear regression.
 
+\begin{table} [h!]
+\centering
+ \begin{tabular}{ | c | c | c | c | }
+\hline
+\textbf{Features Selected} & \textbf{Training $R^2$ Score} & \textbf{Validation $R^2$ Score} \\ [0.5 ex]
+\hline \hline
+457 (all) & 0.458 & 0.414\\
+50 (Genetic - Random init)\footnotemark[1] & $\approx$0.379 & $\approx$0.359\\
+49 (Genetic - Specific init)\footnotemark[1] & $\approx$0.378 & $\approx$0.368  \\
+- (Output Correlation) & - & -  \\ 
+- (manual) & - & -  \\ [1ex]
+\hline
+\end{tabular}
+\caption{Simple linear model overview}
+\label {table:1}
+\end{table}
+
+\begin{figure}
+     \centering
+     \begin{subfigure}[b]{0.45\textwidth}
+         \centering
+         \includegraphics[scale=0.45]{images/accuracy_train_all_linear}
+         \caption{Training Accuracy ($R^2 \approx 0.458$)}
+        \label{fig:TrainingAccuracyLinearModel}
+     \end{subfigure}
+     \hfill
+     \begin{subfigure}[b]{0.45\textwidth}
+         \centering
+         \includegraphics[scale=0.45]{images/accuracy_validate_all_linear}
+        \caption{Validation Accuracy ($R^2 \approx 0.414$)}
+        \label{fig:ValidationAccuracyLinearModel}
+     \end{subfigure}
+     \caption{Best Linear Model.  All 457 features selected.}
+     \label{fig:BestLinearModel}
+\end{figure}
+
+The reason for the low $R^2$ score is that linear models assume a strong linearity between the input variables and the output variable.
+This is not always true.
+
+\subsubsection{Score function of genetic feature selection}
+Since the fitting of linear regression model was very cheap, we could afford to refit the model every time in our genetic algorithm.
+We had 2 objectives at hand
+\begin{itemize}
+\item Get the best performing model.
+\item Reduce the number of input features to make our model simple and explainable.
+\end{itemize}
+The above objectives may not completely be against each other.
+This is because removing a feature that has no correlation (or random correlation) with the output may improve the model whereas removing a feature that the output is highly correlated on degrades the model.
+
+\footnotetext[1]{Approximately reproducible as the reproducibility module was introduced later.}
+
+Hence,  taking inspiration from the hypervolume based multi objective optimisation, we designed the following score function.
+$$
+\textrm{score} = \mathbf{R}^2 * \textrm{Features Eliminated}
+$$
+Figure~\ref{fig:scorefunctionfigure} gives us an intuition about this function.
+Here the score function represents the area of square formed between a given point and the origin.
+Trying to improve the square means,  it will try to eliminate more features as well as try to get a higher $R^2$ score.
+In the example below,  the point $a$ is preferred over $b$ as it gives almost the same $R^2$ score and eliminates a larger number of features.
+Another advantage of this score function is that the scale of both axis is irrevelant.
+
+\begin{figure}[htb]
+  \centering
+    \includegraphics[scale=0.5]{images/scoreFuntionMultiObject}
+    \caption{Genetic Algorithm score function representation.}
+    \label{fig:scorefunctionfigure}
+\end{figure}
 
 \subsection{Random Forest Regression}
 A random forest regression is an ensemble model which uses an ensemble of trees
