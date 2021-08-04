@@ -3,7 +3,7 @@ import numpy as np
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LinearRegression
 from sklearn.preprocessing import PolynomialFeatures
-from data_bakery import bake_train_Xy
+import data_bakery as bakery
 import reproducibility
 
 # Firstly ...
@@ -38,7 +38,7 @@ def plot_figures(X_train, y_train, X_validate, y_validate):
     plt.plot(range(2,14), range(2,14), '--')
     fig.savefig('accuracy_train.png', dpi=fig.dpi)
 
-X, y, features = bake_train_Xy()
+X, y, features = bakery.bake_train_Xy()
 print("X.shape =", X.shape)
 print("y.shape =", y.shape)
 

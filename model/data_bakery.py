@@ -85,7 +85,17 @@ def bake_train_Xy_manual_feature_selection():
     #    here are some selected columns that are zero by default.
     X_selected = X * best_features
 
-    return X_selected, y, feature_names
+    # Removing the columns that are zeros
+    idx = np.argwhere(np.all(X_selected[..., :] == 0, axis=0))
+    X_selected = np.delete(X_selected, idx, axis=1)
+    idx = list(idx.flatten())
+
+    features_selected = []
+    for i in range(len(feature_names)):
+        if i not in idx:
+            features_selected += [feature_names[i]]
+
+    return X_selected, y, features_selected
 
 if __name__ == "__main__":
     X_train, y_train, _ = bake_train_Xy()
@@ -108,3 +118,4 @@ if __name__ == "__main__":
     X_train, y, features = bake_train_Xy_manual_feature_selection()
     print("X_train.shape =", X_train.shape)
     print("y_train.shape =", y_train.shape)
+    print("len(features) = ", len(features))
