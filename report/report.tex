@@ -242,34 +242,40 @@ We assumed that the features were either linearly related to the output (in the 
 The features with the highest correlation were selected as inputs to the model.
 
 \subsubsection{Using genetic algorithms \cite{genetic_algorithm}}
-Here each feature is represented by a binary number
-1 indicating inclusion and 0 indicating exclusion from the input of our model.
-A binary string of 456 binary numbers (401 for ligands + 55 for proteins) is called a chromosome.
-See pseudocode below
+Since the feature space is a non-continuous problem of combinatorial complexity,
+we also studied genetic feature selection algorithms.
+We represent each feature by a binary number, 1 for inclusion of feature and 0 for the exclusion.
+Each feature selection $p \in \mathbb{B}^{456}$ (401 for ligands + 55 for proteins) is called a chromosome.
+A "population" of $n$ chromosomes is maintained.
+For each generation,  the best pairs of chromosomes are selected as parents.
+The next generation is created by crossover and mutation of the chromosomes.
+Algorithm~\ref{alg:GeneticAlgo} below gives a complete pseudocode for this.
+
+The scoring function used to select the best chromosome can vary according to the type of the model being fit. [See Section~\ref{MachineLearningModelslabel}]
 
 \subsubsection{Manual Feature selection}
 Features selected by expert. Given by Simon Bray. (Yet to do)
 
-\label{Genetic_Algo}
 \begin{algorithm}
 \caption{Selection of features in our model using genetic algorithm \cite{genetic_algorithm}}
+\label{alg:GeneticAlgo}
 \begin{algorithmic}[1]
 \Procedure{GENETIC\_ALGORITHM\_BASED\_SELECTOR}{}
-\State model\_type $\gets$ Linear Regression
+\State scoringfunction $\gets$ Get model specific scoring function
 \State $ population = \{C_1, C_2, C_3... C_n\}$ $\in$ $\mathbb{B}^{456}$ (initial chromosomes).
-\State best $\gets C_1$ 
+\State best $\gets C_1$  \textit{// Arbitrarily initialized}
 \State $i \gets 0$
 \State $gen \gets$ number of generations to run.
-      \For{\texttt{$i < gen$}}
-          \State Fit model\_type for each feature selection (chromosome). 
-          \State Let $\{S_1, S_2, S_3... S_n\}$ $\in$ $\mathbb{R}$ be scores for each chromosome.
-          \State best $\gets$ $C_i$ with the highest score $S_i$
+      \For{\texttt{$i < gen$ with step 1}}
+          \State $\{S_1, S_2, S_3... S_n\} \gets$ scoringfunction($population$) $\forall S_i \in \mathbf{R}$.
+          \State \textit{// Do a tournament selection for the best chromosomes}
+          \State $genetically\_better\_population \gets$ empty list
           \For{\texttt{$j < len(population)$}}
-              \State Set $\gets$ 3 random chromosomes from $population$
-              \State $c \gets best($Set$)$
+              \State Set $\gets$ random\_k\_selections($population$)
+              \State $c \gets best($Set$)$ \textit{// Based on scoringfunction.}
               \State $genetically\_better\_population.add(c)$
           \EndFor
-          \State $population \gets genetically\_better\_population$
+          \State $children \gets$ empty list
           \For{\texttt{$j < len(population)$ with step 2}}
               \State $P_1, P_2$ $\gets$ $population[j], population[j+1]$
               \State $c_1, c_2 \gets crossover(P_1, P_2)$
@@ -277,9 +283,9 @@ Features selected by expert. Given by Simon Bray. (Yet to do)
               \State $c_2 \gets mutation(c_2)$
               \State $children.add(c_1, c_2)$
           \EndFor
-      \State $new\_population \gets population$
+          \State $population \gets children$
       \EndFor
-\State return best
+\State return best($population$)
 \EndProcedure
 \end{algorithmic}
 \end{algorithm}
@@ -323,7 +329,7 @@ $y\_validate\_pred$ ($y$ axis) represents the predicted output from the model.
 %\includegraphics[scale=0.7]{accuracy_train}
 
 \section{Machine Learning Models}
-
+\label{MachineLearningModelslabel}
 Various machine learning models were trained using the extracted data.
 We tried out Linear Regression,
 Support Vector Regression,
