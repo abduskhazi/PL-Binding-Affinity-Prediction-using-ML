@@ -240,18 +240,18 @@ The following feature selection heuristics were used instead -
 
 \subsubsection{Selection by output correlation}
 The \textit{pearson} and \textit{spearmann} correlations of each feature were calculated against the output variable.
-We assumed that the features were either linearly related to the output (in the case of pearson correlation) or had a monotonic relationship (in the case of spearmann correlation).
+We assumed that the features were either linearly related to the output (in the case of Pearson correlation) or had a monotonic relationship (in the case of Spearmann correlation).
 The features with the highest correlation were selected as inputs to the model.
 
 \subsubsection{Using genetic algorithms \cite{genetic_algorithm}}
 Since the feature space is a non-continuous problem of combinatorial complexity,
 we also studied genetic feature selection algorithms.
-We represent each feature by a binary number, 1 for inclusion of feature and 0 for the exclusion.
+We represent each feature by a binary number, 1 for the inclusion of the feature and 0 for the exclusion.
 Each feature selection $p \in \mathbb{B}^{456}$ (401 for ligands + 55 for proteins) is called a chromosome.
 A "population" of $n$ chromosomes is maintained.
 For each generation,  the best pairs of chromosomes are selected as parents.
 The next generation is created by crossover and mutation of the chromosomes.
-Algorithm~\ref{alg:GeneticAlgo} below gives a complete pseudocode for this.
+Algorithm~\ref{alg:GeneticAlgo} below gives complete pseudocode for this.
 
 The scoring function used to select the best chromosome can vary according to the type of the model being fit. [See Section~\ref{MachineLearningModelslabel}]
 
