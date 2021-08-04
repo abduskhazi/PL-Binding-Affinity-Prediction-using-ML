@@ -12,6 +12,32 @@ if len(sys.argv) > 1:
     ExecutionID = int(sys.argv[1])
 ExecutionID = reproducibility.reproduce(ExecutionID)
 
+
+###################################################################################
+# PLOTTING 
+###################################################################################
+
+import matplotlib
+import matplotlib.pyplot as plt
+
+def plot_figures(X_train, y_train, X_validate, y_validate):
+    print("Plotting to visualize the accuracy of our model.")
+    fig = plt.figure()
+    plt.plot(y_validate, reg.predict(X_validate), '.')
+    plt.xlabel("y_validate")
+    plt.ylabel("y_validate_pred")
+    plt.title("Execution ID = " + str(ExecutionID))
+    plt.plot(range(2,14), range(2,14), '--')
+    fig.savefig('accuracy_validate.png', dpi=fig.dpi)
+
+    fig = plt.figure()
+    plt.plot(y_train, reg.predict(X_train), '.')
+    plt.xlabel("y_train")
+    plt.ylabel("y_train_pred")
+    plt.title("Execution ID = " + str(ExecutionID))
+    plt.plot(range(2,14), range(2,14), '--')
+    fig.savefig('accuracy_train.png', dpi=fig.dpi)
+
 X, y, features = bake_train_Xy()
 print("X.shape =", X.shape)
 print("y.shape =", y.shape)
@@ -22,8 +48,17 @@ import random
 seed = random.randint(0,2**32)
 
 # Reporting Linear Regression accuracy with all features included (R^2 score)
-X_train, _, y_train, _ = train_test_split(X, y, test_size=0.10, random_state=seed)
+X_train, X_validate, y_train, y_validate = train_test_split(X, y, test_size=0.10)
 reg = LinearRegression().fit(X_train, y_train)
+plot_figures(X_train, y_train, X_validate, y_validate)
+
+training_r2_score = reg.score(X_train, y_train)
+validation_r2_score = reg.score(X_validate, y_validate)
+
+print("Training R2 score = ", training_r2_score)
+print("Validation R2 score = ", validation_r2_score)
+
+# Running the genetic algorithms.
 score = -reg.score(X_train, y_train)
 print("Linear regression score (raw) = ", score)
 
@@ -95,28 +130,4 @@ X_local = np.delete(X_local, idx, axis=1)
 X_train, X_validate, y_train, y_validate = train_test_split(X_local, y, test_size=0.10) #, random_state=42)
 reg = LinearRegression().fit(X_train, y_train)
 
-y_pred = reg.predict(X_validate)
-
-###################################################################################
-# PLOTTING 
-###################################################################################
-
-import matplotlib
-import matplotlib.pyplot as plt
-
-#Plotting to visualize the accuracy of our model.
-fig = plt.figure()
-plt.plot(y_validate, y_pred, '.')
-plt.xlabel("y_validate")
-plt.ylabel("y_validate_pred")
-plt.title("Execution ID = " + str(ExecutionID))
-plt.plot(range(2,14), range(2,14), '--')
-fig.savefig('accuracy_validate.png', dpi=fig.dpi)
-
-fig = plt.figure()
-plt.plot(y_train, reg.predict(X_train), '.')
-plt.xlabel("y_train")
-plt.ylabel("y_train_pred")
-plt.title("Execution ID = " + str(ExecutionID))
-plt.plot(range(2,14), range(2,14), '--')
-fig.savefig('accuracy_train.png', dpi=fig.dpi)
+plot_figures(X_train, y_train, X_validate, y_validate)
