@@ -57,6 +57,12 @@ def remove_features(feature_names, exclusion_ids):
 
     return features_selected
 
+def remove_columns(X, idx):
+    idx = np.array(idx)
+    idx = idx[:, np.newaxis]
+    X_selected = np.delete(X, idx, axis=1)
+    return X_selected
+
 def bake_train_Xy():
     output_variable_file = "../data/regression_varible.data"
     input_variable_file = "../data/train/train_model_input_all_proteins_mol2_fp_no_nan.data"
@@ -85,19 +91,9 @@ def bake_train_Xy_manual_feature_selection():
         if feature_names[i] in selected_features_list:
             best[i] = 1
 
-    best = np.asarray(best)
-    best_features = best[np.newaxis, :]
-
-    # Use broadcasting for zeroing all the unwanted columns
-    # Deleting the columns is a little complicated so not done here.
-    #    here are some selected columns that are zero by default.
-    X_selected = X * best_features
-
-    # Removing the columns that are zeros
-    idx = np.argwhere(np.all(X_selected[..., :] == 0, axis=0))
-    X_selected = np.delete(X_selected, idx, axis=1)
-
-    features_selected = remove_features(feature_names, list(idx.flatten()))
+    list_indexes = [id for id, e in enumerate(best) if e == 0]
+    X_selected = remove_columns(X, list_indexes)
+    features_selected = remove_features(feature_names, list_indexes)
 
     return X_selected, y, features_selected
 
@@ -110,13 +106,10 @@ def bake_train_Xy_exclude_features_families(exclusion_list):
         for i in range(len(feature_names)):
             if exc in feature_names[i]:
                 ids_to_exclude += [i]
-    ids_to_exclude = sorted(list(set(ids_to_exclude)))
+    list_indexes = sorted(list(set(ids_to_exclude)))
 
-    idx = np.array(ids_to_exclude)
-    idx = idx[:, np.newaxis]
-    X_selected = np.delete(X, idx, axis=1)
-
-    features_selected = remove_features(feature_names, list(idx.flatten()))
+    X_selected = remove_columns(X, ids_to_exclude)
+    features_selected = remove_features(feature_names, list_indexes)
 
     return X_selected, y, features_selected
 
