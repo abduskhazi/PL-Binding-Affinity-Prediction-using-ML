@@ -49,6 +49,14 @@ def get_feature_names(protein_start, ligand_start):
 
     return names_desc_prot[protein_start:] + ligand_columns[ligand_start:]
 
+def remove_features(feature_names, exclusion_ids):
+    features_selected = []
+    for i in range(len(feature_names)):
+        if i not in exclusion_ids:
+            features_selected += [feature_names[i]]
+
+    return features_selected
+
 def bake_train_Xy():
     output_variable_file = "../data/regression_varible.data"
     input_variable_file = "../data/train/train_model_input_all_proteins_mol2_fp_no_nan.data"
@@ -88,12 +96,8 @@ def bake_train_Xy_manual_feature_selection():
     # Removing the columns that are zeros
     idx = np.argwhere(np.all(X_selected[..., :] == 0, axis=0))
     X_selected = np.delete(X_selected, idx, axis=1)
-    idx = list(idx.flatten())
 
-    features_selected = []
-    for i in range(len(feature_names)):
-        if i not in idx:
-            features_selected += [feature_names[i]]
+    features_selected = remove_features(feature_names, list(idx.flatten()))
 
     return X_selected, y, features_selected
 
@@ -112,11 +116,7 @@ def bake_train_Xy_exclude_features_families(exclusion_list):
     idx = idx[:, np.newaxis]
     X_selected = np.delete(X, idx, axis=1)
 
-    idx = list(idx.flatten())
-    features_selected = []
-    for i in range(len(feature_names)):
-        if i not in idx:
-            features_selected += [feature_names[i]]
+    features_selected = remove_features(feature_names, list(idx.flatten()))
 
     return X_selected, y, features_selected
 
@@ -145,3 +145,9 @@ if __name__ == "__main__":
     print("len(features) = ", len(features))
 
     X_train, y, features = bake_train_Xy_exclude_features_families(["AUTOCORR2D_"])
+    print("X_train.shape =", X_train.shape)
+    print("y_train.shape =", y_train.shape)
+    print("len(features) = ", len(features))
+
+    f = remove_features(["a", "b", "c"], [0, 1])
+    print(f)
