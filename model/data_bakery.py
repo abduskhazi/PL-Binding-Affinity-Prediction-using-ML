@@ -97,6 +97,10 @@ def bake_train_Xy_manual_feature_selection():
 
     return X_selected, y, features_selected
 
+def bake_train_Xy_exclude_regex(exclusion_list):
+    X, y, feature_names = bake_train_Xy()
+
+
 if __name__ == "__main__":
     X_train, y_train, _ = bake_train_Xy()
     print("X_train.shape =", X_train.shape)
@@ -119,3 +123,5 @@ if __name__ == "__main__":
     print("X_train.shape =", X_train.shape)
     print("y_train.shape =", y_train.shape)
     print("len(features) = ", len(features))
+
+    X_train, y, features = bake_train_Xy_exclusion_list(["AUTOCORR2d_*"])
