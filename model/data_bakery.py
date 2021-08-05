@@ -97,8 +97,28 @@ def bake_train_Xy_manual_feature_selection():
 
     return X_selected, y, features_selected
 
-def bake_train_Xy_exclude_regex(exclusion_list):
+def bake_train_Xy_exclude_features_families(exclusion_list):
     X, y, feature_names = bake_train_Xy()
+
+    # Get all the ids to exclude
+    ids_to_exclude = []
+    for exc in exclusion_list:
+        for i in range(len(feature_names)):
+            if exc in feature_names[i]:
+                ids_to_exclude += [i]
+    ids_to_exclude = sorted(list(set(ids_to_exclude)))
+
+    idx = np.array(ids_to_exclude)
+    idx = idx[:, np.newaxis]
+    X_selected = np.delete(X, idx, axis=1)
+
+    idx = list(idx.flatten())
+    features_selected = []
+    for i in range(len(feature_names)):
+        if i not in idx:
+            features_selected += [feature_names[i]]
+
+    return X_selected, y, features_selected
 
 
 if __name__ == "__main__":
@@ -124,4 +144,4 @@ if __name__ == "__main__":
     print("y_train.shape =", y_train.shape)
     print("len(features) = ", len(features))
 
-    X_train, y, features = bake_train_Xy_exclusion_list(["AUTOCORR2d_*"])
+    X_train, y, features = bake_train_Xy_exclude_features_families(["AUTOCORR2D_"])
