@@ -27,8 +27,8 @@ X_train, X_validate, y_train, y_validate = train_test_split(X, y, test_size=0.2)
 rotation = True
 if rotation:
     print("Fitting the Rotation Forest Regressor...")
-    regressor = rf.RotationForest(n_trees=100, sample_prop=0.5, bootstrap=True)
-else
+    regressor = rf.RotationForest(n_trees=100, n_features=15, sample_prop=0.5, bootstrap=True) # features = partitions here.
+else:
     print("Fitting the Random Forest Regressor...")
     regressor = RandomForestRegressor(n_estimators=100, oob_score=True, n_jobs=-1)
 
