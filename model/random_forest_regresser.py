@@ -15,7 +15,6 @@ if len(sys.argv) > 1:
     ExecutionID = int(sys.argv[1])
 ExecutionID = reproducibility.reproduce(ExecutionID)
 
-
 # Obtain data for our random forest regressor.
 X, y, features = bakery.bake_train_Xy()
 print("X.shape =", X.shape)
@@ -90,30 +89,79 @@ print("Important features based on decrease in entropy (Gini Importance).", "Che
 for i in impt_indices[:30]:
     print(features[i])
 
-print("Calculating importance of features using permuation importance...")
-# Permutation Importance
-from sklearn.inspection import permutation_importance
-impt = permutation_importance(regressor, X_validate, y_validate, n_repeats=30, n_jobs=-1)
-impt_indices = impt.importances_mean.argsort()[::-1]
+def random_forest_score(population , X, y):
+    #using the regressor fit using the data.
+    global regressor
+    X = np.copy(X) # To prevent reference modification.
 
-print("Permuation impt ->", [impt.importances_mean[i] for i in impt_indices[:5]])
+    initial_score = r2_score(y, regressor.predict(X))
+    # Copy X_validate to prevent modification.
+    print()
+    X_backup = np.copy(X)
 
-fig = plt.figure()
-fig.subplots_adjust(left=0.35)
-ax = fig.add_subplot(111) #fig.add_axes([0,0,1,1])
-feature_names = [features[i] for i in impt_indices[:15]]
-importances = [impt.importances_mean[i] for i in impt_indices[:15]]
-y_pos = np.arange(len(importances))
-ax.barh(y_pos, importances, align='center')
-ax.set_yticks(y_pos)
-ax.set_yticklabels(feature_names)
-ax.invert_yaxis()  # labels read top-to-bottom
-ax.set_xlabel("Execution ID = " + str(ExecutionID))
-ax.set_title("Permutation Importances of features.")
-fig.savefig('Permutation_importance.png', dpi=fig.dpi)
+    score = []
+    n = 0
+    for feature_selection in population:
+        shuffle_indexes = [id for id, e in enumerate(feature_selection) if e == 0]
+        for i in shuffle_indexes:
+            np.random.shuffle(X[:, i])
+        score_after_shuffle = r2_score(y, regressor.predict(X))
 
-print("Important features based on permutation.", "Check Permutation_importance.png")
-for i in impt_indices[:30]:
-    print(features[i])
+        n = n + 1
+        print("R2 score reference = ", r2_score(y, regressor.predict(X_backup)), "Finished - ", n, end="\r")
+        X = np.copy(X_backup)
+        score += [initial_score - score_after_shuffle]
+
+    return score
+
+if True:
+    # Checking genetic algorithms with random forest regressor.
+    from genetic_model import genetic_algorithm
+
+    n_iter = 10
+    n_bits = X.shape[1]
+    n_pop = 100 # n_bits * 6  # 100
+    r_cross = 0.9
+    r_mut = 1.0 / float(n_bits)
+
+    X_validate = np.copy(X_validate_backup)
+    # perform the genetic algorithm search
+    print("Random forest regressor - Starting genetic algorithm")
+    best, score = genetic_algorithm(random_forest_score, X_validate, y_validate, n_bits, n_iter, n_pop, r_cross, r_mut)
+    print('Done!')
+    print('f(%s) = %f' % (best, score))
+
+    X_validate = np.copy(X_validate_backup)
+    shuffle_indexes = [id for id, e in enumerate(best) if e == 0]
+    for i in shuffle_indexes:
+        np.random.shuffle(X_validate[:, i])
+    print("R2 score = ", r2_score(y_validate, regressor.predict(X_validate)))
+
+if False:
+    print("Calculating importance of features using permuation importance...")
+    # Permutation Importance
+    from sklearn.inspection import permutation_importance
+    impt = permutation_importance(regressor, X_validate, y_validate, n_repeats=30, n_jobs=-1)
+    impt_indices = impt.importances_mean.argsort()[::-1]
+
+    print("Permuation impt ->", [impt.importances_mean[i] for i in impt_indices[:5]])
+
+    fig = plt.figure()
+    fig.subplots_adjust(left=0.35)
+    ax = fig.add_subplot(111) #fig.add_axes([0,0,1,1])
+    feature_names = [features[i] for i in impt_indices[:15]]
+    importances = [impt.importances_mean[i] for i in impt_indices[:15]]
+    y_pos = np.arange(len(importances))
+    ax.barh(y_pos, importances, align='center')
+    ax.set_yticks(y_pos)
+    ax.set_yticklabels(feature_names)
+    ax.invert_yaxis()  # labels read top-to-bottom
+    ax.set_xlabel("Execution ID = " + str(ExecutionID))
+    ax.set_title("Permutation Importances of features.")
+    fig.savefig('Permutation_importance.png', dpi=fig.dpi)
+
+    print("Important features based on permutation.", "Check Permutation_importance.png")
+    for i in impt_indices[:30]:
+        print(features[i])
 
 print("Program finished.")
