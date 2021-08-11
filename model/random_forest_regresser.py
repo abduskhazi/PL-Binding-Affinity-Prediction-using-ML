@@ -8,6 +8,8 @@ import matplotlib.pyplot as plt
 import random
 import numpy as np
 import sys
+sys.path.append('../')
+import RotationForest.RotationForest as rf
 
 # Firstly ...
 ExecutionID = None
@@ -22,13 +24,21 @@ print("y.shape =", y.shape)
 
 X_train, X_validate, y_train, y_validate = train_test_split(X, y, test_size=0.2)
 
-print("Fitting the Random Forest Regressor...")
-regressor = RandomForestRegressor(n_estimators=100, oob_score = True, n_jobs=-1)
+rotation = True
+if rotation:
+    print("Fitting the Rotation Forest Regressor...")
+    regressor = rf.RotationForest(n_trees=100, sample_prop=0.5, bootstrap=True)
+else
+    print("Fitting the Random Forest Regressor...")
+    regressor = RandomForestRegressor(n_estimators=100, oob_score=True, n_jobs=-1)
+
 regressor.fit(X_train, y_train)
 print("Fitting completed.")
 
 y_pred = regressor.predict(X_validate)
-print("oob score = ", regressor.oob_score_, ", Validation r2 score = ", r2_score(y_validate, y_pred))
+if not rotation:
+    print("oob score = ", regressor.oob_score_)
+print("Validation r2 score = ", r2_score(y_validate, y_pred))
 print("Training r2 score = ", r2_score(y_train, regressor.predict(X_train)))
 
 #Plotting to visualize the accuracy of our model.
