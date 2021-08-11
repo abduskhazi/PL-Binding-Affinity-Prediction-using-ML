@@ -1,0 +1,55 @@
+Things completed -
+1. Finished writing the report (Show report if asked)
+2. Tried out manual feature selection and reported results.
+3. Finished exclusion of families and fitting the models.
+4. Genetic algorithm.
+   --> Computationally feasible if we shuffle the columns.
+   --> Yet to run for a long run.
+
+
+
+Issues I faced -
+1. Even when I excluded families of features, my models are still reporting good results.
+2. Saw that there is difference between validation and training set.
+    If I try to reduce it by regularising the validation error goes down as well.
+===> Any advices on this? (Check hyperperparameters...)
+
+
+Elitism .... Dont forget to test this part for random forest geen.... 
+
+Next steps -
+1.
+2.
+3.
+4.
+
+Comments and feedback -
+Report - Given by Simon
+
+Hyperparameters
+Dont limit the number of nodes ....
+
+Check this ---> ****
+Rotation forest .... (Read about this)
+    Modified version of random forest....
+    May outperform random forest.... ? 2020 April paper..
+    (Check if it is well implemented and integrate for our data)
+
+Different models first .... then autoML.
+
+ANT optimization --> Different from rotation forest.
+
+
+
+Next Steps .....
+1. Complete and report the genetic run form randome forest..
+2. Rotation forests read paper and use implementation..
+3. Use narine's method for featuring for featurizing protein.
+   *** Data is already created for PDB bind. + RD
+4. Other featuring methods for ligand --> Yet to do..
+
+
+https://github.com/joshloyal/RotationForest/tree/master/rotation_forest
+https://github.com/Liam-E2/RotationForest
+https://arxiv.org/abs/1809.06705
+
