@@ -118,9 +118,9 @@ if True:
     # Checking genetic algorithms with random forest regressor.
     from genetic_model import genetic_algorithm
 
-    n_iter = 10
+    n_iter = 100
     n_bits = X.shape[1]
-    n_pop = 100 # n_bits * 6  # 100
+    n_pop = n_bits * 6  # 100
     r_cross = 0.9
     r_mut = 1.0 / float(n_bits)
 
