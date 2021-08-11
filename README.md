@@ -5,8 +5,10 @@ Please read the weekly notes committed to get an idea about the work done till n
 ## Setup
 * Please clone the repository. Let this folder be `repo`
 * Go inside the `repo` folder. `cd repo`
-* Create the required conda environment using the exported conda environmentt.  
+* Create the required conda environment using the exported conda environment.
 `conda env create -f conda_environment/environment.yml`
+If the environment is already created, then update it using the command
+`conda env update --file conda_environment/environment.yml --prune`
 * This creates a conda environment called msc-project. Activate the conda environment.  
 `conda activate msc-project`
 
