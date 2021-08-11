@@ -1,13 +1,17 @@
 # This file contains code that was used for testing different models.
 # Future work - Create a seperate script for each of these models
 
+import sys
+import data_bakery as bakery
+import reproducibility
+
 # Firstly ...
 ExecutionID = None
 if len(sys.argv) > 1:
     ExecutionID = int(sys.argv[1])
 ExecutionID = reproducibility.reproduce(ExecutionID)
 
-X, y, features = bake_train_Xy()
+X, y, features = bakery.bake_train_Xy()
 
 print("X.shape =", X.shape)
 print("y.shape =", y.shape)
@@ -17,10 +21,7 @@ print("y.shape =", y.shape)
 from sklearn.linear_model import LinearRegression
 from sklearn.model_selection import train_test_split
 
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.10, random_state=42)
-
-print(X_train.shape)
-print(X_test.shape)
+X_train, X_validate, y_train, y_validate = train_test_split(X, y, test_size=0.20)
 
 if False:
     degree = 2
@@ -47,12 +48,14 @@ if False:
 
 # Since it takes a lot of time.
 if False:
-    # Next = support vector machines, decision trees, random forest, and neural network
+    # Next = support vector machine and neural network
     from sklearn.svm import SVR
     regressor = SVR(kernel = 'rbf')
+    print("Fitting an SVR...")
     regressor.fit(X_train, y_train)
-    print("Support Vector Regession score = ", regressor.score(X_train, y_train))
-    y_pred = regressor.predict(X_test)
+    print("Fitting finished")
+    print("Support Vector Regession R^2 training score = ", regressor.score(X_train, y_train))
+    print("Support Vector Regession R^2 validation score = ", regressor.score(X_validate, y_validate))
 
 if False:
     from sklearn.linear_model import Ridge
