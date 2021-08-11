@@ -38,7 +38,7 @@ def mutation(bitstring, r_mut):
             bitstring[i] = 1 - bitstring[i]
 
 # genetic algorithm
-def genetic_algorithm(objective, X, y, n_bits, n_iter, n_pop, r_cross, r_mut):
+def genetic_algorithm(objective, X, y, n_bits, n_iter, n_pop, r_cross, r_mut, name = "genetic"):
     # initial population of random bitstring
     pop = [randint(0, 2, n_bits).tolist() for _ in range(n_pop)]
     # keep track of best solution
@@ -55,7 +55,7 @@ def genetic_algorithm(objective, X, y, n_bits, n_iter, n_pop, r_cross, r_mut):
                 #print(">%d, new best f(%s) = %.3f" % (gen,  pop[i], scores[i]))
                 print(">%d, new best = %.3f." % (gen, scores[i]))
                 import json
-                with open('genetic_feature_selection.json', 'w') as f:
+                with open(name + "_feature_selection.json", 'w') as f:
                     json.dump((scores[i], pop[i]), f)
         # select parents
         selected = [selection(pop, scores) for _ in range(n_pop)]
@@ -73,7 +73,7 @@ def genetic_algorithm(objective, X, y, n_bits, n_iter, n_pop, r_cross, r_mut):
         # replace population
         pop = children
         import json
-        with open("genetic_generation_info.data", "w") as f:
+        with open(name + "_generation_info.data", "w") as f:
             json.dump(["Generation = " + str(gen), pop], f)
     return [best, best_eval]
 

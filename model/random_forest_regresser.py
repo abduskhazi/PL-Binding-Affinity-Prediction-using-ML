@@ -127,7 +127,8 @@ if True:
     X_validate = np.copy(X_validate_backup)
     # perform the genetic algorithm search
     print("Random forest regressor - Starting genetic algorithm")
-    best, score = genetic_algorithm(random_forest_score, X_validate, y_validate, n_bits, n_iter, n_pop, r_cross, r_mut)
+    best, score = genetic_algorithm(random_forest_score, X_validate, y_validate, n_bits, n_iter, n_pop, r_cross, r_mut,
+                                    name="random_forest_genetic")
     print('Done!')
     print('f(%s) = %f' % (best, score))
 
