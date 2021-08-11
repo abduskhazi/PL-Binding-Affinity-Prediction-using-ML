@@ -46,9 +46,12 @@ if False:
     y_pred = lasso_reg.predict(X_test)
     print("Lasso Regression score = ", lasso_reg.score(X_train, y_train))
 
-# Since it takes a lot of time.
 if False:
-    # Next = support vector machine and neural network
+    # Statistics of SVR (Execution ID = 438302616)
+    # When all features are used.
+    #     Support Vector Regession R^2 training score =  0.31437544671737994
+    #     Support Vector Regession R^2 validation score =  0.28133698851672306
+    # Time taken - 6m27.786s
     from sklearn.svm import SVR
     regressor = SVR(kernel = 'rbf')
     print("Fitting an SVR...")
