@@ -110,7 +110,8 @@ def random_forest_score(population , X, y):
         n = n + 1
         print("R2 score reference = ", r2_score(y, regressor.predict(X_backup)), "Finished - ", n, end="\r")
         X = np.copy(X_backup)
-        score += [initial_score - score_after_shuffle]
+        num_features_selected = sum(feature_selection) # The optimization tries to find the minima.
+        score += [(initial_score - score_after_shuffle) * num_features_selected]
 
     return score
 
@@ -128,7 +129,7 @@ if True:
     # perform the genetic algorithm search
     print("Random forest regressor - Starting genetic algorithm")
     best, score = genetic_algorithm(random_forest_score, X_validate, y_validate, n_bits, n_iter, n_pop, r_cross, r_mut,
-                                    name="random_forest_genetic")
+                                    name="random_forest_genetic_multiobjective")
     print('Done!')
     print('f(%s) = %f' % (best, score))
 
