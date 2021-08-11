@@ -8,10 +8,11 @@ dependencies:
   - _openmp_mutex=4.5=1_gnu
   - _pytorch_select=0.1=cpu_0
   - blas=1.0=mkl
+  - bottleneck=1.3.2=py37heb32a55_1
   - bzip2=1.0.8=h7b6447c_0
-  - ca-certificates=2021.5.30=ha878542_0
+  - ca-certificates=2021.7.5=h06a4308_1
   - cairo=1.16.0=hf32fb01_1
-  - certifi=2021.5.30=py37h89c1867_0
+  - certifi=2021.5.30=py37h06a4308_0
   - cffi=1.14.6=py37h400218f_0
   - curl=7.71.1=hbc83047_1
   - cycler=0.10.0=py37_0
@@ -62,13 +63,14 @@ dependencies:
   - ncurses=6.2=he6710b0_1
   - ninja=1.10.2=hff7bd54_1
   - nox=1.0=h3f329b5_0
+  - numexpr=2.7.3=py37hb2eb853_0
   - numpy=1.19.2=py37h54aff64_0
   - numpy-base=1.19.2=py37hfa32c7d_0
   - olefile=0.46=py37_0
   - openbabel=3.1.1=py37h200e996_1
   - openjpeg=2.3.0=h05c96fa_1
-  - openssl=1.1.1k=h7f98852_0
-  - pandas=1.2.4=py37h2531618_0
+  - openssl=1.1.1k=h27cfd23_0
+  - pandas=1.3.1=py37h8c16a72_0
   - pcre=8.45=h295c915_0
   - perl=5.32.1=0_h7f98852_perl5
   - pillow=8.3.1=py37h2c7a002_0
