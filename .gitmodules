@@ -1,6 +1,6 @@
 [submodule "galaxytools"]
 	path = galaxytools
-	url = https://github.com/bgruening/galaxytools.git
+	url = https://github.com/abduskhazi/galaxytools.git
 [submodule "RotationForest"]
 	path = RotationForest
 	url = https://github.com/abduskhazi/RotationForest.git
