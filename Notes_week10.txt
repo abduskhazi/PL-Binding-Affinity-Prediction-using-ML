@@ -11,6 +11,6 @@ Things done this week -
 
 NEXT THINGS -
 1. Forgot to implement elitism (Will do this week)
-2.
-3.
-4.
+2. With boostrap PCA calculation in rotation forest ...***
+3. Maybe scoring function = (num_features*num_features)
+4. When data avaialble ... Try narine's protein featurization.
