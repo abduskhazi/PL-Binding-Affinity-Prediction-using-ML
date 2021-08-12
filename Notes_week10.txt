@@ -5,9 +5,9 @@ Things done this week -
 2. Revisited the depricated models (Because the models were built using specific features and not all)
     --> Show the SVR statistics
     --> Show how NN gets stuck in a local minima. (Not very good local minima)
-3. Fixed the genetic algorithm bug.
-    --> Show the features obtained using normal score
-    --> Show the features obtained using the 2D score.
+3. Fixed the genetic algorithm bug. (Check issues)
+    --> Show the statistics obtained using normal score
+    --> Show the statistics obtained using the 2D score.
 
 NEXT THINGS -
 1. Forgot to implement elitism (Will do this week)
