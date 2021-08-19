@@ -11,23 +11,6 @@ import sys
 sys.path.append('../')
 import RotationForest.RotationForest as rf
 
-def shuffle_calculator(args):
-
-    regressor, X, X_backup, y, n, feature_selection, initial_score = args
-    shuffle_indexes = [id for id, e in enumerate(feature_selection) if e == 0]
-    for i in shuffle_indexes:
-        np.random.shuffle(X[:, i])
-    score_after_shuffle = r2_score(y, regressor.predict(X))
-
-    n = n + 1
-    print("R2 score reference = ", r2_score(y, regressor.predict(X_backup)), "Finished - ", n, end="\r")
-    X = np.copy(X_backup)
-    num_features_selected = sum(feature_selection)  # The optimization tries to find the minima.
-    score = (initial_score - score_after_shuffle) * num_features_selected ** 2
-
-    return score
-
-regressor = None
 def main():
     # Firstly ...
     ExecutionID = None
@@ -35,7 +18,6 @@ def main():
         ExecutionID = int(sys.argv[1])
     ExecutionID = reproducibility.reproduce(ExecutionID)
 
-    global regressor
     # Obtain data for our random forest regressor.
     X, y, features = bakery.bake_train_Xy()
     print("X.shape =", X.shape)
@@ -43,7 +25,7 @@ def main():
 
     X_train, X_validate, y_train, y_validate = train_test_split(X, y, test_size=0.2)
 
-    rotation = False
+    rotation = True
     if rotation:
         print("Fitting the Rotation Forest Regressor...")
         regressor = rf.RotationForest(n_trees=100, n_features=15, sample_prop=0.5, bootstrap=True) # features = partitions here.
@@ -129,10 +111,18 @@ def main():
         X_backup = np.copy(X)
 
         score = []
-        import multiprocessing as mp
-        pool = mp.Pool(mp.cpu_count())
-        score = pool.map(shuffle_calculator, [(regressor, np.copy(X), X_backup, y, i, population[i], initial_score) for i in range(len(population))])
-        pool.close()
+        n = 0
+        for feature_selection in population:
+            shuffle_indexes = [id for id, e in enumerate(feature_selection) if e == 0]
+            for i in shuffle_indexes:
+                np.random.shuffle(X[:, i])
+            score_after_shuffle = r2_score(y, regressor.predict(X))
+
+            n = n + 1
+            print("R2 score reference = ", r2_score(y, regressor.predict(X_backup)), "Finished - ", n, end="\r")
+            X = np.copy(X_backup)
+            num_features_selected = sum(feature_selection) # The optimization tries to find the minima.
+            score += [(initial_score - score_after_shuffle) * num_features_selected ** 2]
 
         return score
 
