@@ -1,7 +1,8 @@
 # genetic algorithm search of the one max optimization problem
 from numpy.random import randint
 from numpy.random import rand
- 
+import json
+
 # objective function
 def onemax(x):
     return -sum(x)
@@ -56,7 +57,6 @@ def genetic_algorithm(objective, X, y, n_bits, n_iter, n_pop, r_cross, r_mut, na
                 best, best_eval = pop[i], scores[i]
                 #print(">%d, new best f(%s) = %.3f" % (gen,  pop[i], scores[i]))
                 print(">%d, new best = %.3f." % (gen, scores[i]))
-                import json
                 with open(name + "_feature_selection.json", 'w') as f:
                     json.dump((scores[i], pop[i]), f)
         # select parents
@@ -74,7 +74,6 @@ def genetic_algorithm(objective, X, y, n_bits, n_iter, n_pop, r_cross, r_mut, na
                 children.append(c)
         # replace population
         pop = children
-        import json
         with open(name + "_generation_info.data", "w") as f:
             json.dump(["Generation = " + str(gen), pop], f)
     return [best, best_eval]
