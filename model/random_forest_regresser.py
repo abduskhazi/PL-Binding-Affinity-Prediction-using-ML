@@ -11,6 +11,8 @@ import sys
 sys.path.append('../')
 import RotationForest.RotationForest as rf
 
+regressor = None
+
 def main():
     # Firstly ...
     ExecutionID = None
