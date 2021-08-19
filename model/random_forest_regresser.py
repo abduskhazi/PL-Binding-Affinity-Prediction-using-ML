@@ -104,7 +104,6 @@ def main():
 
     def random_forest_score(population , X, y):
         #using the regressor fit using the data.
-        global regressor
         X = np.copy(X) # To prevent reference modification.
 
         initial_score = r2_score(y, regressor.predict(X))
