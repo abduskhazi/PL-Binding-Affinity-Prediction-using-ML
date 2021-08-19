@@ -4,6 +4,7 @@
 import sys
 import data_bakery as bakery
 import reproducibility
+from sklearn.metrics import r2_score
 
 # Firstly ...
 ExecutionID = None
@@ -53,7 +54,7 @@ if False:
     #     Support Vector Regession R^2 validation score =  0.28133698851672306
     # Time taken - 6m27.786s
     from sklearn.svm import SVR
-    regressor = SVR(kernel = 'rbf')
+    regressor = SVR(kernel = "poly")
     print("Fitting an SVR...")
     regressor.fit(X_train, y_train)
     print("Fitting finished")
@@ -80,9 +81,11 @@ if False:
             # self.fc_1_ligand = nn.Linear(20, 10)
             # self.fc_2_protein = nn.Linear(10, 4)
             # self.fc_2_ligand = nn.Linear(10, 4)
-            self.fc_1 = nn.Linear(40,10)
-            self.fc_2 = nn.Linear(10,4)
-            self.fc_3 = nn.Linear(4, 1)
+            self.fc_1 = nn.Linear(457,10)
+            self.fc_2 = nn.Linear(10,7)
+            self.fc_3 = nn.Linear(7, 4)
+            self.fc_4 = nn.Linear(4, 2)
+            self.fc_5 = nn.Linear(2, 1)
             #########
 
         def forward(self, x):
@@ -102,6 +105,10 @@ if False:
             x = self.fc_2(x)
             x = F.relu(x)
             x = self.fc_3(x)
+            x = F.relu(x)
+            x = self.fc_4(x)
+            x = F.relu(x)
+            x = self.fc_5(x)
             return x
 
 
@@ -115,11 +122,20 @@ if False:
 
     X_train_torch = torch.from_numpy(X_train)
     y_train_torch = torch.from_numpy(y_train).view(-1, 1)
-    batch_size = 100
+    batch_size = 700
 
     n = X_train_torch.shape[0]
 
-    for epoch in range(500):
+    score = 0.0
+    epoch = 0
+    #while(score < 0.95): # --> Use this when you want to check the best local minima.
+    for epoch in range(1000):
+        #Shuffling data for better regularization
+        #from sklearn.utils import shuffle
+        #X_train, y_train = shuffle(X_train, y_train)
+
+        epoch += 1
+
         for i in range((n-1)//batch_size + 1):
             start = i * batch_size
             end = start + batch_size
@@ -132,11 +148,24 @@ if False:
             loss.backward()
             optimizer.step()
 
-        print("Epoch : ", epoch)
+        X_train_torch = torch.from_numpy(X_train)
+        y_train_pred = deepNN(X_train_torch)
+        y_train_pred = y_train_pred.detach().numpy()
+        X_validate_torch = torch.from_numpy(X_validate)
+        y_validate_pred = deepNN(X_validate_torch)
+        y_validate_pred = y_validate_pred.detach().numpy()
+        score_validate = r2_score(y_validate, y_validate_pred)
+        score = r2_score(y_train, y_train_pred)
+        print("Epoch : ", epoch, "R^2 (Train)", score, "R^2 (Validate)", score_validate, end='\r')
 
-    X_test_torch = torch.from_numpy(X_test)
-    y_pred = deepNN(X_test_torch)
-    y_pred = y_pred.detach().numpy()
+    X_train_torch = torch.from_numpy(X_train)
+    y_train_pred = deepNN(X_train_torch)
+    y_train_pred = y_train_pred.detach().numpy()
+    X_validate_torch = torch.from_numpy(X_validate)
+    y_validate_pred = deepNN(X_validate_torch)
+    y_validate_pred = y_validate_pred.detach().numpy()
+    print("Neural Network R^2 score (Train) = ", r2_score(y_train, y_train_pred))
+    print("Neural Network R^2 score (Validation) = ", r2_score(y_validate, y_validate_pred))
 
 
 if False:
