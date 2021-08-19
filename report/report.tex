@@ -44,7 +44,7 @@
 \subsection{Biological Background}
 Proteins are the workhorses of our body.  They are necessary for many important functions in the body.  Ligands are molecules that bind to proteins to form protein-ligand complexes.  They can be molecules that the protein transports (e.g., a Haemoglobin transporter) or act as stimulating agents.  In addition to this, they can also start/stop the protein from doing its function.  The correct functioning of these protein-ligand complexes is essential for any living organism.
 
-The study of protein-ligand complexes is an intrinsic part of the drug discovery field.  It is because drugs are small molecules that act as ligands.  As the drug molecules (ligands) bind to the target proteins, they can artificially influence the protein behavior.  This causes a therapeutic effect.
+The study of protein-ligand complexes is an intrinsic part of the drug discovery field.  It is because drugs are small molecules that act as ligands.  As the drug molecules (ligands) bind to the target proteins, they can artificially influence the protein behavior.  This binding between protein and ligand causes a therapeutic effect.
 
 \begin{figure}[htb]
   \centering
@@ -78,7 +78,7 @@ Similarly, $K_i$ and $IC_{50}$ are defined using concentration albeit non-trivia
 \cite{binding_affinity_description}
 
 \subsection{PDBBind Dataset}
-Over the last few decades, researchers have been successful in building a single data archive for proteins.  This archive, called \textbf{Protein Data bank} \cite{pdb_homepage} , holds 3-D structural data of the proteins determined by experiments like X-ray crystallographic, Nuclear magnetic resonance (NMR), and cryoelectron microscopy (cryoEM).  A subset of this data also contains information about how well a given protein and ligand bind together.  It is called binding affinity between a protein and ligands.  (It also contains data about protein-protein complexes that our project does not deal with)
+Over the last few decades, researchers have been successful in building a single data archive for proteins.  This archive, called \textbf{Protein Data Bank} \cite{pdb_homepage} , holds 3-D structural data of the proteins determined by experiments like X-ray crystallographic, Nuclear magnetic resonance (NMR), and cryoelectron microscopy (cryoEM).  A subset of this data also contains information about how well a given protein and ligand bind together.  It is called binding affinity between a protein and ligands.  (It also contains data about protein-protein complexes that our project does not deal with)
 \cite{pdbank_history}
 
 As we study the protein-ligand binding affinity here, we would like to filter out this data from the protein data bank.  It is what is done by the maintainers of the \textbf{PDBBind Data bank}.
@@ -101,7 +101,7 @@ Figure~\ref{fig:plproblemclassification} shows how the Protein-Ligand problem ca
 
 The binding of proteins and ligands is heavily influenced by their respective 3D structures.
 Figure~\ref{fig:lockandkey} illustrates a hypothesis called \textit{Lock and Key}.
-As you can see it is very crucial that the shape of the protein's binding location and the shape of the ligand be complementary for the binding.
+It is very crucial that the shape of the protein's binding location and the shape of the ligand be complementary for the binding.
 
 \begin{figure}[htb]
   \centering
@@ -137,7 +137,6 @@ All the above mentioned formats use the \textbf{XYZ format} internally to repres
 \label{xyz_format}
 XYZ format is a chemical file format that represents the geometry of a molecule.
 It specifies the number of atoms and their Cartesian X, Y, Z coordinates hence the name XYZ format.
-The coordinates are relative to each other. Hence, translation and rotation do not change the molecule's representation. 
 The following text illustrates the XYZ format.
 Section \ref{XYZFileexampleref} gives an example.
 \cite{XYZ_format}
@@ -177,7 +176,7 @@ SMILES is an acronym for Simplified Molecular-Input Line-Entry System.
 It represents a molecule using an ASCII string.
 Using the 3D data in SDF and Mol2 formats,  we can create an atomic graph representation.
 Using this graph the SMILES string for the molecule can be generated.
-The smiles format itself is not very helpful for us as we lose the 3D structural information after converting to it.
+The SMILES format itself is not very helpful for us as we lose the 3D structural information after converting to it.
 \cite{smilesformat}
 
 \subsection{Extraction of features}
@@ -193,7 +192,7 @@ Each descriptor value is taken as a real number,  hence the input space of ligan
 \textit{Fpocket} stands for "Find pocket" whereas \textit{Dpocket} stands for "Describe pocket".
 \textit{Fpocket} uses 3D Voronoi tessalation and the concepts of "Alpha Spheres" to find out pockets in the protein structure \cite{fpocketmanual} \cite{voronoitesselationshortvideo}.
 Given a protein PDB file, we can extract the descriptors of all pockets in the protein.
-For every pocket, we get 55 descriptors in total which are take as $\mathbf{R}$ values.
+For every pocket, we get 55 descriptors in total which are taken as real values,  $\mathbf{R}$.
 Hence the input space for protein features is $\mathbf{R}^{55}$.
 
 
@@ -203,7 +202,7 @@ It generates 3 files as output files,  namely,  dpout\_fpocketp.txt, dpout\_fpoc
 \begin{itemize}
 \item \textbf{dpout\_fpocketp.txt}.
 This file contains the descriptors (a.k.a features) of all pockets that are considered to be binding pockets based on a binding criterion.
-Multiple pockets can bind with the same ligand.
+The ligand can bind at different locations (pockets) in the protein 3D structure.
 Hence,  there may be features of more than 1 pocket in this file.
 \item \textbf{dpout\_fpocketnp.txt}.  This file contains the descriptors of all pockets that are non-binding according to the criteria.
 \item \textbf{dpout\_explicitp.txt}.  An explicit pocket is defined as a pocket consisting of all vertices/atoms situated at a specific distance from the ligand in the PL complex.
@@ -239,14 +238,15 @@ This is because we would have to try $\binom{402}{k_1} * \binom{55}{k_1}$ ($k_1,
 The following feature selection heuristics were used instead -
 
 \subsubsection{Selection by output correlation}
-The \textit{pearson} and \textit{spearmann} correlations of each feature were calculated against the output variable.
-We assumed that the features were either linearly related to the output (in the case of Pearson correlation) or had a monotonic relationship (in the case of Spearmann correlation).
+The \textit{pearson} and \textit{spearman} correlations of each feature were calculated against the output variable.
+We assumed that the features were either linearly related to the output (in the case of Pearson correlation) or had a monotonic relationship (in the case of Spearman correlation).
 The features with the highest correlation were selected as inputs to the model.
 
 \subsubsection{Using genetic algorithms \cite{genetic_algorithm}}
 Since the feature space is a non-continuous problem of combinatorial complexity,
 we also studied genetic feature selection algorithms.
 We represent each feature by a binary number, 1 for the inclusion of the feature and 0 for the exclusion.
+Let $\mathbb{B}$ be a binary number $\{0,  1\}$.
 Each feature selection $p \in \mathbb{B}^{456}$ (401 for ligands + 55 for proteins) is called a chromosome.
 A "population" of $n$ chromosomes is maintained.
 For each generation,  the best pairs of chromosomes are selected as parents.
@@ -392,7 +392,7 @@ We had 2 objectives at hand
 \item Get the best performing model.
 \item Reduce the number of input features to make our model simple and explainable.
 \end{itemize}
-The above objectives may not completely be against each other.
+The above objectives are not always against each other.
 This is because removing a feature that has no correlation (or random correlation) with the output may improve the model whereas removing a feature that the output is highly correlated on degrades the model.
 
 \footnotetext[1]{Approximately reproducible as the reproducibility module was introduced later.}
