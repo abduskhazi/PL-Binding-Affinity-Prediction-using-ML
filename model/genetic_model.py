@@ -42,7 +42,9 @@ def genetic_algorithm(objective, X, y, n_bits, n_iter, n_pop, r_cross, r_mut, na
     # initial population of random bitstring
     pop = [randint(0, 2, n_bits).tolist() for _ in range(n_pop)]
     # keep track of best solution
-    best, best_eval = 0, objective([pop[0]], X, y)[0]
+    best, best_eval = pop[0], objective([pop[0]], X, y)[0]
+    with open(name + "_feature_selection.json", 'w') as f:
+        json.dump((best_eval, best), f)
     # enumerate generations
     for gen in range(n_iter):
         print("Generation - ", gen)
