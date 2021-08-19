@@ -24,7 +24,7 @@ print("y.shape =", y.shape)
 
 X_train, X_validate, y_train, y_validate = train_test_split(X, y, test_size=0.2)
 
-rotation = True
+rotation = False
 if rotation:
     print("Fitting the Rotation Forest Regressor...")
     regressor = rf.RotationForest(n_trees=100, n_features=15, sample_prop=0.5, bootstrap=True) # features = partitions here.
