@@ -27,7 +27,7 @@ def main():
 
     X_train, X_validate, y_train, y_validate = train_test_split(X, y, test_size=0.2)
 
-    rotation = True
+    rotation = False
     if rotation:
         print("Fitting the Rotation Forest Regressor...")
         regressor = rf.RotationForest(n_trees=100, n_features=15, sample_prop=0.5, bootstrap=True) # features = partitions here.
@@ -141,7 +141,7 @@ def main():
         # perform the genetic algorithm search
         print("Random forest regressor - Starting genetic algorithm")
         best, score = genetic_algorithm(random_forest_score, X_validate, y_validate, n_bits, n_iter, n_pop, r_cross, r_mut,
-                                        name="rf_genetic_multiobjective_square_score_function")
+                                        name="rf_genetic_multiobjective_elitism")
         print('Done!')
         print('f(%s) = %f' % (best, score))
 

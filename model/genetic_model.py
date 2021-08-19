@@ -1,12 +1,20 @@
 # genetic algorithm search of the one max optimization problem
 from numpy.random import randint
 from numpy.random import rand
+import numpy as np
 import json
 
 # objective function
 def onemax(x):
     return -sum(x)
- 
+
+def sorted_population(pop, scores):
+    indices = scores.argsort()
+    sorted_pop = []
+    for i in indices:
+        sorted_pop += [pop[i]]
+    return sorted_pop
+
 # tournament selection
 def selection(pop, scores, k=10):
     # first random selection
@@ -60,7 +68,9 @@ def genetic_algorithm(objective, X, y, n_bits, n_iter, n_pop, r_cross, r_mut, na
                 with open(name + "_feature_selection.json", 'w') as f:
                     json.dump((scores[i], pop[i]), f)
         # select parents
-        selected = [selection(pop, scores) for _ in range(n_pop)]
+        selected = [selection(pop, scores) for _ in range(n_pop - 50)]
+        #Select the elite among the population
+        selected += sorted_population(pop, np.array(scores))[:50]
         # create the next generation
         children = list()
         for i in range(0, n_pop, 2):
