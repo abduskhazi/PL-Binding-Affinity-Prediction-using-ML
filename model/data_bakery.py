@@ -6,19 +6,31 @@ def bake_Xy(output_variable_file, input_variable_file):
         regression_list = [r.strip() for r in regression_file.readlines()]
 
     regression = {}
+    resolution = {}
+    max_resolution = 0
 
     for r in regression_list:
         # Not including the comments in the file.
         if r[0] != "#":
             key = r.split()[0]
+            try:
+                res_val = round(float(r.split()[1]))
+            except ValueError:
+                res_val = 5 # This is choses because this is the max resolution found in the data set.
             value = r.split()[3]
             regression[key] = float(value)
+            resolution[key] = res_val
+            if(max_resolution < resolution[key]):
+                max_resolution = resolution[key]
 
     with open(input_variable_file) as input_var_f:
         input_list = [r.strip() for r in input_var_f.readlines()]
 
+    #print("Max resolution", max_resolution)
+
     X = []
     y = []
+    data_weights = []
 
     protein_start = 2
     ligand_start = 1 # Use 193 for ignoring auto curr 2d descriptors
@@ -34,11 +46,12 @@ def bake_Xy(output_variable_file, input_variable_file):
         x_i = [row_protein[protein_start:] + row_ligand[ligand_start:]]
         X += x_i
         y += [regression[complex_name]]
+        data_weights += [(max_resolution+1) - resolution[complex_name]]
 
     X = np.asarray(X, dtype='float64')
     y = np.asarray(y, dtype='float64')
 
-    return X, y, get_feature_names(protein_start, ligand_start)
+    return X, y, get_feature_names(protein_start, ligand_start), data_weights
 
 def get_feature_names(protein_start, ligand_start):
     with open("../data/protein_descriptors.txt") as names_f:
@@ -74,17 +87,17 @@ def bake_test_Xy():
     return bake_Xy(output_variable_file, input_variable_file)
 
 def bake_train_Xy_with_given_features(features):
-    X, y, feature_names = bake_train_Xy()
+    X, y, feature_names, weights = bake_train_Xy()
 
     list_indexes = [id for id, e in enumerate(features) if e == 0]
     X_selected = remove_columns(X, list_indexes)
     features_selected = remove_features(feature_names, list_indexes)
 
-    return X_selected, y, features_selected
+    return X_selected, y, features_selected, weights
 
 
 def bake_train_Xy_manual_feature_selection():
-    X, y, feature_names = bake_train_Xy()
+    X, y, feature_names, weights = bake_train_Xy()
 
     selected_features_list = []
     with open("manual_ligand_features.csv") as f:
@@ -105,10 +118,10 @@ def bake_train_Xy_manual_feature_selection():
     X_selected = remove_columns(X, list_indexes)
     features_selected = remove_features(feature_names, list_indexes)
 
-    return X_selected, y, features_selected
+    return X_selected, y, features_selected, weights
 
 def bake_train_Xy_exclude_features_families(exclusion_list):
-    X, y, feature_names = bake_train_Xy()
+    X, y, feature_names, weights = bake_train_Xy()
 
     # Get all the ids to exclude
     ids_to_exclude = []
@@ -121,15 +134,15 @@ def bake_train_Xy_exclude_features_families(exclusion_list):
     X_selected = remove_columns(X, ids_to_exclude)
     features_selected = remove_features(feature_names, list_indexes)
 
-    return X_selected, y, features_selected
+    return X_selected, y, features_selected, weights
 
 
 if __name__ == "__main__":
-    X_train, y_train, _ = bake_train_Xy()
+    X_train, y_train, _, _ = bake_train_Xy()
     print("X_train.shape =", X_train.shape)
     print("y_train.shape =", y_train.shape)
 
-    X_test, y_test, _ = bake_test_Xy()
+    X_test, y_test, _, _ = bake_test_Xy()
     print("X_test.shape =", X_test.shape)
     print("y_test.shape =", y_test.shape)
 
@@ -142,12 +155,12 @@ if __name__ == "__main__":
     print("\t0 ->", features[0], " ... 54 ->", features[54])
     print("\t55 ->", features[55], " ... %d ->" % (len(features)-1), features[-1])
 
-    X_train, y, features = bake_train_Xy_manual_feature_selection()
+    X_train, y, features, _ = bake_train_Xy_manual_feature_selection()
     print("X_train.shape =", X_train.shape)
     print("y_train.shape =", y_train.shape)
     print("len(features) = ", len(features))
 
-    X_train, y, features = bake_train_Xy_exclude_features_families(["AUTOCORR2D_"])
+    X_train, y, features, _ = bake_train_Xy_exclude_features_families(["AUTOCORR2D_"])
     print("X_train.shape =", X_train.shape)
     print("y_train.shape =", y_train.shape)
     print("len(features) = ", len(features))
@@ -156,6 +169,6 @@ if __name__ == "__main__":
     print(f)
 
     selected_features = [1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 0, 0, 0, 1, 1, 1, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 1, 0, 1, 1, 1, 0, 1, 1, 0, 0, 0, 1, 0, 1, 0, 0, 1, 1, 1, 0, 0, 1, 1, 0, 1, 0, 1, 0, 0, 1, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1]
-    X, y, features = bake_train_Xy_with_given_features(selected_features)
+    X, y, features, _ = bake_train_Xy_with_given_features(selected_features)
     print(sum(selected_features))
     print(X.shape)
