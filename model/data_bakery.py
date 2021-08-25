@@ -23,6 +23,18 @@ def bake_Xy(output_variable_file, input_variable_file):
             if(max_resolution < resolution[key]):
                 max_resolution = resolution[key]
 
+    # Resolution statistics
+    stats = {}
+    for key in resolution:
+        if(resolution[key] not in stats):
+            stats[resolution[key]] = 0
+        stats[resolution[key]] += 1
+
+    print("Resolution Statistics:")
+    print("    Resolution    Num datapoint")
+    for key in sorted(stats):
+        print("     ~",key,"           ",stats[key])
+
     with open(input_variable_file) as input_var_f:
         input_list = [r.strip() for r in input_var_f.readlines()]
 
