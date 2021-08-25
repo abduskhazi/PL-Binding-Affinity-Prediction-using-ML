@@ -13,6 +13,30 @@ import RotationForest.RotationForest as rf
 
 regressor = None
 
+def func(args):
+    population_part, X, y, regressor = args
+    regressor.set_params(n_jobs=1) # To avoid multiprocessing warning.
+    X_backup = np.copy(X)
+
+    initial_score = r2_score(y, regressor.predict(X))
+    # Copy X_validate to prevent modification.
+
+    score = []
+    n = 0
+    for feature_selection in population_part:
+        shuffle_indexes = [id for id, e in enumerate(feature_selection) if e == 0]
+        for i in shuffle_indexes:
+            np.random.shuffle(X[:, i])
+        score_after_shuffle = r2_score(y, regressor.predict(X))
+
+        n = n + 1
+        print("R2 score reference = ", r2_score(y, regressor.predict(X_backup)), "Finished - ", n, end="\r")
+        X = np.copy(X_backup)
+        num_features_selected = sum(feature_selection)  # The optimization tries to find the minima.
+        score += [(initial_score - score_after_shuffle) * num_features_selected]
+
+    return score
+
 def main():
     # Firstly ...
     ExecutionID = None
@@ -103,27 +127,23 @@ def main():
         print(features[i])
 
     def random_forest_score(population , X, y):
-        #using the regressor fit using the data.
-        X = np.copy(X) # To prevent reference modification.
-
-        initial_score = r2_score(y, regressor.predict(X))
-        # Copy X_validate to prevent modification.
         print()
-        X_backup = np.copy(X)
+
+        import multiprocessing as mp
+        num_cores = mp.cpu_count()
+        if len(population) >= num_cores:
+            pool = mp.Pool(num_cores)
+            chunks = np.array_split(population, num_cores)
+            work_chunks = []
+            for c in chunks:
+                work_chunks += [(c, np.copy(X), np.copy(y), regressor)]
+            out = pool.map(func, work_chunks)
+        else:
+            out = [func((population, X, y, regressor))]
 
         score = []
-        n = 0
-        for feature_selection in population:
-            shuffle_indexes = [id for id, e in enumerate(feature_selection) if e == 0]
-            for i in shuffle_indexes:
-                np.random.shuffle(X[:, i])
-            score_after_shuffle = r2_score(y, regressor.predict(X))
-
-            n = n + 1
-            print("R2 score reference = ", r2_score(y, regressor.predict(X_backup)), "Finished - ", n, end="\r")
-            X = np.copy(X_backup)
-            num_features_selected = sum(feature_selection) # The optimization tries to find the minima.
-            score += [(initial_score - score_after_shuffle) * num_features_selected ]
+        for partial_result in out:
+            score += partial_result
 
         return score
 
