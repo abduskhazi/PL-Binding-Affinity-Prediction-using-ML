@@ -11,7 +11,7 @@ def bake_Xy(output_variable_file, input_variable_file):
         # Not including the comments in the file.
         if r[0] != "#":
             key = r.split()[0]
-            value = r.split()[1]
+            value = r.split()[3]
             regression[key] = float(value)
 
     with open(input_variable_file) as input_var_f:
@@ -64,12 +64,12 @@ def remove_columns(X, idx):
     return X_selected
 
 def bake_train_Xy():
-    output_variable_file = "../data/regression_varible.data"
+    output_variable_file = "../data/INDEX_general_PL_data.2019"
     input_variable_file = "../data/train/train_model_input_all_proteins_mol2_fp_no_nan.data"
     return bake_Xy(output_variable_file, input_variable_file)
 
 def bake_test_Xy():
-    output_variable_file = "../data/regression_varible.data"
+    output_variable_file = "../data/INDEX_general_PL_data.2019"
     input_variable_file = "../data/test/test_model_input_all_proteins_mol2_fp_no_nan.data"
     return bake_Xy(output_variable_file, input_variable_file)
 
