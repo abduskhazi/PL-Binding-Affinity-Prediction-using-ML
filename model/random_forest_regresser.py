@@ -51,8 +51,9 @@ def main():
 
     weights = np.array(weights, dtype='int64')
     X = np.concatenate((X, weights[:, np.newaxis]), axis=1)
-    print("X.shape =", X.shape)
-    print("y.shape =", y.shape)
+    print("X concatenated with weights")
+    print("    X.shape =", X.shape)
+    print("    y.shape =", y.shape)
 
     X_train, X_validate, y_train, y_validate = train_test_split(X, y, test_size=0.2)
 
@@ -147,52 +148,7 @@ def main():
     for i in impt_indices[:30]:
         print(features[i])
 
-    def random_forest_score(population , X, y):
-        print()
-
-        import multiprocessing as mp
-        num_cores = mp.cpu_count()
-        if len(population) >= num_cores:
-            pool = mp.Pool(num_cores)
-            chunks = np.array_split(population, num_cores)
-            work_chunks = []
-            for c in chunks:
-                work_chunks += [(c, np.copy(X), np.copy(y), regressor)]
-            out = pool.map(func, work_chunks)
-        else:
-            out = [func((population, X, y, regressor))]
-
-        score = []
-        for partial_result in out:
-            score += partial_result
-
-        return score
-
     if True:
-        # Checking genetic algorithms with random forest regressor.
-        from genetic_model import genetic_algorithm
-
-        n_iter = 100
-        n_bits = X.shape[1]
-        n_pop = n_bits * 6  # 100
-        r_cross = 0.9
-        r_mut = 1.0 / float(n_bits)
-
-        X_validate = np.copy(X_validate_backup)
-        # perform the genetic algorithm search
-        print("Random forest regressor - Starting genetic algorithm")
-        best, score = genetic_algorithm(random_forest_score, X_validate, y_validate, n_bits, n_iter, n_pop, r_cross, r_mut,
-                                        name="rf_genetic_multiobjective_elitism")
-        print('Done!')
-        print('f(%s) = %f' % (best, score))
-
-        X_validate = np.copy(X_validate_backup)
-        shuffle_indexes = [id for id, e in enumerate(best) if e == 0]
-        for i in shuffle_indexes:
-            np.random.shuffle(X_validate[:, i])
-        print("R2 score = ", r2_score(y_validate, regressor.predict(X_validate)))
-
-    if False:
         print("Calculating importance of features using permuation importance...")
         # Permutation Importance
         from sklearn.inspection import permutation_importance
@@ -218,6 +174,51 @@ def main():
         print("Important features based on permutation.", "Check Permutation_importance.png")
         for i in impt_indices[:30]:
             print(features[i])
+
+    def random_forest_score(population , X, y):
+        print()
+
+        import multiprocessing as mp
+        num_cores = mp.cpu_count()
+        if len(population) >= num_cores:
+            pool = mp.Pool(num_cores)
+            chunks = np.array_split(population, num_cores)
+            work_chunks = []
+            for c in chunks:
+                work_chunks += [(c, np.copy(X), np.copy(y), regressor)]
+            out = pool.map(func, work_chunks)
+        else:
+            out = [func((population, X, y, regressor))]
+
+        score = []
+        for partial_result in out:
+            score += partial_result
+
+        return score
+
+    if False:
+        # Checking genetic algorithms with random forest regressor.
+        from genetic_model import genetic_algorithm
+
+        n_iter = 100
+        n_bits = X.shape[1]
+        n_pop = n_bits * 6  # 100
+        r_cross = 0.9
+        r_mut = 1.0 / float(n_bits)
+
+        X_validate = np.copy(X_validate_backup)
+        # perform the genetic algorithm search
+        print("Random forest regressor - Starting genetic algorithm")
+        best, score = genetic_algorithm(random_forest_score, X_validate, y_validate, n_bits, n_iter, n_pop, r_cross, r_mut,
+                                        name="rf_genetic_multiobjective_elitism")
+        print('Done!')
+        print('f(%s) = %f' % (best, score))
+
+        X_validate = np.copy(X_validate_backup)
+        shuffle_indexes = [id for id, e in enumerate(best) if e == 0]
+        for i in shuffle_indexes:
+            np.random.shuffle(X_validate[:, i])
+        print("R2 score = ", r2_score(y_validate, regressor.predict(X_validate)))
 
     print("Program finished.")
 
