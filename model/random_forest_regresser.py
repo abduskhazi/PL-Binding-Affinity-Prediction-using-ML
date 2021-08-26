@@ -59,7 +59,7 @@ def main():
         regressor = rf.RotationForest(n_trees=100, n_features=15, sample_prop=0.5, bootstrap=True) # features = partitions here.
     else:
         print("Fitting the Random Forest Regressor...")
-        regressor = RandomForestRegressor(n_estimators=300, max_features="auto", min_samples_leaf=1, oob_score=True, n_jobs=-1)
+        regressor = RandomForestRegressor(n_estimators=400, max_features=0.2, min_samples_leaf=2, oob_score=True, n_jobs=-1)
 
     regressor.fit(X_train, y_train, sample_weight=w_train)
     print("Fitting completed.")
