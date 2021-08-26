@@ -50,7 +50,8 @@ def main():
     print("y.shape =", y.shape)
 
     X_train, X_validate, y_train, y_validate, w_train, w_validate = bakery.test_train_split(X, y, weights, test_size=0.2)
-    X_train, y_train, w_train = bakery.duplicate_data(X_train, y_train, w_train)
+    # Not duplicating the data by default as it may lead to correlated regression trees
+    # X_train, y_train, w_train = bakery.duplicate_data(X_train, y_train, w_train)
 
     rotation = False
     if rotation:
