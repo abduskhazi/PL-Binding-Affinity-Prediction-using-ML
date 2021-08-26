@@ -60,7 +60,7 @@ def bake_Xy(output_variable_file, input_variable_file):
         x_i = [row_protein[protein_start:] + row_ligand[ligand_start:]]
         X += x_i
         y += [regression[complex_name]]
-        data_weights += [(max_resolution+1) - resolution[complex_name]]
+        data_weights += [max_resolution/resolution[complex_name]]
 
     X = np.asarray(X, dtype='float64')
     y = np.asarray(y, dtype='float64')
@@ -165,9 +165,8 @@ def test_train_split(X, y, weights, test_size=0.2):
     X = np.delete(X, -1, axis=1)
     X_train = np.delete(X_train, -1, axis=1)
     X_validate = np.delete(X_validate, -1, axis=1)
-    print("Before weight duplication")
-    print("    X_train.shape =", X_train.shape)
-    print("    y_train.shape =", y_train.shape)
+    print("X_train.shape =", X_train.shape)
+    print("y_train.shape =", y_train.shape)
     
     return X_train, X_validate, y_train, y_validate, weights_train, weights_validate
 
