@@ -49,29 +49,8 @@ def main():
     print("X.shape =", X.shape)
     print("y.shape =", y.shape)
 
-    weights = np.array(weights, dtype='int64')
-    X = np.concatenate((X, weights[:, np.newaxis]), axis=1)
-    print("X concatenated with weights")
-    print("    X.shape =", X.shape)
-    print("    y.shape =", y.shape)
-
-    X_train, X_validate, y_train, y_validate = train_test_split(X, y, test_size=0.2)
-
-    weights_train = np.array(X_train[:, -1], dtype='int64')
-    weights_validate = np.array(X_validate[:, -1], dtype='int64')
-
-    X = np.delete(X, -1, axis=1)
-    X_train = np.delete(X_train, -1, axis=1)
-    X_validate = np.delete(X_validate, -1, axis=1)
-    print("Before weight duplication")
-    print("    X_train.shape =", X_train.shape)
-    print("    y_train.shape =", y_train.shape)
-
-    X_train = np.repeat(X_train, weights_train, axis=0)
-    y_train = np.repeat(y_train, weights_train, axis=0)
-    print("After weight duplication")
-    print("    X_train.shape =", X_train.shape)
-    print("    y_train.shape =", y_train.shape)
+    X_train, X_validate, y_train, y_validate, w_train, w_validate = bakery.test_train_split(X, y, weights, test_size=0.2)
+    X_train, y_train, w_train = bakery.duplicate_data(X_train, y_train, w_train)
 
     rotation = False
     if rotation:
@@ -81,7 +60,7 @@ def main():
         print("Fitting the Random Forest Regressor...")
         regressor = RandomForestRegressor(n_estimators=100, oob_score=True, n_jobs=-1)
 
-    regressor.fit(X_train, y_train)
+    regressor.fit(X_train, y_train, sample_weight=w_train)
     print("Fitting completed.")
 
     y_pred = regressor.predict(X_validate)

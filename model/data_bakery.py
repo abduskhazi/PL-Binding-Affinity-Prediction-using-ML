@@ -1,4 +1,5 @@
 import numpy as np
+import sklearn.model_selection
 
 def bake_Xy(output_variable_file, input_variable_file):
 
@@ -14,7 +15,7 @@ def bake_Xy(output_variable_file, input_variable_file):
         if r[0] != "#":
             key = r.split()[0]
             try:
-                res_val = round(float(r.split()[1]))
+                res_val = float(r.split()[1])
             except ValueError:
                 res_val = 5 # This is choses because this is the max resolution found in the data set.
             value = r.split()[3]
@@ -23,12 +24,14 @@ def bake_Xy(output_variable_file, input_variable_file):
             if(max_resolution < resolution[key]):
                 max_resolution = resolution[key]
 
+    print("Max resolution", max_resolution)
     # Resolution statistics
     stats = {}
     for key in resolution:
-        if(resolution[key] not in stats):
-            stats[resolution[key]] = 0
-        stats[resolution[key]] += 1
+        data_resolution = int(round(resolution[key]))
+        if(data_resolution not in stats):
+            stats[data_resolution] = 0
+        stats[data_resolution] += 1
 
     print("Resolution Statistics:")
     print("    Resolution    Num datapoint")
@@ -38,7 +41,6 @@ def bake_Xy(output_variable_file, input_variable_file):
     with open(input_variable_file) as input_var_f:
         input_list = [r.strip() for r in input_var_f.readlines()]
 
-    #print("Max resolution", max_resolution)
 
     X = []
     y = []
@@ -148,6 +150,40 @@ def bake_train_Xy_exclude_features_families(exclusion_list):
 
     return X_selected, y, features_selected, weights
 
+def test_train_split(X, y, weights, test_size=0.2):
+    weights = np.array(weights, dtype='float64')
+    X = np.concatenate((X, weights[:, np.newaxis]), axis=1)
+    print("X concatenated with weights")
+    print("    X.shape =", X.shape)
+    print("    y.shape =", y.shape)
+
+    X_train, X_validate, y_train, y_validate = sklearn.model_selection.train_test_split(X, y, test_size=test_size)
+
+    weights_train = np.array(X_train[:, -1], dtype='float64')
+    weights_validate = np.array(X_validate[:, -1], dtype='float64')
+
+    X = np.delete(X, -1, axis=1)
+    X_train = np.delete(X_train, -1, axis=1)
+    X_validate = np.delete(X_validate, -1, axis=1)
+    print("Before weight duplication")
+    print("    X_train.shape =", X_train.shape)
+    print("    y_train.shape =", y_train.shape)
+    
+    return X_train, X_validate, y_train, y_validate, weights_train, weights_validate
+
+def duplicate_data(X_train, y_train, weights_train):
+
+    weights_train = np.round(weights_train)
+    weights_train = np.array(weights_train, dtype='int64')
+    X_train = np.repeat(X_train, weights_train, axis=0)
+    y_train = np.repeat(y_train, weights_train, axis=0)
+
+    print("After weight duplication")
+    print("    X_train.shape =", X_train.shape)
+    print("    y_train.shape =", y_train.shape)
+
+    # After duplication of data, the weight of each data point is equal
+    return X_train, y_train, np.array([1]* X_train.shape[0])
 
 if __name__ == "__main__":
     X_train, y_train, _, _ = bake_train_Xy()
