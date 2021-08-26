@@ -1,5 +1,6 @@
 import numpy as np
 import sklearn.model_selection
+from sklearn.utils import shuffle
 
 def bake_Xy(output_variable_file, input_variable_file):
 
@@ -181,6 +182,8 @@ def duplicate_data(X_train, y_train, weights_train):
     print("After weight duplication")
     print("    X_train.shape =", X_train.shape)
     print("    y_train.shape =", y_train.shape)
+
+    X_train, y_train = shuffle(X_train, y_train)
 
     # After duplication of data, the weight of each data point is equal
     return X_train, y_train, np.array([1]* X_train.shape[0])
