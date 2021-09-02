@@ -44,6 +44,25 @@ def main():
         ExecutionID = int(sys.argv[1])
     ExecutionID = reproducibility.reproduce(ExecutionID)
 
+    # Finding out correlation matrix for all famililes one by one
+    families = ["AUTOCORR2D_", "Chi", "EState_VSA", "PEOE_VSA", "SMR_VSA", "SlogP_VSA", "VSA_EState", "fr_"]
+    for x in families:
+        family = [x]
+        X, _, _, _ = bakery.bake_train_Xy_with_specific_columns(family)
+        ### Removing all zeros
+        idx = np.argwhere(np.all(X[..., :] == 0, axis=0))
+        X = np.delete(X, idx, axis=1)
+        ###
+        print("X.shape =", X.shape)
+        fig = plt.figure()
+        correlation_matrix = np.corrcoef(X.transpose())
+        plt.imshow(correlation_matrix, cmap='hot', interpolation='nearest')
+        plt.colorbar()
+        plt.xlabel("Correlation matrix for family: " + str(family[0]))
+        min_corr_val = np.min(correlation_matrix)
+        plt.ylabel(f'Min: {min_corr_val:.2f}').set_rotation(0)
+        fig.savefig("correlation" + family[0] + ".png", dpi=fig.dpi)
+
     # Obtain data for our random forest regressor.
     X, y, features, weights = bakery.bake_train_Xy()
     print("X.shape =", X.shape)

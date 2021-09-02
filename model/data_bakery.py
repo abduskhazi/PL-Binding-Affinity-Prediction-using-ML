@@ -135,6 +135,19 @@ def bake_train_Xy_manual_feature_selection():
 
     return X_selected, y, features_selected, weights
 
+def bake_train_Xy_with_specific_columns(selected_list):
+    X, y, feature_names, weights = bake_train_Xy()
+
+    required_columns = []
+    for col in selected_list:
+        for i in range(len(feature_names)):
+            if col in feature_names[i]:
+                required_columns += [1]
+            else:
+                required_columns += [0]
+
+    return bake_train_Xy_with_given_features(required_columns)
+
 def bake_train_Xy_exclude_features_families(exclusion_list):
     X, y, feature_names, weights = bake_train_Xy()
 
