@@ -72,7 +72,6 @@ def main():
     n, bins, patches = plt.hist(weights, bins=20, density=False)
     plt.xlabel("weight")
     plt.ylabel("frequency")
-    plt.show()
     fig.savefig('weight_distribution.png', dpi=fig.dpi)
 
     X_train, X_validate, y_train, y_validate, w_train, w_validate = bakery.test_train_split(X, y, weights, test_size=0.2)
