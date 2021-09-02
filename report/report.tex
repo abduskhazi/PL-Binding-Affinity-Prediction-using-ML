@@ -226,6 +226,41 @@ This creates a data imbalance and may lead the model to select only ligand featu
 \end{itemize}
 Hence we need some methods to reduce the input dimensions.
 
+\subsection{Feature Family analysis}
+\label{CorrelationAnalysis}
+All the features extracted from the pdb and the ligand files can be classified into various families.
+Some of the important once are:
+\begin{itemize}
+\item AUTOCORR2d\_
+\item Chi
+\item EState\_VSA
+\item PEOE\_VSA
+\item SMR\_VSA
+\item SlogP\_VSA
+\item VSA\_EState
+\item fr\_
+\end{itemize}
+
+Figure~\ref{fig:correlationheatmap} shows correlation matrix of 2 of the most interesting families AUTOCORR2d\_ and Chi.
+As we can see from the heatmap there is heavy correlation within the families.
+Hence we also require a strategy to deal with this.
+
+\begin{figure}[htb]
+    \begin{subfigure}[b]{0.45\textwidth}
+         \centering
+         \includegraphics[scale=0.45]{images/correlationChi}
+        \label{fig:correlationChi}
+     \end{subfigure}
+     \hfill
+    \begin{subfigure}[b]{0.45\textwidth}
+         \centering
+         \includegraphics[scale=0.45]{images/correlationAUTOCORR2D}
+        \label{fig:correlationfr}
+     \end{subfigure}
+     \caption{Correlation Heat Map}
+     \label{fig:correlationheatmap}
+\end{figure}
+
 \subsection{Feature Selection Strategies}
 
 %The data if it is complementary is better for solving the problem.
@@ -481,6 +516,94 @@ As you can see,  this model far outperforms the linear one.
      \label{fig:RFMModel}
 \end{figure}
 
+\subsubsection{Dealing with correlated features}
+In Section \ref{CorrelationAnalysis} we discussed that within some the families of features there are heavily correlated features.
+One way to deal with this would be to just taken one feature from a family and exclude the rest.
+However this would not be a good strategy for generalization.
+This is because in future,  if this one feature is not measured,  our model would be rendered useless.
+
+For this reason,  we made use of the stochasticity of the random forest to our advantage.
+During the creation of a regression tree,  the random forest model tries to get the best (feature,  value) tuple to divide the data. This is known as the split criteria.
+We force it to randomly select only 20\% of the features for deciding on the split criteria.
+More specifically,  we use the following values
+\begin{itemize}
+\item 400 Trees (n\_estimators)
+\item 20\% of feature selection.  (max\_features)
+\item A minimum of 2 data points for each leaf.  (min\_samples\_leaf)
+\end{itemize}
+These hyperparameters were determined after some empirical testing.
+We increased the number of estimators as we increased the stochasticity of our ensemble.
+Our model would hence be dependent on the entire family of features and not rely on a single feature heavily.
+
+\subsubsection{Dealing with measurement resolution}
+During the measurement of the Protein ligand complexes,  the measurements can be taken at various resolutions (in \si{\angstrom}).
+As shown in a small excerpt of the PDB Databank INDEX file,  we also have a resolution for each of the datapoints.
+\begin{verbatim}
+# ==============================================================================
+# List of protein-ligand complexes with known binding data in PDBbind v.2019
+# 17679 protein-ligand complexes in total, sorted by binding data
+# Latest update: Dec 2019
+# PDB code, resolution, release year, -logKd/Ki, Kd/Ki, reference, ligand name
+# ==============================================================================
+3zzf  2.20  2012   0.40  Ki=400mM      // 3zzf.pdf (NLG)
+3gww  2.46  2009   0.45  IC50=355mM    // 3gwu.pdf (SFX)
+1w8l  1.80  2004   0.49  Ki=320mM      // 1w8l.pdf (1P3)
+\end{verbatim}
+
+Using this resolution,  we calculated the weight of each data point according to the formula
+$$
+W_i = \frac{ \mathrm{\max{R_{1 ...  n}}}}{R_i}  \forall i \in \mathbf{I}
+$$
+Where $R_i$ is a resolution of a given data point.
+Figure~\ref{fig:weightdistribution} shows the distribution of the weights obtained from our data.
+
+
+
+\begin{figure}
+     \centering
+     \begin{subfigure}[b]{0.45\textwidth}
+         \centering
+    \includegraphics[scale=0.5]{images/weightdistribution}
+    \caption{Weight distribution}
+    \label{fig:weightdistribution}
+     \end{subfigure}
+     \hfill
+     \begin{subfigure}[b]{0.45\textwidth}
+         \centering
+        \includegraphics[scale=0.5]{images/resolutiondistribution}
+        \caption{Resolution distribution}
+        \label{fig:resolutiondistribution}
+     \end{subfigure}
+     \caption{ Resolutions in our data (Excluding the test set)}
+     \label{fig:ResolutionStats}
+\end{figure}
+
+\begin{figure}[htb]
+  \centering
+
+\end{figure}
+
+We employed 2 strategies to use this in our random forest model.
+
+\begin{itemize}
+\item Duplicating the data points.
+\item Using the weights directly in the fit function.
+\end{itemize}
+
+After the duplication, we get $\approx$39K data points for the training.
+On training this data,  we get the following results.
+\begin{itemize}
+\item Training R2 score = 0.995
+\item Validation R2 score = 0.8298
+\item oob score = 0.977
+\end{itemize}
+
+The out of bag error (oob score) is erroneously high here. This is because of repeated data points. Many points are both inside the selected bag and outside it. Hence, we found duplication of the data a wrong strategy.
+
+When we used our weight directly in the fit function,  we could not get any noticable improvement in our model.
+We think this is because of the data is already skewed towards the $\approx$2 \si{\angstrom}
+data points.
+This can be seen in Figure~\ref{fig:resolutiondistribution}
 
 \subsubsection{Feature Importance calculation}
 The Random Forest regression model fitting is very expensive as compared to the simple linear regression.
