@@ -87,6 +87,7 @@ def main():
         print("Fitting the Random Forest Regressor...")
         regressor = RandomForestRegressor(n_estimators=400, max_features=0.2, min_samples_leaf=2, oob_score=True, n_jobs=-1)
 
+    w_train = w_train / np.sum(w_train)
     regressor.fit(X_train, y_train, sample_weight=w_train)
     print("Fitting completed.")
 
