@@ -49,6 +49,13 @@ def main():
     print("X.shape =", X.shape)
     print("y.shape =", y.shape)
 
+    fig = plt.figure()
+    n, bins, patches = plt.hist(weights, bins=20, density=False)
+    plt.xlabel("weight")
+    plt.ylabel("frequency")
+    plt.show()
+    fig.savefig('weight_distribution.png', dpi=fig.dpi)
+
     X_train, X_validate, y_train, y_validate, w_train, w_validate = bakery.test_train_split(X, y, weights, test_size=0.2)
     # Not duplicating the data by default as it may lead to correlated regression trees
     # X_train, y_train, w_train = bakery.duplicate_data(X_train, y_train, w_train)
