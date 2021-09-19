@@ -121,8 +121,7 @@ def bake_train_Xy_with_given_features(features):
     return X_selected, y, features_selected, weights
 
 
-def bake_train_Xy_manual_feature_selection():
-    X, y, feature_names, weights = bake_train_Xy()
+def bake_Xy_manual_feature_selection(X, y, feature_names, weights):
 
     selected_features_list = []
     with open("manual_ligand_features.csv") as f:
@@ -144,6 +143,14 @@ def bake_train_Xy_manual_feature_selection():
     features_selected = remove_features(feature_names, list_indexes)
 
     return X_selected, y, features_selected, weights
+
+def bake_train_Xy_manual_feature_selection():
+    X, y, feature_names, weights = bake_train_Xy()
+    return bake_Xy_manual_feature_selection(X, y, feature_names, weights)
+
+def bake_test_Xy_manual_feature_selection():
+    X, y, feature_names, weights = bake_test_Xy()
+    return bake_Xy_manual_feature_selection(X, y, feature_names, weights)
 
 def bake_train_Xy_with_specific_columns(selected_list):
     X, y, feature_names, weights = bake_train_Xy()
