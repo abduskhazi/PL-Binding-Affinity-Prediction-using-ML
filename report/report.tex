@@ -552,6 +552,12 @@ Figure~\ref{fig:BestLinearModel} shows the best results obtained with linear reg
 
 The reason for the low $R^2$ score is that linear models assume a strong linearity between the input variables and the output variable.
 This is not always true.
+One anomoly in the results is that the validation and testing results seem to be better than the training result.
+However this is not always the case. 
+The validation and testing results highly depend on the seed.
+If the seed changes,  the train/test data split gives us different data for training and different data for testing.
+Sometimes the validation accuracy is better and some other times the testing accuracy.
+What is important for the validity of our model is that both remain in a reasonable range.
 
 In the linear regression model,  we used genetic algorithms to reduce both the large feature space and to eliminate correlated features within the families. 
 
@@ -785,8 +791,9 @@ However,  we did use data point weights during the fit function of the training.
 
 The results are reported in Table~\ref{table:2}.
 The linear weighting of the data gave the best results in SVR.
-The reason testing $R^2$ score is around the same range as the training score may be because the testing data is of better better quality data as compared to the validation data.
-However this can vary slightly based on the random seed used.
+The reason testing $R^2$ score is around the same range as the training score may be because the testing data is of better quality data as compared to the validation data.
+However this varies very highly depending on the random seed used.
+What we must observe is the approximate range in which the values are obtained.
 
 As the performance of the model was not on par with other models,
 we did not run the costly genetic algorithm feature selection on SVR.
