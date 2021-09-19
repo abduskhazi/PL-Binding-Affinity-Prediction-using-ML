@@ -20,7 +20,7 @@ ExecutionID = reproducibility.reproduce(ExecutionID)
 import matplotlib
 import matplotlib.pyplot as plt
 
-def plot_figures(X_train, y_train, X_validate, y_validate):
+def plot_figures(X_validate, y_validate, X_test, y_test):
     print("Plotting to visualize the accuracy of our model.")
     fig = plt.figure()
     plt.plot(y_validate, reg.predict(X_validate), '.')
@@ -31,35 +31,37 @@ def plot_figures(X_train, y_train, X_validate, y_validate):
     fig.savefig('accuracy_validate.png', dpi=fig.dpi)
 
     fig = plt.figure()
-    plt.plot(y_train, reg.predict(X_train), '.')
-    plt.xlabel("y_train")
-    plt.ylabel("y_train_pred")
+    plt.plot(y_test, reg.predict(X_test), '.')
+    plt.xlabel("y_test")
+    plt.ylabel("y_test_pred")
     plt.title("Execution ID = " + str(ExecutionID))
     plt.plot(range(2,14), range(2,14), '--')
-    fig.savefig('accuracy_train.png', dpi=fig.dpi)
+    fig.savefig('accuracy_test.png', dpi=fig.dpi)
 
-X, y, features, weights = bakery.bake_train_Xy()
-X_test, y_test, _, w_test = bakery.bake_train_Xy()
+X, y, features, weights = bakery.bake_train_Xy() #_correlated_feature_selection(pearson = True)
+X_test, y_test, _, w_test = bakery.bake_test_Xy() #_correlated_feature_selection(pearson = True)
 #X, y, features, weights = bakery.bake_train_Xy_manual_feature_selection()
 print("X.shape =", X.shape)
 print("y.shape =", y.shape)
 
 # This is to control the randomness when selecting train-validation set
 # If you change the training set, the function fitted to the data changes. We want to avoid this.
-import random
-seed = random.randint(0,2**32)
+# import random
+# seed = random.randint(0,2**32)
 
 # Reporting Linear Regression accuracy with all features included (R^2 score)
 X_train, X_validate, y_train, y_validate, w_train, w_validate = bakery.test_train_split(X, y, weights, test_size=0.2)
 #X_train, y_train, w_train = bakery.duplicate_data(X_train, y_train, w_train)
-reg = LinearRegression().fit(X_train, y_train)#, w_train)
-plot_figures(X_train, y_train, X_validate, y_validate)
+reg = LinearRegression().fit(X_train, y_train, w_train)
+plot_figures(X_validate, y_validate, X_test, y_test)
 
 training_r2_score = reg.score(X_train, y_train)
 validation_r2_score = reg.score(X_validate, y_validate)
+testing_r2_score = reg.score(X_test, y_test)
 
 print("Training R2 score = ", training_r2_score)
 print("Validation R2 score = ", validation_r2_score)
+print("Testing R2 score = ", testing_r2_score)
 
 # Running the genetic algorithms.
 score = -reg.score(X_train, y_train)
