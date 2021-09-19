@@ -268,7 +268,7 @@ In the next subsections we discuss a few feature selection strategies that were 
 \subsubsection{Selection by output correlation}
 The \textit{pearson} and \textit{spearman} correlations of each feature were calculated against the output variable.
 We assumed that the features were either linearly related to the output (in the case of Pearson correlation) or had a monotonic relationship (in the case of Spearman correlation).
-The features with the highest correlation were selected as inputs to the model.
+20 from the ligand descriptors that were most correlated to the output were selected as inputs to the model.  Similar 20 best features from the protein descriptors were selected.
 
 \subsubsection{Using genetic algorithms \cite{genetic_algorithm}}
 Since the feature space is a non-continuous problem of combinatorial complexity,
@@ -773,7 +773,7 @@ We trained support vector regression with the RBF kernel.
 457 (all) & 0.314 & 0.279 & 0.318\\
 457 (Hyperbolic weighting) & 0.333 & 0.304 & 0.341\\
 \textbf{457 (Linear weighting)} & \textbf{0.342} &\textbf{0.323} & \textbf{0.349}\\
-- (Output Correlation)\footnotemark[1] & - & -  & - \\ 
+40 (Output Correlation + Linear weighting)\footnotemark[1] & 0.267 & 0.239  & 0.262 \\ 
 176 (manual + Linear weighting) & 0.308  & 0.286  & 0.314\\ [1ex]
 \hline
 \end{tabular}
