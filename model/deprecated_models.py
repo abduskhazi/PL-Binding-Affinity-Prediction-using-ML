@@ -12,7 +12,30 @@ if len(sys.argv) > 1:
     ExecutionID = int(sys.argv[1])
 ExecutionID = reproducibility.reproduce(ExecutionID)
 
-X, y, features = bakery.bake_train_Xy()
+def plot_figures(X_validate, y_validate, X_test, y_test, reg):
+    import matplotlib.pyplot as plt
+    print("Plotting to visualize the accuracy of our model.")
+    fig = plt.figure()
+    plt.plot(y_validate, reg.predict(X_validate), '.')
+    plt.xlabel("y_validate")
+    plt.ylabel("y_validate_pred")
+    plt.title("Execution ID = " + str(ExecutionID))
+    plt.plot(range(2,14), range(2,14), '--')
+    fig.savefig('accuracy_validate.png', dpi=fig.dpi)
+
+    fig = plt.figure()
+    plt.plot(y_test, reg.predict(X_test), '.')
+    plt.xlabel("y_test")
+    plt.ylabel("y_test_pred")
+    plt.title("Execution ID = " + str(ExecutionID))
+    plt.plot(range(2,14), range(2,14), '--')
+    fig.savefig('accuracy_test.png', dpi=fig.dpi)
+
+
+X, y, features, weights = bakery.bake_train_Xy()
+X_test, y_test, _, w_test = bakery.bake_test_Xy()
+#X, y, features, weights = bakery.bake_train_Xy_manual_feature_selection()
+#X_test, y_test, _, _ = bakery.bake_test_Xy_manual_feature_selection()
 
 print("X.shape =", X.shape)
 print("y.shape =", y.shape)
@@ -22,7 +45,8 @@ print("y.shape =", y.shape)
 from sklearn.linear_model import LinearRegression
 from sklearn.model_selection import train_test_split
 
-X_train, X_validate, y_train, y_validate = train_test_split(X, y, test_size=0.20)
+X_train, X_validate, y_train, y_validate, w_train, w_validate = bakery.test_train_split(X, y, weights, test_size=0.2)
+#X_train, X_validate, y_train, y_validate = train_test_split(X, y, test_size=0.20)
 
 if False:
     degree = 2
@@ -47,19 +71,21 @@ if False:
     y_pred = lasso_reg.predict(X_test)
     print("Lasso Regression score = ", lasso_reg.score(X_train, y_train))
 
-if False:
+if True:
     # Statistics of SVR (Execution ID = 438302616)
     # When all features are used.
     #     Support Vector Regession R^2 training score =  0.31437544671737994
     #     Support Vector Regession R^2 validation score =  0.28133698851672306
     # Time taken - 6m27.786s
     from sklearn.svm import SVR
-    regressor = SVR(kernel = "poly")
+    regressor = SVR(kernel = "rbf")
     print("Fitting an SVR...")
-    regressor.fit(X_train, y_train)
+    regressor.fit(X_train, y_train, w_train)
     print("Fitting finished")
-    print("Support Vector Regession R^2 training score = ", regressor.score(X_train, y_train))
-    print("Support Vector Regession R^2 validation score = ", regressor.score(X_validate, y_validate))
+    print("Support Vector Regession R^2 Training score = ", regressor.score(X_train, y_train))
+    print("Support Vector Regession R^2 Validation score = ", regressor.score(X_validate, y_validate, w_validate))
+    print("Support Vector Regession R^2 Testing score = ", regressor.score(X_test, y_test, w_test))
+    plot_figures(X_validate, y_validate, X_test, y_test, regressor)
 
 if False:
     from sklearn.linear_model import Ridge
