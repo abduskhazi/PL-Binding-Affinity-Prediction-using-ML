@@ -38,7 +38,9 @@ def plot_figures(X_train, y_train, X_validate, y_validate):
     plt.plot(range(2,14), range(2,14), '--')
     fig.savefig('accuracy_train.png', dpi=fig.dpi)
 
-X, y, features = bakery.bake_train_Xy()
+X, y, features, weights = bakery.bake_train_Xy()
+X_test, y_test, _, w_test = bakery.bake_train_Xy()
+#X, y, features, weights = bakery.bake_train_Xy_manual_feature_selection()
 print("X.shape =", X.shape)
 print("y.shape =", y.shape)
 
@@ -48,8 +50,9 @@ import random
 seed = random.randint(0,2**32)
 
 # Reporting Linear Regression accuracy with all features included (R^2 score)
-X_train, X_validate, y_train, y_validate = train_test_split(X, y, test_size=0.10)
-reg = LinearRegression().fit(X_train, y_train)
+X_train, X_validate, y_train, y_validate, w_train, w_validate = bakery.test_train_split(X, y, weights, test_size=0.2)
+#X_train, y_train, w_train = bakery.duplicate_data(X_train, y_train, w_train)
+reg = LinearRegression().fit(X_train, y_train)#, w_train)
 plot_figures(X_train, y_train, X_validate, y_validate)
 
 training_r2_score = reg.score(X_train, y_train)
