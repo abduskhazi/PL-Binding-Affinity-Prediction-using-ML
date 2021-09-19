@@ -544,8 +544,10 @@ We increased the number of estimators as we increased the stochasticity of our e
 Our model would hence be dependent on the entire family of features and not rely on a single feature heavily.
 
 \subsubsection{Dealing with measurement resolution}
-During the measurement of the Protein ligand complexes,  the measurements can be taken at various resolutions (in \si{\angstrom}).
-As shown in a small excerpt of the PDB Databank INDEX file,  we also have a resolution for each of the datapoints.
+During the measurement of the Protein-Ligand complexes,  the measurements can be taken at various resolutions (in \si{\angstrom} units).
+The accuracy of the measurement is inversely proportional to the resolution.
+As shown in a small excerpt of the PDB Databank INDEX file,  we have a resolution measurement for each of the complexes (or datapoints).
+
 \begin{verbatim}
 # ==============================================================================
 # List of protein-ligand complexes with known binding data in PDBbind v.2019
@@ -558,22 +560,26 @@ As shown in a small excerpt of the PDB Databank INDEX file,  we also have a reso
 1w8l  1.80  2004   0.49  Ki=320mM      // 1w8l.pdf (1P3)
 \end{verbatim}
 
-Using this resolution,  we calculated the weight of each data point according to the formula
-$$
-W_i = \frac{ \mathrm{\max{R_{1 ...  n}}}}{R_i}  \forall i \in \mathbf{I}
-$$
+Using the resolution, we devised the following 2 ways to calculate the weight of each data point.
+\begin{itemize}
+\item Hyperbolic formula: $  W_i = \frac{ \mathrm{\max{R_{1 ...  n}}}}{R_i}  $
+\item Linear formula: $ W_i = (\mathrm{\max{R_{1 ...  n}}} + 1) - R_i $
+\end{itemize}
+
 Where $R_i$ is a resolution of a given data point.
-Figure~\ref{fig:weightdistribution} shows the distribution of the weights obtained from our data.
-
-
+We found that $\mathrm{\max{R_{1 ...  n}}} \approx 5$ \si{\angstrom} in our data.
+It is necessary to add 1 to the max resolution in the linear formula to avoid data points with 0 weight.
+The formulae are depicted in the Figure~\ref{fig:graphingformula}.
+Figure~\ref{fig:resolutiondistribution} shows the distribution of data points as a function of resolution.
+The resolution of the measurements ranges from 1 to 5 approximately.
 
 \begin{figure}
      \centering
      \begin{subfigure}[b]{0.45\textwidth}
          \centering
-    \includegraphics[scale=0.5]{images/weightdistribution}
-    \caption{Weight distribution}
-    \label{fig:weightdistribution}
+    \includegraphics[scale=0.5]{images/graphingformula}
+    \caption{Weight calculation formulae}
+    \label{fig:graphingformula}
      \end{subfigure}
      \hfill
      \begin{subfigure}[b]{0.45\textwidth}
@@ -582,16 +588,37 @@ Figure~\ref{fig:weightdistribution} shows the distribution of the weights obtain
         \caption{Resolution distribution}
         \label{fig:resolutiondistribution}
      \end{subfigure}
-     \caption{ Resolutions in our data (Excluding the test set)}
-     \label{fig:ResolutionStats}
+     \caption{ Weight calculation and resolution distribution}
+     \label{fig:ResolutionWeightStats}
 \end{figure}
 
-\begin{figure}[htb]
-  \centering
+Figure~\ref{fig:WeightDistribution} shows the distribution of the weights obtained from our data for linear and hyperbolic case.
+In Figure~\ref{fig:linearweightdistribution},  we see that linear weighting gives us datapoints with a higher weight as compared to hyperbolic weighting.
+This makes intuitive sense because as shown Figure~\ref{fig:resolutiondistribution}, 
+most of the data points have a resolution around 2 \si{\angstrom}.
+Since linear weighting around 2 \si{\angstrom} is higher, the linearly weighted data points will have a higher weight on average.
+We did not use linear weighting because giving a higher weight to all data points is unnecessary.
 
+\begin{figure}
+     \centering
+     \begin{subfigure}[b]{0.45\textwidth}
+         \centering
+    \includegraphics[scale=0.5]{images/hyperbolicweightdistribution}
+    \caption{Hyperbolic weight distribution}
+    \label{fig:hyperbolicweightdistribution}
+     \end{subfigure}
+     \hfill
+     \begin{subfigure}[b]{0.45\textwidth}
+         \centering
+        \includegraphics[scale=0.5]{images/linearweightdistribution}
+        \caption{Linear weight distribution}
+        \label{fig:linearweightdistribution}
+     \end{subfigure}
+     \caption{ Weights distributions in our data (Excluding the test set)}
+     \label{fig:WeightDistribution}
 \end{figure}
 
-We employed 2 strategies to use this in our random forest model.
+We employed 2 strategies to use the calculated hyperpolic weights in our random forest model.
 
 \begin{itemize}
 \item Duplicating the data points.
@@ -603,13 +630,13 @@ On training this data,  we get the following results.
 \begin{itemize}
 \item Training R2 score = 0.995
 \item Validation R2 score = 0.8298
-\item oob score = 0.977
+\item Out of bag (oob) score = 0.977
 \end{itemize}
 
-The out of bag error (oob score) is erroneously high here. This is because of repeated data points. Many points are both inside the selected bag and outside it. Hence, we found duplication of the data a wrong strategy.
+The out of bag error (oob score) is erroneously high here. This is because of repeated data points. Many points are both inside the selected bag and outside it. Hence, we found that duplication of the data was a wrong strategy.
 
 When we used our weight directly in the fit function,  we could not get any noticable improvement in our model.
-We think this is because of the data is already skewed towards the $\approx$2 \si{\angstrom}
+We think this is because the data is already skewed towards the $\approx$2 \si{\angstrom}
 data points.
 This can be seen in Figure~\ref{fig:resolutiondistribution}
 
