@@ -515,37 +515,38 @@ Figure~\ref{fig:BestLinearModel} shows the best results obtained with linear reg
 \centering
  \begin{tabular}{ | c | c | c | c | }
 \hline
-\textbf{Features Selected} & \textbf{Training $R^2$ Score} & \textbf{Validation $R^2$ Score} \\ [0.5 ex]
+\textbf{Features Selected} & \textbf{Training} & \textbf{Validation} & \textbf{Testing} \\ [0.5 ex]
 \hline \hline
-457 (all) & 0.458 & 0.414\\
-457 (Hyperbolic weighting) & 0.454 & 0.428\\
-457 (Linear weighting) & 0.456 & 0.430 \\
-50 (Genetic - Random init)\footnotemark[1] & $\approx$0.379 & $\approx$0.359\\
-49 (Genetic - Specific init)\footnotemark[1] & $\approx$0.378 & $\approx$0.368  \\
-- (Output Correlation)\footnotemark[1] & - & -  \\ 
-176 (manual) & 0.365  & 0.342  \\ [1ex]
+457 (all) & 0.456 & 0.430 & 0.445\\
+457 (Hyperbolic weighting) & 0.454 & 0.426 & 0.446\\
+\textbf{457 (Linear weighting)} & \textbf{0.451} & \textbf{0.446 } & \textbf{0.450}\\
+49 (Genetic)\footnotemark[1] & $\approx$0.378 & $\approx$0.368  & 0\\
+40 (Pearson Correlation) & 0.289 & 0.273  & 0.286 \\ 
+176 (manual + Linear weighting) & 0.363  & 0.351  & 0.374\\ [1ex]
 \hline
 \end{tabular}
-\caption{Simple linear model overview}
+\caption{$R^2$ scores of the Linear Regression Model}
 \label {table:1}
 \end{table}
+
+\footnotetext[1]{Approximately reproducible as the reproducibility module was introduced later.}
 
 \begin{figure}
      \centering
      \begin{subfigure}[b]{0.45\textwidth}
          \centering
-         \includegraphics[scale=0.45]{images/accuracy_train_all_linear}
-         \caption{Training Accuracy ($R^2 \approx 0.458$)}
-        \label{fig:TrainingAccuracyLinearModel}
+         \includegraphics[scale=0.45]{images/accuracyValidateLinearLinear}
+         \caption{Validation Accuracy}
+        \label{fig:accuracyValidateLinearLinear}
      \end{subfigure}
      \hfill
      \begin{subfigure}[b]{0.45\textwidth}
          \centering
-         \includegraphics[scale=0.45]{images/accuracy_validate_all_linear}
-        \caption{Validation Accuracy ($R^2 \approx 0.414$)}
-        \label{fig:ValidationAccuracyLinearModel}
+         \includegraphics[scale=0.45]{images/accuracytestLinearLinear}
+        \caption{Test Accuracy}
+        \label{fig:accuracytestLinearLinear}
      \end{subfigure}
-     \caption{Best Linear Model.  All 457 features selected.}
+     \caption{Best Linear Model.  Uses all 457 features with linear weighting.}
      \label{fig:BestLinearModel}
 \end{figure}
 
@@ -564,8 +565,6 @@ We had 2 objectives at hand
 \end{itemize}
 The above objectives are not always against each other.
 This is because removing a feature that has no correlation (or random correlation) with the output may improve the model whereas removing a feature that the output is highly correlated on degrades the model.
-
-\footnotetext[1]{Approximately reproducible as the reproducibility module was introduced later.}
 
 Hence,  taking inspiration from the hypervolume-based multi-objective optimization, we designed the following score function.
 $$
@@ -773,7 +772,7 @@ We trained support vector regression with the RBF kernel.
 457 (all) & 0.314 & 0.279 & 0.318\\
 457 (Hyperbolic weighting) & 0.333 & 0.304 & 0.341\\
 \textbf{457 (Linear weighting)} & \textbf{0.342} &\textbf{0.323} & \textbf{0.349}\\
-40 (Output Correlation + Linear weighting) & 0.267 & 0.239  & 0.262 \\ 
+40 (Spearman Correlation + Linear weighting) & 0.267 & 0.239  & 0.262 \\ 
 176 (manual + Linear weighting) & 0.308  & 0.286  & 0.314\\ [1ex]
 \hline
 \end{tabular}
