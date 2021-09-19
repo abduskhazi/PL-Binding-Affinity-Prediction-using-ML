@@ -174,7 +174,7 @@ def bake_train_Xy_correlated_feature_selection(pearson = False, spearman = False
 
     if(pearson):
         ligand_feature_file_name = "pearson_corr_ligand.txt"
-        protein_feature_file_name = "person_corr_protein.txt"
+        protein_feature_file_name = "pearson_corr_protein.txt"
 
     if(spearman):
         ligand_feature_file_name = "spearman_corr_ligand.txt"
@@ -188,7 +188,7 @@ def bake_train_Xy_correlated_feature_selection(pearson = False, spearman = False
         feature_names += ["protein." + r.strip() for r in file.readlines() if r[0] != '#']
 
     for i in feature_names:
-        print(len(feature), i)
+        print(len(feature_names), i)
 
 def bake_train_Xy_exclude_features_families(exclusion_list):
     X, y, feature_names, weights = bake_train_Xy()
