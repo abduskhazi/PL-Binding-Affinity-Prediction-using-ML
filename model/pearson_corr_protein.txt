@@ -1,0 +1,24 @@
+#************************************
+#Protein Feature selection
+#************************************
+#================= The best features according to pearson coefficient ================
+mean_loc_hyd_dens
+drug_score
+mean_loc_hyd_dens_norm
+apol_as_prop
+apol_as_prop_norm
+crit5
+prop_polar_atm
+mean_as_ray
+LEU
+PP-crit
+MET
+VAL
+as_density_norm
+hydrophobicity_score
+pock_vol
+as_max_dst
+nb_AS_norm
+nb_AS
+as_density
+as_max_dst_norm

@@ -1,0 +1,24 @@
+#************************************
+#Ligand Feature Selection
+#************************************
+#================= The best features according to pearson coefficient ================
+AUTOCORR2D_25
+AUTOCORR2D_9
+AUTOCORR2D_32
+AUTOCORR2D_33
+AUTOCORR2D_31
+AUTOCORR2D_16
+AUTOCORR2D_1
+AUTOCORR2D_17
+AUTOCORR2D_10
+AUTOCORR2D_34
+AUTOCORR2D_26
+AUTOCORR2D_15
+AUTOCORR2D_40
+AUTOCORR2D_18
+AUTOCORR2D_24
+AUTOCORR2D_30
+AUTOCORR2D_8
+AUTOCORR2D_2
+AUTOCORR2D_14
+AUTOCORR2D_39
