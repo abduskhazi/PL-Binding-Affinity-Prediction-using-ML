@@ -760,32 +760,58 @@ We used a a stronger signal for the number of eliminated features. This scoring 
 
 
 \subsection{Support Vector Regression}
-Support vector regression is a non linear regression method that fits a  curve based such that the margin of error between the model's prediction and the original value is kept within a minimum range.
-We trained support vector regression with the poly and the rbf kernel.
-all the statistics are reported in the table below
+Support vector regression is a non linear regression method that fits a curve such that the margin of error between the model's prediction and the original value is kept within a minimum range.
+We trained support vector regression with the rbf kernel.
 
 \begin{table} [h!]
 \centering
  \begin{tabular}{ | c | c | c | c | }
 \hline
-\textbf{Features Selected} & \textbf{Training $R^2$ Score} & \textbf{Validation $R^2$ Score} \\ [0.5 ex]
+\textbf{Features Selected} & \textbf{Training} & \textbf{Validation} &  \textbf{Testing} \\ [0.5 ex]
 \hline \hline
-457 (all) & 0.310 & 0.295\\
-457 (Hyperbolic weighting) & 0.334 & 0.302\\
-457 (Linear weighting) & 0.456 & 0.430 \\
-- (Output Correlation)\footnotemark[1] & - & -  \\ 
-176 (manual) & 0.365  & 0.342  \\ [1ex]
+457 (all) & 0.314 & 0.279 & 0.318\\
+457 (Hyperbolic weighting) & 0.333 & 0.304 & 0.341\\
+\textbf{457 (Linear weighting)} & \textbf{0.342} &\textbf{0.323} & \textbf{0.349}\\
+- (Output Correlation)\footnotemark[1] & - & -  & - \\ 
+176 (manual + Linear weighting) & 0.308  & 0.286  & 0.314\\ [1ex]
 \hline
 \end{tabular}
-\caption{Support Vector Regression overview}
+\caption{Table showing  $R^2$ Scores for SVR}
 \label {table:2}
 \end{table}
 
+We did not use the duplication of data strategy for this model because the training time complexity is $O(n^2)$ where n is the number of data points.
+However,  we did use data point weights during the fit function of the training.
+
+The results are reported in Table~\ref{table:2}.
+The linear weighting of the data gave the best results in SVR.
+The reason testing $R^2$ score is around the same range as the training score may be because the testing data is of better better quality data as compared to the validation data.
+
 As the performance of the model was not on par with other models,
 we did not run the costly genetic algorithm feature selection on SVR.
-Moreover,  the time it took to get the $R^2$ score was very high to use the idea of permutation based genetic algorithm as disscussed in the random forest section.
+Moreover,  the time it took to get the $R^2$ score (validation and testing) was very high and was not suitable to be used in permutation based genetic algorithm as discussed in the random forest section.
 
-The following figures visualize the training and validation error of the best model.
+Figures~\ref{fig:SVRaccuracy} visualize the training and validation error of the best model.
+
+\begin{figure}
+     \centering
+     \begin{subfigure}[b]{0.45\textwidth}
+         \centering
+         \includegraphics[scale=0.45]{images/accuracyvalidateSVRLinear}
+         \caption{accuracyvalidateSVRLinear}
+        \label{fig:accuracyvalidateSVRLinear}
+     \end{subfigure}
+     \hfill
+     \begin{subfigure}[b]{0.45\textwidth}
+         \centering
+         \includegraphics[scale=0.45]{images/accuracytestSVRLinear}
+        \caption{accuracytestSVRLinear}
+        \label{fig:accuracytestSVRLinear}
+     \end{subfigure}
+     \caption{SVR accuracy visualization for 457 (Linear weighting) feature selection}
+     \label{fig:SVRaccuracy}
+\end{figure}
+
 
 \subsection{Rotation Forests}
 
