@@ -81,7 +81,7 @@ Similarly, $K_i$ and $IC_{50}$ are defined using concentration albeit non-trivia
 Over the last few decades, researchers have been successful in building a single data archive for proteins.  This archive, called \textbf{Protein Data Bank} \cite{pdb_homepage} , holds 3-D structural data of the proteins determined by experiments like X-ray crystallographic, Nuclear magnetic resonance (NMR), and cryoelectron microscopy (cryoEM).  A subset of this data also contains information about how well a given protein and ligand bind together.  It is called binding affinity between a protein and ligands.  (It also contains data about protein-protein complexes that our project does not deal with)
 \cite{pdbank_history}
 
-As we study the protein-ligand binding affinity here, we would like to filter out this data from the protein data bank.  It is what is done by the maintainers of the \textbf{PDBBind Data bank}.
+As we study the protein-ligand binding affinity here, we would like to filter out this data from the \textbf{Protein Data Bank}  It is what is done by the maintainers of the \textbf{PDBBind Data Bank}.
 \cite{pdbbind_introduction}
 Using the curated protein-ligand affinity data present in the PDBBind Data bank, we build a machine learning model that learns to predict the affinity. 
 
@@ -291,7 +291,14 @@ Algorithm~\ref{alg:GeneticAlgo} below gives complete pseudocode for this.
 The scoring function used to select the best chromosome can vary according to the type of the model being fit. [See Section~\ref{MachineLearningModelslabel}]
 
 \subsubsection{Manual Feature selection}
-Features selected by expert. Given by Simon Bray. (Yet to do)
+A selected list of features were given to us by Simon Bray. 
+These features were used to build a simple linear regressor and a non-linear model.
+We obtained the following results:
+\begin{itemize}
+\item For Linear Regression, we obtained a validation R2 score of 0.342.
+\item For Random Forest Regressor,  we obtained Out of Bag (oob) score of 0.744 and a validation R2 score of 0.747.
+\end{itemize}
+
 
 \begin{algorithm}
 \caption{Selection of features in our model using genetic algorithm \cite{genetic_algorithm}}
@@ -421,6 +428,7 @@ The reason for the low $R^2$ score is that linear models assume a strong lineari
 This is not always true.
 
 \subsubsection{Score function of genetic feature selection}
+\label{GenerationScoringFunction}
 Since the fitting of the linear regression model was very cheap, we could afford to refit the model every time in our genetic algorithm.
 We had 2 objectives at hand
 \begin{itemize}
@@ -644,6 +652,14 @@ If feature $A$ and feature $B$ are correlated,  the shuffling of $A$ may not imp
 To overcome the issue with the above feature importance selection, we plan to use a combination of the concepts of permutation importance and genetic algorithm to find out the importance of the selected features.
 This is because it is very expensive to refit the model and cheap enough to check the results of shuffling the model.
 
+\subsubsection{Specific scoring function and elitism}
+In Section ~\ref{GenerationScoringFunction},  we discussed intuition behind the scoring function used in our genetic model.
+In the random forest model,  however,  this scoring function selected a lot of features ($> 400$). Hence we researched the following scoring function in an effort to reduce the number of features. 
+It uses a stronger signal for the number of eliminated features.
+$$
+\textrm{score} = R_2 score * \textrm{Features Eliminated}^2
+$$
+This scoring function however,  turned out to be too strong and non of the features were selected.
 \section{Discussion}
 
 
