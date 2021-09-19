@@ -166,8 +166,7 @@ def bake_train_Xy_with_specific_columns(selected_list):
 
     return bake_train_Xy_with_given_features(required_columns)
 
-def bake_train_Xy_correlated_feature_selection(pearson = False, spearman = False):
-    X, y, feature_names, weights = bake_train_Xy()
+def bake_Xy_correlated_feature_selection(pearson, spearman, X, y, feature_names, weights):
 
     ligand_feature_file_name = None
     protein_feature_file_name = None
@@ -194,10 +193,18 @@ def bake_train_Xy_correlated_feature_selection(pearson = False, spearman = False
             if col == feature_names[i]:
                 required_columns[-1] = 1
 
-    # print(sum(required_columns))
-    # print(len(required_columns))
+    print(sum(required_columns))
+    print(len(required_columns))
 
     return bake_train_Xy_with_given_features(required_columns)
+
+def bake_train_Xy_correlated_feature_selection(pearson = False, spearman = False):
+    X, y, feature_names, weights = bake_train_Xy()
+    return bake_Xy_correlated_feature_selection(pearson, spearman, X, y, feature_names, weights)
+
+def bake_test_Xy_correlated_feature_selection(pearson = False, spearman = False):
+    X, y, feature_names, weights = bake_test_Xy()
+    return bake_Xy_correlated_feature_selection(pearson, spearman, X, y, feature_names, weights)
 
 
 def bake_train_Xy_exclude_features_families(exclusion_list):

@@ -32,8 +32,8 @@ def plot_figures(X_validate, y_validate, X_test, y_test, reg):
     fig.savefig('accuracy_test.png', dpi=fig.dpi)
 
 
-X, y, features, weights = bakery.bake_train_Xy()
-X_test, y_test, _, w_test = bakery.bake_test_Xy()
+X, y, features, weights = bakery.bake_train_Xy_correlated_feature_selection(spearman = True)
+X_test, y_test, _, w_test = bakery.bake_test_Xy_correlated_feature_selection(spearman = True)
 #X, y, features, weights = bakery.bake_train_Xy_manual_feature_selection()
 #X_test, y_test, _, _ = bakery.bake_test_Xy_manual_feature_selection()
 
@@ -83,8 +83,8 @@ if True:
     regressor.fit(X_train, y_train, w_train)
     print("Fitting finished")
     print("Support Vector Regession R^2 Training score = ", regressor.score(X_train, y_train))
-    print("Support Vector Regession R^2 Validation score = ", regressor.score(X_validate, y_validate, w_validate))
-    print("Support Vector Regession R^2 Testing score = ", regressor.score(X_test, y_test, w_test))
+    print("Support Vector Regession R^2 Validation score = ", regressor.score(X_validate, y_validate))
+    print("Support Vector Regession R^2 Testing score = ", regressor.score(X_test, y_test))
     plot_figures(X_validate, y_validate, X_test, y_test, regressor)
 
 if False:
