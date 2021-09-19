@@ -194,8 +194,8 @@ def bake_train_Xy_correlated_feature_selection(pearson = False, spearman = False
             if col == feature_names[i]:
                 required_columns[-1] = 1
 
-    print(sum(required_columns))
-    print(len(required_columns))
+    # print(sum(required_columns))
+    # print(len(required_columns))
 
     return bake_train_Xy_with_given_features(required_columns)
 
