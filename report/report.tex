@@ -232,21 +232,11 @@ Hence we need some methods to reduce the input dimensions.
 \subsection{Feature Family analysis}
 \label{CorrelationAnalysis}
 All the features extracted from the pdb and the ligand files can be classified into various families.
-Some of the important once are:
-\begin{itemize}
-\item AUTOCORR2d\_
-\item Chi
-\item EState\_VSA
-\item PEOE\_VSA
-\item SMR\_VSA
-\item SlogP\_VSA
-\item VSA\_EState
-\item fr\_
-\end{itemize}
-
+Some of the important once are: AUTOCORR2d\_, Chi, EState\_VSA,  PEOE\_VSA,  SMR\_VSA,  SlogP\_VSA,  VSA\_EState and fr\_.
 Figure~\ref{fig:correlationheatmap} shows correlation matrix of 2 of the most interesting families AUTOCORR2d\_ and Chi.
 As we can see from the heatmap there is heavy correlation within the families.
 Hence we also require a strategy to deal with this.
+The correlation heat maps for the other families are illustrated in Section \ref{CorrHeatMapsAppendix}.
 
 \begin{figure}[htb]
     \begin{subfigure}[b]{0.45\textwidth}
@@ -891,5 +881,55 @@ GAST_HUCK
 @<TRIPOS>SUBSTRUCTURE
      1 DMJ         1
 \end{verbatim}
+
+\subsection{Correlation Heat Maps}
+\label{CorrHeatMapsAppendix}
+This section shows the correlation heat maps of the most interesting feature families in the our dataset.
+\begin{figure}
+     \centering
+     \begin{subfigure}[b]{0.45\textwidth}
+         \centering
+    \includegraphics[scale=0.5]{images/correlationEStateVSA}
+    \caption{Family EState\_VSA}
+    \label{fig:correlationEStateVSA}
+     \end{subfigure}
+     \hfill
+     \begin{subfigure}[b]{0.45\textwidth}
+         \centering
+        \includegraphics[scale=0.5]{images/correlationPEOEVSA}
+        \caption{Family PEOE\_VSA}
+        \label{fig:correlationPEOEVSA}
+     \end{subfigure}
+          \hfill
+     \begin{subfigure}[b]{0.45\textwidth}
+         \centering
+        \includegraphics[scale=0.5]{images/correlationSMRVSA}
+        \caption{Family SMR\_VSA}
+        \label{fig:correlationSMRVSA}
+     \end{subfigure}
+               \hfill
+     \begin{subfigure}[b]{0.45\textwidth}
+         \centering
+        \includegraphics[scale=0.5]{images/correlationfr}
+        \caption{Family fr\_}
+        \label{fig:correlationfr}
+     \end{subfigure}
+      \hfill
+     \begin{subfigure}[b]{0.45\textwidth}
+         \centering
+        \includegraphics[scale=0.5]{images/correlationSlogPVSA}
+        \caption{Family SlogP\_VSA}
+        \label{fig:correlationSlogPVSA}
+     \end{subfigure}
+             \hfill
+     \begin{subfigure}[b]{0.45\textwidth}
+         \centering
+        \includegraphics[scale=0.5]{images/correlationVSAEState}
+        \caption{Family VSA\_EState}
+        \label{fig:correlationVSAEState}
+     \end{subfigure}     
+     \caption{Correlation Heat Maps}
+     \label{fig:CorrHeatMapFig}
+\end{figure}
 
 \end{document}
