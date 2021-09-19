@@ -1,0 +1,24 @@
+#************************************
+#Ligand Feature Selection
+#************************************
+#================== The best features according to spearman coefficient ====================
+AUTOCORR2D_34
+AUTOCORR2D_10
+AUTOCORR2D_33
+Chi1v
+AUTOCORR2D_26
+AUTOCORR2D_25
+AUTOCORR2D_9
+Chi2v
+Ipc
+AUTOCORR2D_17
+AUTOCORR2D_18
+MolMR
+Chi0v
+LabuteASA
+HeavyAtomCount
+Chi1
+AUTOCORR2D_1
+Chi2n
+Chi3v
+Chi1n

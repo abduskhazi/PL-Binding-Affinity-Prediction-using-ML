@@ -1,0 +1,24 @@
+#************************************
+#Protein Feature selection
+#************************************
+#================== The best features according to spearman coefficient ====================
+mean_loc_hyd_dens
+drug_score
+mean_loc_hyd_dens_norm
+apol_as_prop
+apol_as_prop_norm
+pock_vol
+mean_as_ray
+prop_polar_atm
+LEU
+VAL
+nb_AS
+PP-crit
+convex_hull_volume
+crit5
+MET
+crit4
+lig_vol
+as_density
+as_max_dst
+hydrophobicity_score

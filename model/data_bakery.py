@@ -166,6 +166,30 @@ def bake_train_Xy_with_specific_columns(selected_list):
 
     return bake_train_Xy_with_given_features(required_columns)
 
+def bake_train_Xy_correlated_feature_selection(pearson = False, spearman = False):
+    X, y, feature_names, weights = bake_train_Xy()
+
+    ligand_feature_file_name = None
+    protein_feature_file_name = None
+
+    if(pearson):
+        ligand_feature_file_name = "pearson_corr_ligand.txt"
+        protein_feature_file_name = "person_corr_protein.txt"
+
+    if(spearman):
+        ligand_feature_file_name = "spearman_corr_ligand.txt"
+        protein_feature_file_name = "spearman_corr_protein.txt"
+
+    feature_names = []
+    with open(ligand_feature_file_name) as file:
+        feature_names += ["ligand." + r.strip() for r in file.readlines() if r[0] != '#']
+
+    with open(protein_feature_file_name) as file:
+        feature_names += ["protein." + r.strip() for r in file.readlines() if r[0] != '#']
+
+    for i in feature_names:
+        print(len(feature), i)
+
 def bake_train_Xy_exclude_features_families(exclusion_list):
     X, y, feature_names, weights = bake_train_Xy()
 
