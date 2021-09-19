@@ -219,7 +219,7 @@ In the other 2 files,  we prefer using pocket descriptors given by dpout\_fpocke
 \section{Feature selection}
 \subsection{Requirement of feature selection}
 Both the protein and the ligand are equally responsible for the affinity of the PL complex.
-Hence we concatenate their descriptors to get a high dementional $\mathbf{R}^{457}$ input for our model.
+Hence we concatenate their descriptors to get a high dimensional $\mathbf{R}^{457}$ input for our model.
 There are a couple of issues with using all of the descriptors.
 \begin{itemize}
 \item The amount of data is not very large. 
@@ -232,7 +232,7 @@ Hence we need some methods to reduce the input dimensions.
 \subsection{Feature Family analysis}
 \label{CorrelationAnalysis}
 All the features extracted from the pdb and the ligand files can be classified into various families.
-Some of the important once are: AUTOCORR2d\_, Chi, EState\_VSA,  PEOE\_VSA,  SMR\_VSA,  SlogP\_VSA,  VSA\_EState and fr\_.
+Some of the important ones are - AUTOCORR2d\_, Chi, EState\_VSA,  PEOE\_VSA,  SMR\_VSA,  SlogP\_VSA,  VSA\_EState and fr\_.
 Figure~\ref{fig:correlationheatmap} shows correlation matrix of 2 of the most interesting families AUTOCORR2d\_ and Chi.
 As we can see from the heatmap there is heavy correlation within the families.
 Hence we also require a strategy to deal with this.
@@ -263,7 +263,7 @@ We try to select features of the protein and the ligand separately.
 This helps us make our model plug-and-play as discussed in section \ref{ProblemOverviewlabel}.
 The best combination,  i.e Global Optima,  cannot be obtained practically by brute force algorithms.
 This is because we would have to try $\binom{402}{k_1} * \binom{55}{k_1}$ ($k_1, k_2 \in \mathbf{I}^+$) possibilities which is impractical.
-The following feature selection heuristics were used instead -
+In the next subsections we discuss a few feature selection strategies that were considered in our project.
 
 \subsubsection{Selection by output correlation}
 The \textit{pearson} and \textit{spearman} correlations of each feature were calculated against the output variable.
@@ -282,16 +282,6 @@ The next generation is created by crossover and mutation of the chromosomes.
 Algorithm~\ref{alg:GeneticAlgo} below gives complete pseudocode for this.
 
 The scoring function used to select the best chromosome can vary according to the type of the model being fit. [See Section~\ref{MachineLearningModelslabel}]
-
-\subsubsection{Manual Feature selection}
-A selected list of features were given to us by Simon Bray. 
-These features were used to build a simple linear regressor and a non-linear model.
-We obtained the following results:
-\begin{itemize}
-\item For Linear Regression, we obtained a validation R2 score of 0.342.
-\item For Random Forest Regressor,  we obtained Out of Bag (oob) score of 0.744 and a validation R2 score of 0.747.
-\end{itemize}
-
 
 \begin{algorithm}
 \caption{Selection of features in our model using genetic algorithm \cite{genetic_algorithm}}
@@ -326,6 +316,11 @@ We obtained the following results:
 \EndProcedure
 \end{algorithmic}
 \end{algorithm}
+
+\subsubsection{Manual Feature selection}
+A selected list of features were given to us by Simon Bray. 
+We investigated manually selected 121 ligand descriptors. 
+We continued to use all of the protein descriptors as they were only a few in number as compared to the ligand descriptors.
 
 \section{Testing}
 \subsection{Reproducibility}
@@ -375,45 +370,45 @@ We decided to use the following machine learning models for our problem:
 \item Random Forest Regression
 \end{itemize}
 
-But by far the most impressive performance was given by Random Forest Regression.
+By far the most impressive performance was given by Random Forest Regression.
 Hence we spent more time on Random Forest regression to understand the reasons for its performance.
 
-Because of the lack of data, Deep neural networks are not suitable for our problem. 
-For example, if we used all the features to train the deep learning model of size $457 * 20 * 10 * 1$,  there would be 9350 parameters to train.  As we only have 16,000 data points to train our model,  the deep learning model would over-fit drastically.
+Because of the lack of data, Deep Neural Networks were not suitable for our problem. 
+For example, if we used all the features to train a simple DNN model of size $[457,  20, 10,  1]$,  there would be 9350 parameters to train.  As we only have 16,000 data points to train our model,  the deep learning model would over-fit drastically.
 
 
 \subsection{Data Preprocessing}
 Before fitting the model, we did a preliminary analysis of our data.  This was necessary to train our models more reliably.
 
 \subsubsection{Data cleaning}
-Using Principle component analysis (PCA) each feature's contribution in the variable of the data was analysed. 
-During this analysis 2 issues were found in our data:
+Using Principle component analysis (PCA) each feature's contribution in the variation of the data was analysed. 
+During this analysis 2 issues were found:
 \begin{itemize}
-\item There was a ligand feature named IPC that was having extremely small and extremely huge values.  E.g e+39. 
-Hence we used a logarithm scale to scale this feature.
-The affect of this scaling on the cumulative PCA is shown in Figure~\ref{fig:PCAAnalysis}. 
+\item There was a ligand feature named IPC that was having extremely small and extremely huge values e.g $k * 10^{39}$ where $k \in (0,1]$ .
+Hence we scaled this feature using a logarithm function.
 This was done for the numerical safety during the training of our models.
+The affect of this scaling on the cumulative PCA is shown in Figure~\ref{fig:PCAAnalysis}. 
 
 \begin{figure}
      \centering
      \begin{subfigure}[b]{0.45\textwidth}
          \centering
     \includegraphics[scale=0.5]{images/pcaligandanalysisIPC}
-    \caption{With Ligand feature IPC}
+    \caption{With original Ligand feature IPC}
     \label{fig:pcaproteinanalysisIPC}
      \end{subfigure}
      \hfill
      \begin{subfigure}[b]{0.45\textwidth}
          \centering
-        \includegraphics[scale=0.5]{images/PCAanalysislingands}
-        \caption{Without Ligand feature IPC}
-        \label{fig:PCAanalysislingands}
+        \includegraphics[scale=0.5]{images/pcawithscaledIPC}
+        \caption{With log scaled Ligand feature IPC}
+        \label{fig:pcawithscaledIPC}
      \end{subfigure}
      \caption{Cumulative PCA of ligand features}
      \label{fig:PCAAnalysis}
 \end{figure}
 
-\item There were a lot of NaN (Not a number) and zeros in our data.  Perhaps this was because the measurements done in the experiments were not recorded completely and the RDKit feature extracter could not extract these values relaibly. While the presence of 0s was harmless,  we made sure that we removed all NaN values before we input the data to our model.
+\item There were a lot of NaN (Not a number) and zeros in our data.  Perhaps this was because the measurements done in the experiments were not recorded completely and the RDKit feature extracter could not extract these values relaibly. While the presence of 0s was harmless,  we made sure that we removed all NaN values before we input the data to our model.  Figure~\ref{fig:pcaproteinanalysis} shows cumulative PCA of the protein features. 
 \end{itemize}
 
 \begin{figure}[htb]
@@ -423,7 +418,8 @@ This was done for the numerical safety during the training of our models.
     \label{fig:pcaproteinanalysis}
 \end{figure}
 
-Figure~\ref{fig:pcaproteinanalysis} shows cumulative PCA of the protein features. It must be noted that,  the scaling of ligand feature IPC must be done before we use the model new data.
+It must be noted that,  the scaling of ligand feature IPC must be done before we use the model for prediction of new data.
+This is a limitation of our model.
 
 \subsubsection{Dealing with measurement resolution}
 During the measurement of the Protein-Ligand complexes,  the measurements can be taken at various resolutions (in \si{\angstrom} units).
@@ -485,17 +481,17 @@ Since linear weighting around 2 \si{\angstrom} is higher, the linearly weighted 
      \begin{subfigure}[b]{0.45\textwidth}
          \centering
     \includegraphics[scale=0.5]{images/hyperbolicweightdistribution}
-    \caption{Hyperbolic weight distribution}
+    \caption{Hyperbolic weighting}
     \label{fig:hyperbolicweightdistribution}
      \end{subfigure}
      \hfill
      \begin{subfigure}[b]{0.45\textwidth}
          \centering
         \includegraphics[scale=0.5]{images/linearweightdistribution}
-        \caption{Linear weight distribution}
+        \caption{Linear weighting}
         \label{fig:linearweightdistribution}
      \end{subfigure}
-     \caption{ Weights distributions in our data (Excluding the test set)}
+     \caption{Weighting of our data points (Excluding the test set)}
      \label{fig:WeightDistribution}
 \end{figure}
 
@@ -555,6 +551,8 @@ Figure~\ref{fig:BestLinearModel} shows the best results obtained with linear reg
 
 The reason for the low $R^2$ score is that linear models assume a strong linearity between the input variables and the output variable.
 This is not always true.
+
+In the linear regression model,  we used genetic algorithms to reduce both the large feature space and to eliminate correlated features within the families. 
 
 \subsubsection{Score function of genetic feature selection}
 \label{GenerationScoringFunction}
@@ -633,6 +631,26 @@ On the negative side,  the function represented by the ensemble cannot be easily
 Figure~\ref{fig:RFMModel} shows the validation and accuracy results obtained by a random forest of 100 trees when we use all the 457 features as input.
 As you can see,  this model far outperforms the linear one.
 
+The following table gives you an overview of our model.
+
+\begin{table} [h!]
+\centering
+ \begin{tabular}{ | c | c | c | c | }
+\hline
+\textbf{Features Selected} & \textbf{Training $R^2$ Score} & \textbf{Validation $R^2$ Score} \\ [0.5 ex]
+\hline \hline
+457 (all) & 0.310 & 0.295\\
+457 (Hyperbolic weighting) & 0.334 & 0.302\\
+457 (Linear weighting) & 0.456 & 0.430 \\
+- (Output Correlation)\footnotemark[1] & - & -  \\ 
+- (Genetic Elitism) & 0.456 & 0.430 \\
+- (Genetic Normal) & 0.456 & 0.430 \\
+176 (manual) & 0.365  & 0.342  \\ [1ex]
+\hline
+\end{tabular}
+\caption{Random Forest Regression overview}
+\label {table:3}
+\end{table}
 
 \begin{figure}
      \centering
@@ -668,19 +686,14 @@ More specifically,  we use the following values
 \item 20\% of feature selection.  (max\_features)
 \item A minimum of 2 data points for each leaf.  (min\_samples\_leaf)
 \end{itemize}
-These hyperparameters were determined after some empirical testing.
+These hyper-parameters were determined after some empirical testing.
 We increased the number of estimators as we increased the stochasticity of our ensemble.
 Our model would hence be dependent on the entire family of features and not rely on a single feature heavily.
 
 \subsubsection{Dealing with measurement resolution}
 
 We trained our model by duplicating the data according to their weights. 
-After training we get the following results:
-\begin{itemize}
-\item Training R2 score = 0.995
-\item Validation R2 score = 0.8298
-\item Out of bag (oob) score = 0.977
-\end{itemize}
+After training we got the following results - Training $R^2$ score = 0.995,  Validation $R^2$ score = 0.8298 and  Out of bag (oob) score = 0.977.
 
 We found the following issues with this strategy:
 \begin{itemize}
@@ -688,7 +701,7 @@ We found the following issues with this strategy:
 \item Due to duplication of data points,  the trees may end up being more correlated to each other.  This will affect generalization of our model.
 \item As training this model is costly, duplicating the data points further increases the cost of training.
 \end{itemize}
-Hence, we found that duplication of the data was a wrong strategy for this model.
+Hence, we conclude that duplication of the data based on their weights is a wrong strategy for this model.
 
 When we used our weight directly in the fit function,  we could not get any noticable improvement in our model.
 We think this is because the data is already skewed towards the $\approx$2 \si{\angstrom}
@@ -730,18 +743,21 @@ If feature $A$ and feature $B$ are correlated,  the shuffling of $A$ may not imp
      \label{fig:RFMFILable}
 \end{figure}
 
-\subsection{Permutation Importance and genetic algorithm}
+\subsubsection{Permutation Importance and genetic algorithm}
 To overcome the issue with the above feature importance selection, we plan to use a combination of the concepts of permutation importance and genetic algorithm to find out the importance of the selected features.
 This is because it is very expensive to refit the model and cheap enough to check the results of shuffling the model.
 
-\subsubsection{Specific scoring function and elitism}
-In Section ~\ref{GenerationScoringFunction},  we discussed intuition behind the scoring function used in our genetic model.
+We used 2 different strategies to get the for our genetic algorithms -
+\begin{itemize}
+\item \textbf{Using specific scoring function}.  In Section ~\ref{GenerationScoringFunction},  we discussed intuition behind the scoring function used in our genetic model.
 In the random forest model,  however,  this scoring function selected a lot of features ($> 400$). Hence we researched the following scoring function in an effort to reduce the number of features. 
-It uses a stronger signal for the number of eliminated features.
 $$
 \textrm{score} = R_2 score * \textrm{Features Eliminated}^2
 $$
-This scoring function however,  turned out to be too strong and non of the features were selected.
+We used a a stronger signal for the number of eliminated features. This scoring function, however,  turned out to be too strong and non of the features were selected.
+\item \textbf{Elitism}.  Elitism is a strategy used in the genetic algorithms to select the top few elements from each generation for the next generation in addition to the newly created children. This keeps the best performing subset of the population always in the current generation in an effort to improve them further by cross over or mutation.
+\end{itemize}
+
 
 \subsection{Support Vector Regression}
 Support vector regression is a non linear regression method that fits a  curve based such that the margin of error between the model's prediction and the original value is kept within a minimum range.
@@ -761,8 +777,8 @@ all the statistics are reported in the table below
 176 (manual) & 0.365  & 0.342  \\ [1ex]
 \hline
 \end{tabular}
-\caption{Simple linear model overview}
-\label {table:1}
+\caption{Support Vector Regression overview}
+\label {table:2}
 \end{table}
 
 As the performance of the model was not on par with other models,
@@ -779,23 +795,78 @@ One of the reasons,  we hypothesize,  is that rotation forest are shown to be be
 However,  as per the domain expert,  we may have many discrete values in our feature space.
 Hence we conclude that this model is not the best model for our problem.
 
-\section{Discussion}
-The use of genetic algorithms - 2 perspectives -
-1. The results shown here were not very good as compared all the features selected
-2. If we use our model becomes dependent on only 1 type of features. This can be avoided by used the Randomness in the random forest regressor.
+\begin{table} [h!]
+\centering
+ \begin{tabular}{ | c | c | c | c | }
+\hline
+\textbf{Features Selected} & \textbf{Training $R^2$ Score} & \textbf{Validation $R^2$ Score} \\ [0.5 ex]
+\hline \hline
+457 (all) & 0.310 & 0.295\\
+457 (Hyperbolic weighting) & 0.334 & 0.302\\
+457 (Linear weighting) & 0.456 & 0.430 \\
+- (Output Correlation)\footnotemark[1] & - & -  \\ 
+- (Genetic Elitism) & 0.456 & 0.430 \\
+- (Genetic Normal) & 0.456 & 0.430 \\
+176 (manual) & 0.365  & 0.342  \\ [1ex]
+\hline
+\end{tabular}
+\caption{Rotation Forest overview}
+\label {table:4}
+\end{table}
 
-Limitations:
-We would like to point some of the limitation and issues we found in our model.
-Firstly our has very less explaianablity.
+\section{Discussion}
+In this project,  we tried to determine the protein-ligand binding affinity by using spacial features extracted by RDKit and dpocket.
+We believe that the presence of 2D/3D features made our data more accesible to simple machine learning models. 
+This was crucial because the complex models that directly get the 3D features from the data (e.g. 3D convolutions) require huge amount of data which is expensive to accumulate.
+
+We spent most of the time analysing and studying the most suitable linear model (Linear Regression) and non-linear model (Random Forest Regression) for our extracted data.
+Our study also included feature selection methods like genetic algorithms.
+We found that our extracted protein ligand data had the following interesting properties
+\begin{itemize}
+\item The data does not not have a symmetric Gaussian distribution.  In other words, the ranges of values in each dimension were very different.
+\item The features are both real valued numbers as well as discrete.  The discrete values are also represented as real numbers.
+\item There are feature families in the ligand descriptors that have features that are highly correlated.
+\end{itemize}
+
+While linear regression did give reasonable results,  it was not a very reliable model because it assumed that the data was linearly related to the binding affinity.
+Nevertheless,  we were able to run genetic algorithms on this model to get the best $\approx$ 50 features.
+We failed to do this in case of the Random Forest Regression model.
+
+From our study of genetic genetic algorithms we make the conclusion that it was not very helpful in improving the performance of our model. However we were able to reduce or eliminate around 50 features for the Random Regression Model and around 400 features in the linear Regression without hampering the performance to a large degree.
+One issue we found with genetic algorithms is that they make the model very reliant on the selected features.
+This hard constraint may not be good when data collection process is expensive and error prone.
+
+We found that the Random Forest Regression was able to deal with all the above specific properties of our data.
+Random Forest Regression deals with both Real valued and discrete input features because the main aim of a fitting tree (in the random forest) is to reduce the entropy of the divided data.
+Since all the discrete features in our data are represented as real valued number,  the trees can can easily find a midpoint between the discrete values to divide the data. 
+Interestingly,  we could also use the feature correlation within families to our advantage to improve the robustness of our model. 
+By increasing the randomness of our feature selection during the data split we force our model to rely less on a specific feature.
+Hence a wrong measurement or a corrupted feature would not hamper our model significantly.
+
+Since we are getting an $R^2$ score of $>$ 0.65 consistently,  the binding affinity predicted by our model can be used for any new PL complex can be taken as a reference for drug-testing decisions.
+For example,  one can use the results to prioritize testing of new ligands in a wet lab experiment to save resources for the important ligands.
+
+As with any model,  our model and approach does have limitations. 
+Firstly our model cannot be explained very easily.
+With hundreds of trees in our random forest, the model can only be treated as a Black Box.
 Because of the complexity of our model,  we were not able to show why some features were very important and other not so important - for example in the feature importance calculation.
-Secondly,  the hyperparameter optimization was not automated,
-because with feature selection with genetic algorithms and hyperparameter optimization would be prohibitively expensive.
+Secondly, our model relies heavily on the ligand features. 
+This makes our model assume that the binding only slightly depends on the protein which is not the case conceptually.
+Also, we could not perform hyper-parameter optimization,
+in conjunction with the genetic feature selection algorithms as it is prohibitively expensive.
 
 \section{Conclusion}
 In this project we studied methods and preprocessing techniques to predict the protein ligand binding affinity.
-In conclusion we would like to suggest the use of random forest regressor for this problem because of the ease training and its generalization capability.
-Moreover as discussion in the discussion section,  our problem has a mixture of discrete and continous features,  which is very well handled in the random forest.
+In conclusion we would like to suggest the use of Random Forest Regression for this problem because of the ease training and its generalization capability.
+We believe that a random forest regression,  could be used as a baseline to compare any new models.
 
+In further work,  we believe that there is scope for improving the feature selection process of our model.
+One issue which could not be solved by us is that our model uses more ligand features than protein features.
+Further study on why this is the case would be helpful.
+One way could be to build models with all protein features and one family of ligand features. 
+The most important features in each family may be used as surrogates for the whole family.
+We also think more study needs to be conducted to create explainable models.
+This would be both accepted by the cheminformatics community and would be helpful to further the understanding of binding affinity.
 
 \bibliographystyle{plain}
 \bibliography{references}
