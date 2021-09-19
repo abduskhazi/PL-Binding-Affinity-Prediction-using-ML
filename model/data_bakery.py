@@ -39,6 +39,16 @@ def bake_Xy(output_variable_file, input_variable_file):
     for key in sorted(stats):
         print("     ~",key,"           ",stats[key])
 
+    import matplotlib.pyplot as plt
+    fig = plt.figure()
+    hist_plot = []
+    for key in resolution:
+        hist_plot += [resolution[key]]
+    n, bins, patches = plt.hist(hist_plot, bins=20, density=False)
+    plt.xlabel("resolution")
+    plt.ylabel("frequency")
+    fig.savefig('resolution_distribution.png', dpi=fig.dpi)
+
     with open(input_variable_file) as input_var_f:
         input_list = [r.strip() for r in input_var_f.readlines()]
 
