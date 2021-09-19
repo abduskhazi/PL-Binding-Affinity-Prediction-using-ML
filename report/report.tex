@@ -760,8 +760,9 @@ We used a a stronger signal for the number of eliminated features. This scoring 
 
 
 \subsection{Support Vector Regression}
-Support vector regression is a non linear regression method that fits a curve such that the margin of error between the model's prediction and the original value is kept within a minimum range.
-We trained support vector regression with the rbf kernel.
+Support vector regression is a non-linear regression method that fits a curve such that the margin of error between the model's prediction and the original value is kept within a minimum range.
+Any error higher than this minimum range is penalised during training of the model.
+We trained support vector regression with the RBF kernel.
 
 \begin{table} [h!]
 \centering
@@ -786,12 +787,14 @@ However,  we did use data point weights during the fit function of the training.
 The results are reported in Table~\ref{table:2}.
 The linear weighting of the data gave the best results in SVR.
 The reason testing $R^2$ score is around the same range as the training score may be because the testing data is of better better quality data as compared to the validation data.
+However this can vary slightly based on the random seed used.
 
 As the performance of the model was not on par with other models,
 we did not run the costly genetic algorithm feature selection on SVR.
 Moreover,  the time it took to get the $R^2$ score (validation and testing) was very high and was not suitable to be used in permutation based genetic algorithm as discussed in the random forest section.
+The issues of within family feature correlation as well as feature selection were hence dealt by either using output correlation or by manual feature selection.
 
-Figures~\ref{fig:SVRaccuracy} visualize the training and validation error of the best model.
+Figures~\ref{fig:accuracyvalidateSVRLinear} and ~\ref{fig:accuracytestSVRLinear} visualize the training and validation error of the best model.
 
 \begin{figure}
      \centering
