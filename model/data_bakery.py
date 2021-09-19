@@ -71,7 +71,8 @@ def bake_Xy(output_variable_file, input_variable_file):
         x_i = [row_protein[protein_start:] + row_ligand[ligand_start:]]
         X += x_i
         y += [regression[complex_name]]
-        data_weights += [max_resolution/resolution[complex_name]]
+        data_weights += [max_resolution/resolution[complex_name]] # --> Hyperbolic weighting
+        #data_weights += [max_resolution + 1 - resolution[complex_name]] # Linear weighting
 
     X = np.asarray(X, dtype='float64')
     y = np.asarray(y, dtype='float64')
