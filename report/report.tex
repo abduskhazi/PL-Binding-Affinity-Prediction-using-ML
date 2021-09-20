@@ -895,17 +895,18 @@ Also, we could not perform hyper-parameter optimization,
 in conjunction with the genetic feature selection algorithms as it is prohibitively expensive.
 
 \section{Conclusion}
-In this project we studied methods and preprocessing techniques to predict the protein ligand binding affinity.
-In conclusion we would like to suggest the use of Random Forest Regression for this problem because of the ease training and its generalization capability.
-We believe that a random forest regression,  could be used as a baseline to compare any new models.
+In this project, we studied methods and preprocessing techniques to predict the protein-ligand binding affinity.
+In conclusion, we suggest using Random Forest Regression for this problem because of the ease of training and the generalization capability.
+We believe that a random forest regression could be used as a baseline to compare any new models.
 
 In further work,  we believe that there is scope for improving the feature selection process of our model.
-One issue which could not be solved by us is that our model uses more ligand features than protein features.
-Further study on why this is the case would be helpful.
+Our model depends heavily on the ligand features as compared to the protein features.
+We believe it is because of the data extracted by RDKit and D-Pocket.
+Further investigation on new models that do not have this limitation would be helpful.
 One way could be to build models with all protein features and one family of ligand features. 
-The most important features in each family may be used as surrogates for the whole family.
+The most important features in each family may can as surrogates for the whole family.
 We also think more study needs to be conducted to create explainable models.
-This would be both accepted by the cheminformatics community and would be helpful to further the understanding of binding affinity.
+It would be both accepted by the Cheminformatics community and would be helpful to further the understanding of binding affinity.
 
 \bibliographystyle{plain}
 \bibliography{references}
