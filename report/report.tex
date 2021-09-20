@@ -806,7 +806,7 @@ we did not run the costly genetic algorithm feature selection on SVR.
 Moreover,  the time it took to get the $R^2$ score (validation and testing) was very high and was not suitable to be used in permutation based genetic algorithm as discussed in the random forest section.
 The issues of within family feature correlation as well as feature selection were hence dealt by either using output correlation or by manual feature selection.
 
-Figures~\ref{fig:SVRvalidate} and ~\ref{fig:SVRtest} visualize the training and validation error of the best model.
+Figures~\ref{fig:SVRvalidate} and ~\ref{fig:SVRtest} visualize the validation and testing accuracy of the best SVR model.
 
 \begin{figure}
      \centering
@@ -840,18 +840,40 @@ Hence we conclude that this model is not the best model for our problem.
 \centering
  \begin{tabular}{ | c | c | c | c | }
 \hline
-\textbf{Features Selected} & \textbf{Training} & \textbf{Validation} \\ [0.5 ex]
+\textbf{Features Selected} & \textbf{Training} & \textbf{Validation} & \textbf{Testing} \\ [0.5 ex]
 \hline \hline
-457 (all) & - & -\\
-457 (Hyperbolic) & - & -\\
-457 (Linear weighting) & - & - \\
-40 (Output Correlation) & - & -  \\
-176 (manual) & - & -  \\ [1ex]
+457 (all) & 0.967 & 0.756 & 0.543\\
+457 (Hyperbolic) & NA & NA & NA\\
+457 (Linear weighting) & NA & NA & NA\\
+40 (Person) & 0.948 & 0.596 & 0.878\\
+40 (Spearman) & 0.951 & 0.667 &0.896 \\
+\textbf{176 (manual)} & \textbf{0.960} & \textbf{0.724} & \textbf{0.572} \\ [1ex]
 \hline
 \end{tabular}
 \caption{Rotation Forest $R^2$ Score overview}
 \label {table:4}
 \end{table}
+
+Figures~\ref{fig:accuracyRotationFRvalidate} and ~\ref{fig:accuracyRotationFRtest} visualize the validation and testing accuracy of the best Rotation Forest Model.
+
+\begin{figure}
+     \centering
+     \begin{subfigure}[b]{0.45\textwidth}
+         \centering
+         \includegraphics[scale=0.45]{images/accuracyRotationFRvalidate}
+         \caption{Validation accuarcy}
+        \label{fig:accuracyRotationFRvalidate}
+     \end{subfigure}
+     \hfill
+     \begin{subfigure}[b]{0.45\textwidth}
+         \centering
+         \includegraphics[scale=0.45]{images/accuracyRotationFRtest}
+        \caption{Testing accuracy}
+        \label{fig:accuracyRotationFRtest}
+     \end{subfigure}
+     \caption{Rotation Forest Accuracy visualization for manually selected features (176).  The rotation forest implementation does not support data weighting}
+     \label{fig:RotationForestAccuracy}
+\end{figure}
 
 \section{Discussion}
 In this project, we tried to determine the protein-ligand binding affinity by using spacial features extracted by RDKit and D-Pocket.
