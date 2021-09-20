@@ -723,11 +723,11 @@ We used the following strategies to determine the importance of features in the 
 
 \begin{itemize}
 \item \textbf{Gini Importance (or) Decrease in impurity}.  This is calculated by the model itself.
-For every feature,  it calculates how much decrease in the split criterion the feature contributes to the entire ensemble (i.e in every node its used in all the trees).
+For every feature,  it calculates how much decrease in the split criterion the feature contributes in the entire ensemble (i.e in every node it's used in all the trees).
 The disadvantage is that they cannot be reliable when the features have a high cardinality.  Figure~\ref{fig:GiniImportanceLabel} illustrates this importance.
 \item \textbf{Permutation Importance} - This is a model agnostic method.
 It tries to calculate the reduction in the accuracy we shuffle each feature.
-The more the reduction the more important the feature is.
+The importance of the features is directly proportional to the amount of reduction in the accuracy.
 The disadvantage is that since each feature is checked independently,  correlated input features make the results unreliable. 
 If feature $A$ and feature $B$ are correlated,  the shuffling of $A$ may not impact the model as the model can rely on $B$ for its prediction.  Figure~\ref{fig:PermutationImportanceLabel} illustrates this importance.
 \end{itemize}
@@ -752,24 +752,24 @@ If feature $A$ and feature $B$ are correlated,  the shuffling of $A$ may not imp
 \end{figure}
 
 \subsubsection{Permutation Importance and genetic algorithm}
-To overcome the issue with the above feature importance selection, we plan to use a combination of the concepts of permutation importance and genetic algorithm to find out the importance of the selected features.
+To overcome the issue with the above feature importance selection, we used a combination of permutation importance and genetic algorithm to find out the importance of the selected features.
 This is because it is very expensive to refit the model and cheap enough to check the results of shuffling the model.
 
-We used 2 different strategies to get the for our genetic algorithms -
+We used 2 different strategies to get them for our genetic algorithms -
 \begin{itemize}
 \item \textbf{Using specific scoring function}.  In Section ~\ref{GenerationScoringFunction},  we discussed intuition behind the scoring function used in our genetic model.
 In the random forest model,  however,  this scoring function selected a lot of features ($> 400$). Hence we researched the following scoring function in an effort to reduce the number of features. 
 $$
 \textrm{score} = \mathbf{R}^2 * \textrm{Features Eliminated}^2
 $$
-We used a a stronger signal for the number of eliminated features. This scoring function, however,  turned out to be too strong and non of the features were selected.
-\item \textbf{Elitism}.  Elitism is a strategy used in the genetic algorithms to select the top few elements from each generation for the next generation in addition to the newly created children. This keeps the best performing subset of the population always in the current generation in an effort to improve them further by cross over or mutation.
+We used a stronger signal for the number of eliminated features. This scoring function, however,  turned out to be too strong and non of the features were selected.
+\item \textbf{Elitism}.  Elitism is a strategy used in the genetic algorithms to select the top few elements from each generation for the next generation in addition to the newly created children. This keeps the best performing subset of the population always in the current generation in an effort to improve them further by cross-over or mutation.
 \end{itemize}
 
 
 \subsection{Support Vector Regression}
 Support vector regression is a non-linear regression method that fits a curve such that the margin of error between the model's prediction and the original value is kept within a minimum range.
-Any error higher than this minimum range is penalised during training of the model.
+Any error higher than this minimum range is penalized during the training of the model.
 We trained support vector regression with the RBF kernel.
 
 \begin{table} [h!]
@@ -797,14 +797,14 @@ However,  we did use data point weights during the fit function of the training.
 
 The results are reported in Table~\ref{table:2}.
 The linear weighting of the data gave the best results in SVR.
-The reason testing $R^2$ score is around the same range as the training score may be because the testing data is of better quality data as compared to the validation data.
-However this varies very highly depending on the random seed used.
+The reason testing $R^2$ score is around the same range as the training score maybe because the testing data is of better quality data as compared to the validation data.
+However, this varies very highly depending on the random seed used.
 What we must observe is that the approximate range in which the values are obtained is small.
 
 As the performance of the model was not on par with other models,
 we did not run the costly genetic algorithm feature selection on SVR.
-Moreover,  the time it took to get the $R^2$ score (validation and testing) was very high and was not suitable to be used in permutation based genetic algorithm as discussed in the random forest section.
-The issues of within family feature correlation as well as feature selection were hence dealt by either using output correlation or by manual feature selection.
+Moreover,  the time it took to get the $R^2$ score (validation and testing) was very high and was not suitable to be used in a permutation-based genetic algorithm as discussed in the random forest section.
+The issues of within family feature correlation as well as feature selection were hence dealt with by either using output correlation or by manual feature selection.
 
 Figures~\ref{fig:SVRvalidate} and ~\ref{fig:SVRtest} visualize the validation and testing accuracy of the best SVR model.
 
@@ -830,9 +830,9 @@ Figures~\ref{fig:SVRvalidate} and ~\ref{fig:SVRtest} visualize the validation an
 
 \subsection{Rotation Forests}
 
-The training $R^2$ score was comparable to that of random forest regressor.
-However, this did not yield good validation error.
-One of the reasons,  we hypothesize,  is that rotation forest are shown to be better than random forest only for the continuous feature values.
+The training $R^2$ score was comparable to that of the random forest regressor.
+However, this did not yield a good validation error.
+One of the reasons,  we hypothesize,  is that rotation forests are shown to be better than random forests only for the continuous feature values.
 However,  as per the domain expert,  we may have many discrete values in our feature space.
 Hence we conclude that this model is not the best model for our problem.
 
@@ -871,7 +871,7 @@ Figures~\ref{fig:accuracyRotationFRvalidate} and ~\ref{fig:accuracyRotationFRtes
         \caption{Testing accuracy}
         \label{fig:accuracyRotationFRtest}
      \end{subfigure}
-     \caption{Rotation Forest Accuracy visualization for manually selected features (176).  The rotation forest implementation does not support data weighting}
+     \caption{Rotation Forest Accuracy visualization for manually selected features (176).  The rotation forest implementation does not support data weighting.}
      \label{fig:RotationForestAccuracy}
 \end{figure}
 
