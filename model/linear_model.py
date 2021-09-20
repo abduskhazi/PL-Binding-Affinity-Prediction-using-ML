@@ -38,8 +38,21 @@ def plot_figures(X_validate, y_validate, X_test, y_test):
     plt.plot(range(2,14), range(2,14), '--')
     fig.savefig('accuracy_test.png', dpi=fig.dpi)
 
-X, y, features, weights = bakery.bake_train_Xy() #_correlated_feature_selection(pearson = True)
-X_test, y_test, _, w_test = bakery.bake_test_Xy() #_correlated_feature_selection(pearson = True)
+best = [0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1,     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0    , 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,     0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 1, 0, 0, 0,     0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0    , 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,     0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0,     0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0    , 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,     1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,     0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0    , 0, 1]
+
+#X, y, features, weights = bakery.bake_train_Xy_with_given_features(best) #_correlated_feature_selection(pearson = True)
+#X_test, y_test, _, w_test = bakery.bake_test_Xy_with_given_features(best) #_correlated_feature_selection(pearson = True)
+
+X, y, features, weights = bakery.bake_train_Xy()
+X_test, y_test, _, w_test = bakery.bake_test_Xy()
+
+#X, y, features, weights = bakery.bake_train_Xy_correlated_feature_selection(spearman = True)
+#X_test, y_test, _, w_test = bakery.bake_test_Xy_correlated_feature_selection(spearman = True)
+
+
+#X, y, features, weights = bakery.bake_train_Xy_manual_feature_selection()
+#X_test, y_test, _, w_test = bakery.bake_test_Xy_manual_feature_selection()
+
 #X, y, features, weights = bakery.bake_train_Xy_manual_feature_selection()
 print("X.shape =", X.shape)
 print("y.shape =", y.shape)
@@ -132,7 +145,7 @@ X_local = X * best_features
 idx = np.argwhere(np.all(X_local[..., :] == 0, axis=0))
 X_local = np.delete(X_local, idx, axis=1)
 
-X_train, X_validate, y_train, y_validate = train_test_split(X_local, y, test_size=0.10) #, random_state=42)
+X_train, X_validate, y_train, y_validate = train_test_split(X_local, y, test_size=0.20) #, random_state=42)
 reg = LinearRegression().fit(X_train, y_train)
 
 plot_figures(X_train, y_train, X_validate, y_validate)
