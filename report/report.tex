@@ -370,7 +370,7 @@ We decided to use the following machine learning models for our problem:
 \item Random Forest Regression
 \end{itemize}
 
-By far the most impressive performance was given by Random Forest Regression.
+By far, the most impressive performance was given by Random Forest Regression.
 Hence we spent more time on Random Forest regression to understand the reasons for its performance.
 
 Because of the lack of data, Deep Neural Networks were not suitable for our problem. 
@@ -381,13 +381,13 @@ For example, if we used all the features to train a simple DNN model of size $[4
 Before fitting the model, we did a preliminary analysis of our data.  This was necessary to train our models more reliably.
 
 \subsubsection{Data cleaning}
-Using Principle component analysis (PCA) each feature's contribution in the variation of the data was analysed. 
-During this analysis 2 issues were found:
+Using Principle component analysis (PCA) each feature's contribution in the variation of the data was analyzed. 
+During this analysis, 2 issues were found:
 \begin{itemize}
-\item There was a ligand feature named IPC that was having extremely small and extremely huge values e.g $k * 10^{39}$ where $k \in (0,1]$ .
+\item There was a ligand feature named IPC that was having extremely small and extremely huge values e.g $k * 10^{39}$ where $k \in (0,1]$.
 Hence we scaled this feature using a logarithm function.
-This was done for the numerical safety during the training of our models.
-The affect of this scaling on the cumulative PCA is shown in Figure~\ref{fig:PCAAnalysis}. 
+This was done for numerical safety during the training of our models.
+The effect of this scaling on the cumulative PCA is shown in Figure~\ref{fig:PCAAnalysis}.
 
 \begin{figure}
      \centering
@@ -408,7 +408,7 @@ The affect of this scaling on the cumulative PCA is shown in Figure~\ref{fig:PCA
      \label{fig:PCAAnalysis}
 \end{figure}
 
-\item There were a lot of NaN (Not a number) and zeros in our data.  Perhaps this was because the measurements done in the experiments were not recorded completely and the RDKit feature extracter could not extract these values relaibly. While the presence of 0s was harmless,  we made sure that we removed all NaN values before we input the data to our model.  Figure~\ref{fig:pcaproteinanalysis} shows cumulative PCA of the protein features. 
+\item There were a lot of NaN (Not a number) and zeros in our data.  Perhaps this was because the measurements done in the experiments were not recorded completely and the RDKit feature extractor could not extract these values reliably. While the presence of 0s was harmless,  we made sure that we removed all NaN values before we input the data into our model.  Figure~\ref{fig:pcaproteinanalysis} shows cumulative PCA of the protein features. 
 \end{itemize}
 
 \begin{figure}[htb]
@@ -418,13 +418,13 @@ The affect of this scaling on the cumulative PCA is shown in Figure~\ref{fig:PCA
     \label{fig:pcaproteinanalysis}
 \end{figure}
 
-It must be noted that,  the scaling of ligand feature IPC must be done before we use the model for prediction of new data.
+It must be noted that the scaling of ligand feature IPC must be done before we use the model for the prediction of new data.
 This is a limitation of our model.
 
 \subsubsection{Dealing with measurement resolution}
 During the measurement of the Protein-Ligand complexes,  the measurements can be taken at various resolutions (in \si{\angstrom} units).
 The accuracy of the measurement is inversely proportional to the resolution.
-As shown in a small excerpt of the PDB Databank INDEX file,  we have a resolution measurement for each of the complexes (or datapoints).
+As shown in a small excerpt of the PDB Databank INDEX file,  we have a resolution measurement for each of the complexes (or data points).
 
 \begin{verbatim}
 # ==============================================================================
@@ -447,7 +447,7 @@ Using the resolution, we devised the following 2 ways to calculate the weight of
 Where $R_i$ is a resolution of a given data point.
 We found that $\mathrm{\max{R_{1 ...  n}}} \approx 5$ \si{\angstrom} in our data.
 It is necessary to add 1 to the max resolution in the linear formula to avoid data points with 0 weight.
-The formulae are depicted in the Figure~\ref{fig:graphingformula}.
+The formulae are depicted in Figure~\ref{fig:graphingformula}.
 Figure~\ref{fig:resolutiondistribution} shows the distribution of data points as a function of resolution.
 The resolution of the measurements ranges from 1 to 5 approximately.
 
@@ -470,8 +470,8 @@ The resolution of the measurements ranges from 1 to 5 approximately.
      \label{fig:ResolutionWeightStats}
 \end{figure}
 
-Figure~\ref{fig:WeightDistribution} shows the distribution of the weights obtained from our data for linear and hyperbolic case.
-In Figure~\ref{fig:linearweightdistribution},  we see that linear weighting gives us datapoints with a higher weight as compared to hyperbolic weighting.
+Figure~\ref{fig:WeightDistribution} shows the distribution of the weights obtained from our data for the linear and hyperbolic case.
+In Figure~\ref{fig:linearweightdistribution},  we see that linear weighting gives us data points with a higher weight as compared to hyperbolic weighting.
 This makes intuitive sense because as shown Figure~\ref{fig:resolutiondistribution}, 
 most of the data points have a resolution around 2 \si{\angstrom}.
 Since linear weighting around 2 \si{\angstrom} is higher, the linearly weighted data points will have a higher weight on average.
@@ -553,10 +553,10 @@ Figure~\ref{fig:BestLinearModel} shows the best results obtained with linear reg
      \label{fig:BestLinearModel}
 \end{figure}
 
-The reason for the low $R^2$ score is that linear models assume a strong linearity between the input variables and the output variable.
+The reason for the low $R^2$ score is that linear models assume strong linearity between the input variables and the output variable.
 This is not always true.
-One anomoly in the results is that there are some cases where the validation and testing results seem to be better than the training result.
-However this is not always the case. 
+One anomaly in the results is that there are some cases where the validation and testing results seem to be better than the training result.
+However, this is not always the case. 
 The results highly depend on the seed.
 If the seed changes,  the train/test data split gives us different data for training and different data for validation.
 What is important for the validity of our model is that the results remain in a reasonable range.
@@ -636,7 +636,7 @@ Moreover,  random forests can handle categorical features together with the real
 On the negative side,  the function represented by the ensemble cannot be easily represented and has to be interpreted as a black-box function.
 
 Figure~\ref{fig:RFMModel} shows the validation and testing accuracy obtained by a random forest with manually selected features.
-This model outperforms the the other features selection strategies.
+This model outperforms the other features selection strategies.
 
 The following table gives you an overview of our model.
 
@@ -680,10 +680,10 @@ The following table gives you an overview of our model.
 \end{figure}
 
 \subsubsection{Dealing with correlated features}
-In Section \ref{CorrelationAnalysis} we discussed that within some the families of features there are heavily correlated features.
-One way to deal with this would be to just taken one feature from a family and exclude the rest.
-However this would not be a good strategy for generalization.
-This is because in future,  if this one feature is not measured,  our model would be rendered useless.
+In Section \ref{CorrelationAnalysis} we discussed that within some of the families of features there are heavily correlated features.
+One way to deal with this would be to just take one feature from a family and exclude the rest.
+However, this would not be a good strategy for generalization.
+This is because in the future if this one feature is not measured,  our model would be rendered useless.
 
 For this reason,  we made use of the stochasticity of the random forest to our advantage.
 During the creation of a regression tree,  the random forest model tries to get the best (feature,  value) tuple to divide the data. This is known as the split criteria.
@@ -694,9 +694,10 @@ More specifically,  we use the following values
 \item 20\% of feature selection.  (max\_features)
 \item A minimum of 2 data points for each leaf.  (min\_samples\_leaf)
 \end{itemize}
-These hyper-parameters were determined after some empirical testing.
+These hyperparameters were determined after some empirical testing.
 We increased the number of estimators as we increased the stochasticity of our ensemble.
 Our model would hence be dependent on the entire family of features and not rely on a single feature heavily.
+
 
 \subsubsection{Dealing with measurement resolution}
 
@@ -705,13 +706,13 @@ After training we got the following results - Training $R^2$ score = 0.995,  Val
 
 We found the following issues with this strategy:
 \begin{itemize}
-\item The out of bag error (oob score) is erroneously high here. This is because of repeated data points. Many points are both inside the selected bag and outside it.
-\item Due to duplication of data points,  the trees may end up being more correlated to each other.  This will affect generalization of our model.
+\item The out-of-bag error (OOB score) is erroneously high here. This is because of repeated data points. Many points are both inside the selected bag and outside it.
+\item Due to duplication of data points,  the trees may end up being more correlated to each other.  This will affect the generalization of our model.
 \item As training this model is costly, duplicating the data points further increases the cost of training.
 \end{itemize}
 Hence, we conclude that duplication of the data based on their weights is a wrong strategy for this model.
 
-When we used our weight directly in the fit function,  we could not get any noticable improvement in our model.
+When we used our weight directly in the fit function,  we could not get any noticeable improvement in our model.
 We think this is because the data is already skewed towards the $\approx$2 \si{\angstrom}
 data points.
 This can be seen in Figure~\ref{fig:resolutiondistribution}
