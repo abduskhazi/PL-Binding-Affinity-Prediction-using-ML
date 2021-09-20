@@ -555,12 +555,11 @@ Figure~\ref{fig:BestLinearModel} shows the best results obtained with linear reg
 
 The reason for the low $R^2$ score is that linear models assume a strong linearity between the input variables and the output variable.
 This is not always true.
-One anomoly in the results is that the validation and testing results seem to be better than the training result.
+One anomoly in the results is that there are some cases where the validation and testing results seem to be better than the training result.
 However this is not always the case. 
-The validation and testing results highly depend on the seed.
-If the seed changes,  the train/test data split gives us different data for training and different data for testing.
-Sometimes the validation accuracy is better and some other times the testing accuracy.
-What is important for the validity of our model is that both remain in a reasonable range.
+The results highly depend on the seed.
+If the seed changes,  the train/test data split gives us different data for training and different data for validation.
+What is important for the validity of our model is that the results remain in a reasonable range.
 
 In the linear regression model,  we used genetic algorithms to reduce both the large feature space and to eliminate correlated features within the families. 
 
@@ -636,27 +635,28 @@ One advantage is that there is no need for any assumption about the data.
 Moreover,  random forests can handle categorical features together with the real-valued features very easily.
 On the negative side,  the function represented by the ensemble cannot be easily represented and has to be interpreted as a black-box function.
 
-Figure~\ref{fig:RFMModel} shows the validation and accuracy results obtained by a random forest of 100 trees when we use all the 457 features as input.
-As you can see,  this model far outperforms the linear one.
+Figure~\ref{fig:RFMModel} shows the validation and testing accuracy obtained by a random forest with manually selected features.
+This model outperforms the the other features selection strategies.
 
 The following table gives you an overview of our model.
 
 \begin{table} [h!]
 \centering
- \begin{tabular}{ | c | c | c | c | }
+ \begin{tabular}{ | c | c | c | c | c |}
 \hline
-\textbf{Features Selected} & \textbf{Training $R^2$ Score} & \textbf{Validation $R^2$ Score} \\ [0.5 ex]
+\textbf{Features Selected} & \textbf{Training} & \textbf{Validation} & \textbf{OOB score} & \textbf{Testing} \\ [0.5 ex]
 \hline \hline
-457 (all) & 0.310 & 0.295\\
-457 (Hyperbolic weighting) & 0.334 & 0.302\\
-457 (Linear weighting) & 0.456 & 0.430 \\
-- (Output Correlation)\footnotemark[1] & - & -  \\ 
-- (Genetic Elitism) & 0.456 & 0.430 \\
-- (Genetic Normal) & 0.456 & 0.430 \\
-176 (manual) & 0.365  & 0.342  \\ [1ex]
+457 (all) & 0.961 & 0.790 & 0.793 & 0.540\\
+457 (Hyperbolic) &  0.961 & 0.778 & 0.796 & 0.555\\
+457 (Linear)  &  0.960 & 0.800 & 0.790 & 0.542\\
+40 (Spearman) &  0.930 & 0.677 & 0.672 & 0.880  \\ 
+40 (Pearson) &  0.925 & 0.651 & 0.646 & 0.870  \\ 
+229 (Genetic Elitism)  & 0.958 &  0.791 & 0.792 & 0.537 \\
+394 (Genetic Normal) & 0.960 & 0.808 & 0.791 & 0.543 \\
+\textbf{176 (manual)}  &  \textbf{0.947} & \textbf{0.737} & \textbf{0.734} & \textbf{0.579}  \\ [1ex]
 \hline
 \end{tabular}
-\caption{Random Forest Regression overview}
+\caption{Random Forest Regression $R^2$ Score table}
 \label {table:3}
 \end{table}
 
@@ -664,18 +664,18 @@ The following table gives you an overview of our model.
      \centering
      \begin{subfigure}[b]{0.45\textwidth}
          \centering
-         \includegraphics[scale=0.45]{images/accuracy_train_rfr}
-         \caption{Training Accuracy ($R^2 \approx 0.971$)}
-        \label{fig:TrainingAccuracyRFM}
+         \includegraphics[scale=0.45]{images/accuracyRFRvalidate}
+         \caption{Validation Accuracy}
+        \label{fig:accuracyRFRvalidate}
      \end{subfigure}
      \hfill
      \begin{subfigure}[b]{0.45\textwidth}
          \centering
-         \includegraphics[scale=0.45]{images/accuracy_validate_rfr}
-        \caption{Validation Accuracy ($R^2 \approx 0.797$)}
-        \label{fig:ValidationAccuracyRFM}
+         \includegraphics[scale=0.45]{images/accuracyRFRtest}
+        \caption{Testing Accuracy}
+        \label{fig:accuracyRFRtest}
      \end{subfigure}
-     \caption{Random Forest Regressor with 457 features and 100 trees.}
+     \caption{Random Forest Regressor with 176 manually selected features and hyperbolic weighting.}
      \label{fig:RFMModel}
 \end{figure}
 
