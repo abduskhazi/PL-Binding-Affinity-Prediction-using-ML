@@ -747,7 +747,7 @@ If feature $A$ and feature $B$ are correlated,  the shuffling of $A$ may not imp
         \caption{Permutation importance}
         \label{fig:PermutationImportanceLabel}
      \end{subfigure}
-     \caption{Feature Importance calculation of Random Forest Regressor}
+     \caption{Feature Importance calculation of Random Forest Regressor.  (With manual feature selection)}
      \label{fig:RFMFILable}
 \end{figure}
 
@@ -760,7 +760,7 @@ We used 2 different strategies to get the for our genetic algorithms -
 \item \textbf{Using specific scoring function}.  In Section ~\ref{GenerationScoringFunction},  we discussed intuition behind the scoring function used in our genetic model.
 In the random forest model,  however,  this scoring function selected a lot of features ($> 400$). Hence we researched the following scoring function in an effort to reduce the number of features. 
 $$
-\textrm{score} = R_2 score * \textrm{Features Eliminated}^2
+\textrm{score} = \mathbf{R}^2 * \textrm{Features Eliminated}^2
 $$
 We used a a stronger signal for the number of eliminated features. This scoring function, however,  turned out to be too strong and non of the features were selected.
 \item \textbf{Elitism}.  Elitism is a strategy used in the genetic algorithms to select the top few elements from each generation for the next generation in addition to the newly created children. This keeps the best performing subset of the population always in the current generation in an effort to improve them further by cross over or mutation.
@@ -778,11 +778,14 @@ We trained support vector regression with the RBF kernel.
 \hline
 \textbf{Features Selected} & \textbf{Training} & \textbf{Validation} &  \textbf{Testing} \\ [0.5 ex]
 \hline \hline
-457 (all) & 0.314 & 0.279 & 0.318\\
-457 (Hyperbolic weighting) & 0.333 & 0.304 & 0.341\\
-\textbf{457 (Linear weighting)} & \textbf{0.342} &\textbf{0.323} & \textbf{0.349}\\
-40 (Spearman Correlation + Linear weighting) & 0.267 & 0.239  & 0.262 \\ 
-176 (manual + Linear weighting) & 0.308  & 0.286  & 0.314\\ [1ex]
+457 (all) & 0.310 & 0.308 & 0.356\\
+457 (Hyperbolic) & 0.325 & 0.326 & 0.371\\
+\textbf{457 (Linear)} & \textbf{0.336} &\textbf{0.334} & \textbf{0.374}\\
+40 (Spearman + Linear) & 0.256 & 0.286  & 0.262 \\ 
+40 (Pearson + Linear) & 0.199 & 0.200 & 0.199 \\ 
+40 (Spearman + Hyperbolic) & 0.252 & 0.266 & 0.254 \\ 
+40 (Pearson + Hyperbolic) & 0.169 & 0.169 & 0.169 \\ 
+176 (manual) &  0.306  & 0.298  & 0.358\\ [1ex]
 \hline
 \end{tabular}
 \caption{Table showing  $R^2$ Scores for SVR}
@@ -796,31 +799,31 @@ The results are reported in Table~\ref{table:2}.
 The linear weighting of the data gave the best results in SVR.
 The reason testing $R^2$ score is around the same range as the training score may be because the testing data is of better quality data as compared to the validation data.
 However this varies very highly depending on the random seed used.
-What we must observe is the approximate range in which the values are obtained.
+What we must observe is that the approximate range in which the values are obtained is small.
 
 As the performance of the model was not on par with other models,
 we did not run the costly genetic algorithm feature selection on SVR.
 Moreover,  the time it took to get the $R^2$ score (validation and testing) was very high and was not suitable to be used in permutation based genetic algorithm as discussed in the random forest section.
 The issues of within family feature correlation as well as feature selection were hence dealt by either using output correlation or by manual feature selection.
 
-Figures~\ref{fig:accuracyvalidateSVRLinear} and ~\ref{fig:accuracytestSVRLinear} visualize the training and validation error of the best model.
+Figures~\ref{fig:SVRvalidate} and ~\ref{fig:SVRtest} visualize the training and validation error of the best model.
 
 \begin{figure}
      \centering
      \begin{subfigure}[b]{0.45\textwidth}
          \centering
-         \includegraphics[scale=0.45]{images/accuracyvalidateSVRLinear}
+         \includegraphics[scale=0.45]{images/SVRvalidate}
          \caption{Validation accuarcy}
-        \label{fig:accuracyvalidateSVRLinear}
+        \label{fig:SVRvalidate}
      \end{subfigure}
      \hfill
      \begin{subfigure}[b]{0.45\textwidth}
          \centering
-         \includegraphics[scale=0.45]{images/accuracytestSVRLinear}
+         \includegraphics[scale=0.45]{images/SVRtest}
         \caption{Testing accuracy}
-        \label{fig:accuracytestSVRLinear}
+        \label{fig:SVRtest}
      \end{subfigure}
-     \caption{SVR accuracy visualization for 457 (Linear weighting) feature selection}
+     \caption{SVR accuracy visualization for all features 457 and Linear weighting}
      \label{fig:SVRaccuracy}
 \end{figure}
 
@@ -837,18 +840,16 @@ Hence we conclude that this model is not the best model for our problem.
 \centering
  \begin{tabular}{ | c | c | c | c | }
 \hline
-\textbf{Features Selected} & \textbf{Training $R^2$ Score} & \textbf{Validation $R^2$ Score} \\ [0.5 ex]
+\textbf{Features Selected} & \textbf{Training} & \textbf{Validation} \\ [0.5 ex]
 \hline \hline
-457 (all) & 0.310 & 0.295\\
-457 (Hyperbolic weighting) & 0.334 & 0.302\\
-457 (Linear weighting) & 0.456 & 0.430 \\
-- (Output Correlation)\footnotemark[1] & - & -  \\ 
-- (Genetic Elitism) & 0.456 & 0.430 \\
-- (Genetic Normal) & 0.456 & 0.430 \\
-176 (manual) & 0.365  & 0.342  \\ [1ex]
+457 (all) & - & -\\
+457 (Hyperbolic) & - & -\\
+457 (Linear weighting) & - & - \\
+40 (Output Correlation) & - & -  \\
+176 (manual) & - & -  \\ [1ex]
 \hline
 \end{tabular}
-\caption{Rotation Forest overview}
+\caption{Rotation Forest $R^2$ Score overview}
 \label {table:4}
 \end{table}
 
