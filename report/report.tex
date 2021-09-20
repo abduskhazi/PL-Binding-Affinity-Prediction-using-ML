@@ -639,7 +639,10 @@ On the negative side,  the function represented by the ensemble cannot be easily
 Figure~\ref{fig:RFMModel} shows the validation and testing accuracy obtained by a random forest with manually selected features.
 This model outperforms the other features selection strategies.
 
-The following table gives you an overview of our model.
+Table~\ref{table:3} gives an overview of our model.
+The table shows that features selected by output correlation (Spearman and Pearson correlations) seem to generalize well to the test data.
+However,  we cannot consider this as a good model because the validation error and the test error are not in agreement with each other.
+Moreover,  the correlated feature selection assumes that the data features have a strong linear or monotonic relation with the output which may not be correct in our case. Hence, we do not consider these models as the best models.
 
 \begin{table} [h!]
 \centering
@@ -854,6 +857,7 @@ Hence we conclude that this model is not the best model for our problem.
 
 Table~\ref{table:4} gives an overview of the performance of Rotation forests.
 The implemented model does not have an option to train weighted data.
+We do not consider the models trained by using features selected by output correlation good models for similar reasons as discussed in Section \ref{RandomForestRegressionLabel}.
 
 \begin{table} [h!]
 \centering
@@ -923,7 +927,7 @@ Interestingly,  we could also use the feature correlation within families to our
 By increasing the randomness of our feature selection during the data split we force our model to rely less on a specific feature.
 Hence a wrong measurement or a corrupted feature would not hamper our model significantly.
 
-Since we are getting an $R^2$ score of $>$ 0.65 consistently,  the binding affinity predicted by our model can be used for any new PL complex can be taken as a reference for drug-testing decisions.
+Since we are getting an $R^2$ score of $>$ 0.5 consistently,  the binding affinity predicted by our model can be used for any new PL complex can be taken as a reference for drug-testing decisions.
 For example,  one can use the results to prioritize testing of new ligands in a wet lab experiment to save resources for the important ligands.
 
 As with any model,  our model and approach do have limitations. 
