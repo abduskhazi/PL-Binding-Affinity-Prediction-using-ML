@@ -63,8 +63,17 @@ def main():
         plt.ylabel(f'Min: {min_corr_val:.2f}').set_rotation(0)
         fig.savefig("correlation" + family[0] + ".png", dpi=fig.dpi)
 
+    best_general = [1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1,     1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,     1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1    , 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,     1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,     1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1    , 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,     1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1,     1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1    , 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 0, 0, 0, 1, 1, 1, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 1, 0, 1, 1, 1, 0, 1, 1, 0, 0, 0, 1,     0, 1, 0, 0, 1, 1, 1, 0, 0, 1, 1, 0, 1, 0, 1, 0, 0, 1, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1,     0, 0, 0, 0, 0, 0, 0, 0, 1, 1]
+    best_elitism = [0, 1, 1, 0, 0, 0, 0, 1, 1, 0, 1, 0, 0, 0, 1, 1, 0, 1, 0, 1, 0, 1, 1, 0, 0, 1, 1, 0, 1, 1, 1, 1, 1, 0,     1, 1, 1, 1, 0, 0, 0, 1, 1, 0, 1, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 1, 1, 0, 1, 0, 1, 0, 1, 1    , 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 0, 0, 1, 1, 1, 0, 1, 0, 0, 1, 1, 1, 1, 0,     0, 0, 1, 1, 1, 0, 1, 1, 0, 1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0, 0, 1, 1, 0, 1, 1, 1, 0, 0, 1, 0, 1, 1, 0, 0, 1, 0, 1, 1, 0, 1,     0, 1, 0, 1, 0, 0, 0, 0, 1, 1, 0, 1, 1, 0, 0, 1, 0, 0, 0, 0, 1, 1, 0, 1, 0, 1, 1, 0, 1, 0, 1, 0, 0, 0, 1, 0, 0, 1, 0, 1, 1, 0    , 0, 1, 0, 0, 0, 1, 1, 0, 1, 1, 0, 0, 0, 1, 0, 1, 1, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 1, 1, 0, 1, 0, 1, 1, 1, 1, 0, 1, 0, 1, 0,     0, 1, 0, 0, 0, 0, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 1, 0, 0, 1, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0,     1, 1, 0, 1, 1, 0, 1, 0, 1, 0, 1, 1, 0, 0, 1, 1, 0, 1, 1, 1, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0    , 0, 1, 0, 1, 0, 1, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 0, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1,     1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 0, 0, 1, 1, 1, 0, 0, 1, 1, 0, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 1, 0, 0, 0, 0,     1, 0, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0, 0, 1, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1    , 0, 1, 1, 0, 0, 1, 1, 0, 0]
     # Obtain data for our random forest regressor.
-    X, y, features, weights = bakery.bake_train_Xy()
+    #X, y, features, weights = bakery.bake_train_Xy()
+    #X_test, y_test, _, w_test = bakery.bake_test_Xy()
+    #X, y, features, weights = bakery.bake_train_Xy_correlated_feature_selection(pearson = True)
+    #X_test, y_test, _, w_test = bakery.bake_test_Xy_correlated_feature_selection(pearson = True)
+    X, y, features, weights = bakery.bake_train_Xy_manual_feature_selection()
+    X_test, y_test, _, w_test = bakery.bake_test_Xy_manual_feature_selection()
+    #X, y, features, weights = bakery.bake_train_Xy_with_given_features(best_elitism)
+    #X_test, y_test, _, w_test = bakery.bake_test_Xy_with_given_features(best_elitism)
     print("X.shape =", X.shape)
     print("y.shape =", y.shape)
 
@@ -86,7 +95,7 @@ def main():
         print("Fitting the Random Forest Regressor...")
         regressor = RandomForestRegressor(n_estimators=400, max_features=0.2, min_samples_leaf=2, oob_score=True, n_jobs=-1)
 
-    w_train = w_train / np.sum(w_train)
+    #w_train = w_train / np.sum(w_train)
     regressor.fit(X_train, y_train, sample_weight=w_train)
     print("Fitting completed.")
 
@@ -95,23 +104,24 @@ def main():
         print("oob score = ", regressor.oob_score_)
     print("Validation r2 score = ", r2_score(y_validate, y_pred))
     print("Training r2 score = ", r2_score(y_train, regressor.predict(X_train)))
+    print("Testing r2 score = ", r2_score(y_test, regressor.predict(X_test)))
 
     #Plotting to visualize the accuracy of our model.
     fig = plt.figure()
-    plt.scatter(y_validate, y_pred, 1)
+    plt.plot(y_validate, y_pred, '.')
     plt.xlabel("y_validate")
     plt.ylabel("y_validate_pred")
     plt.title("Execution ID = " + str(ExecutionID))
     plt.plot(range(2,14), range(2,14), '--')
-    fig.savefig('accuracy_validate.png', dpi=fig.dpi)
+    fig.savefig('accuracyRFRvalidate.png', dpi=fig.dpi)
 
     fig = plt.figure()
-    plt.scatter(y_train, regressor.predict(X_train), 1)
-    plt.xlabel("y_train")
-    plt.ylabel("y_train_pred")
+    plt.plot(y_test, regressor.predict(X_test), '.')
+    plt.xlabel("y_test")
+    plt.ylabel("y_test_pred")
     plt.title("Execution ID = " + str(ExecutionID))
     plt.plot(range(2,14), range(2,14), '--')
-    fig.savefig('accuracy_train.png', dpi=fig.dpi)
+    fig.savefig('accuracyRFRtest.png', dpi=fig.dpi)
 
     # TO check the importance protein features in our model -
     # We shuffle all protein feature columns one by one. Then we check the R^2 score.
