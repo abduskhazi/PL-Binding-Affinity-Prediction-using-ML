@@ -854,30 +854,30 @@ Hence we conclude that this model is not the best model for our problem.
 \end{table}
 
 \section{Discussion}
-In this project,  we tried to determine the protein-ligand binding affinity by using spacial features extracted by RDKit and dpocket.
-We believe that the presence of 2D/3D features made our data more accesible to simple machine learning models. 
-This was crucial because the complex models that directly get the 3D features from the data (e.g. 3D convolutions) require huge amount of data which is expensive to accumulate.
+In this project, we tried to determine the protein-ligand binding affinity by using spacial features extracted by RDKit and D-Pocket.
+We believe that 2D/3D features made our data more accessible to simple machine learning models. 
+It was crucial because the complex models that directly get the 3D features from the data (E.g., 3D convolutions) require a lot of data which is expensive to accumulate.
 
-We spent most of the time analysing and studying the most suitable linear model (Linear Regression) and non-linear model (Random Forest Regression) for our extracted data.
+We spent most of the time analyzing and studying the most suitable linear model (Linear Regression) and non-linear model (Random Forest Regression) for our extracted data.
 Our study also included feature selection methods like genetic algorithms.
-We found that our extracted protein ligand data had the following interesting properties
+We found that our extracted protein-ligand data had the following interesting properties
 \begin{itemize}
-\item The data does not not have a symmetric Gaussian distribution.  In other words, the ranges of values in each dimension were very different.
-\item The features are both real valued numbers as well as discrete.  The discrete values are also represented as real numbers.
-\item There are feature families in the ligand descriptors that have features that are highly correlated.
+\item The data does not have a symmetric Gaussian distribution.  In other words, the ranges of values in each dimension were very different.
+\item The features are both real-valued numbers as well as discrete.  The discrete values are also represented as real numbers.
+\item There are feature families in the ligand descriptors that have highly correlated features.
 \end{itemize}
 
-While linear regression did give reasonable results,  it was not a very reliable model because it assumed that the data was linearly related to the binding affinity.
+While Linear Regression did give reasonable results,  it was not a very reliable model because it assumed that the data was linearly related to the binding affinity.
 Nevertheless,  we were able to run genetic algorithms on this model to get the best $\approx$ 50 features.
-We failed to do this in case of the Random Forest Regression model.
+We failed to do this in the case of the Random Forest Regression model.
 
-From our study of genetic genetic algorithms we make the conclusion that it was not very helpful in improving the performance of our model. However we were able to reduce or eliminate around 50 features for the Random Regression Model and around 400 features in the linear Regression without hampering the performance to a large degree.
+From our study of genetic algorithms, we conclude that it was not very helpful in improving the performance of our model. However, we were able to reduce (eliminate) around 200 features for the Random Regression Model and around 400 features in the Linear Regression without hampering the performance to a large degree.
 One issue we found with genetic algorithms is that they make the model very reliant on the selected features.
-This hard constraint may not be good when data collection process is expensive and error prone.
+This hard constraint may not be good when the data collection process is expensive and error-prone.
 
-We found that the Random Forest Regression was able to deal with all the above specific properties of our data.
+We found that the Random Forest Regression could deal with all the above specific properties of our data.
 Random Forest Regression deals with both Real valued and discrete input features because the main aim of a fitting tree (in the random forest) is to reduce the entropy of the divided data.
-Since all the discrete features in our data are represented as real valued number,  the trees can can easily find a midpoint between the discrete values to divide the data. 
+Since all the discrete features in our data were extracted as real-valued numbers,  the trees can easily find a midpoint between the discrete values to divide the data. 
 Interestingly,  we could also use the feature correlation within families to our advantage to improve the robustness of our model. 
 By increasing the randomness of our feature selection during the data split we force our model to rely less on a specific feature.
 Hence a wrong measurement or a corrupted feature would not hamper our model significantly.
@@ -885,12 +885,12 @@ Hence a wrong measurement or a corrupted feature would not hamper our model sign
 Since we are getting an $R^2$ score of $>$ 0.65 consistently,  the binding affinity predicted by our model can be used for any new PL complex can be taken as a reference for drug-testing decisions.
 For example,  one can use the results to prioritize testing of new ligands in a wet lab experiment to save resources for the important ligands.
 
-As with any model,  our model and approach does have limitations. 
-Firstly our model cannot be explained very easily.
-With hundreds of trees in our random forest, the model can only be treated as a Black Box.
-Because of the complexity of our model,  we were not able to show why some features were very important and other not so important - for example in the feature importance calculation.
+As with any model,  our model and approach do have limitations. 
+Firstly, Random Forest Regression models cannot be explained easily.
+With hundreds of trees in our random forest, the model at best can only be treated as a Black Box.
+Because of its complexity,  we were not able to show why some features were very important as compared to the others (E.g., in the feature importance calculation).
 Secondly, our model relies heavily on the ligand features. 
-This makes our model assume that the binding only slightly depends on the protein which is not the case conceptually.
+The model, hence, assumes that the binding only slightly depends on the protein features. On the contrary, the protein and ligand features are both equally responsible for the binding affinity.
 Also, we could not perform hyper-parameter optimization,
 in conjunction with the genetic feature selection algorithms as it is prohibitively expensive.
 
