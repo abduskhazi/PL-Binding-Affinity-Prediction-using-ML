@@ -12,7 +12,7 @@ if len(sys.argv) > 1:
     ExecutionID = int(sys.argv[1])
 ExecutionID = reproducibility.reproduce(ExecutionID)
 
-def plot_figures(X_validate, y_validate, X_test, y_test, reg):
+def plot_figures(X_validate, y_validate, X_test, y_test, reg, name="SVR"):
     import matplotlib.pyplot as plt
     print("Plotting to visualize the accuracy of our model.")
     fig = plt.figure()
@@ -21,7 +21,7 @@ def plot_figures(X_validate, y_validate, X_test, y_test, reg):
     plt.ylabel("y_validate_pred")
     plt.title("Execution ID = " + str(ExecutionID))
     plt.plot(range(2,14), range(2,14), '--')
-    fig.savefig('accuracy_validate.png', dpi=fig.dpi)
+    fig.savefig(name + 'validate.png', dpi=fig.dpi)
 
     fig = plt.figure()
     plt.plot(y_test, reg.predict(X_test), '.')
@@ -29,13 +29,15 @@ def plot_figures(X_validate, y_validate, X_test, y_test, reg):
     plt.ylabel("y_test_pred")
     plt.title("Execution ID = " + str(ExecutionID))
     plt.plot(range(2,14), range(2,14), '--')
-    fig.savefig('accuracy_test.png', dpi=fig.dpi)
+    fig.savefig(name + 'test.png', dpi=fig.dpi)
 
 
-X, y, features, weights = bakery.bake_train_Xy_correlated_feature_selection(spearman = True)
-X_test, y_test, _, w_test = bakery.bake_test_Xy_correlated_feature_selection(spearman = True)
+#X, y, features, weights = bakery.bake_train_Xy_correlated_feature_selection(pearson = True)
+#X_test, y_test, _, w_test = bakery.bake_test_Xy_correlated_feature_selection(pearson = True)
 #X, y, features, weights = bakery.bake_train_Xy_manual_feature_selection()
 #X_test, y_test, _, _ = bakery.bake_test_Xy_manual_feature_selection()
+X, y, features, weights = bakery.bake_train_Xy()
+X_test, y_test, _, w_test = bakery.bake_test_Xy()
 
 print("X.shape =", X.shape)
 print("y.shape =", y.shape)

@@ -109,11 +109,11 @@ def bake_train_Xy():
 
 def bake_test_Xy():
     output_variable_file = "../data/INDEX_general_PL_data.2019"
-    input_variable_file = "../data/test/test_model_input_all_proteins_mol2_fp_no_nan.data"
+    #input_variable_file = "../data/test_refined_unseen.data"#/test_model_input_all_proteins_mol2_fp_no_nan.data"
+    input_variable_file = "../data/test/test_unseen.data"
     return bake_Xy(output_variable_file, input_variable_file)
 
-def bake_train_Xy_with_given_features(features):
-    X, y, feature_names, weights = bake_train_Xy()
+def bake_Xy_with_given_features(features, X, y, feature_names, weights):
 
     list_indexes = [id for id, e in enumerate(features) if e == 0]
     X_selected = remove_columns(X, list_indexes)
@@ -121,6 +121,13 @@ def bake_train_Xy_with_given_features(features):
 
     return X_selected, y, features_selected, weights
 
+def bake_train_Xy_with_given_features(features):
+    X, y, feature_names, weights = bake_train_Xy()
+    return bake_Xy_with_given_features(features, X, y, feature_names, weights)
+
+def bake_test_Xy_with_given_features(features):
+    X, y, feature_names, weights = bake_test_Xy()
+    return bake_Xy_with_given_features(features, X, y, feature_names, weights)
 
 def bake_Xy_manual_feature_selection(X, y, feature_names, weights):
 
