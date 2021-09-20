@@ -621,6 +621,7 @@ The rationale was that using the above score function we could go to a local min
 Both the initialization strategies gave similar results as shown in Table~\ref{table:1}
 
 \subsection{Random Forest Regression}
+\label{RandomForestRegressionLabel}
 Random forest regression is an ensemble ML model of regression trees.
 When training each tree,  the algorithm finds out which feature value can divide the data into 2 groups to yield the lowest sum of squared values on both sides (The criterion can be different as well e.g. lowest absolute error).
 Then each of the sub-data is split recursively till a stopping criterion (e.g a set number of data points in the leaf).
@@ -831,11 +832,28 @@ Figures~\ref{fig:SVRvalidate} and ~\ref{fig:SVRtest} visualize the validation an
 
 \subsection{Rotation Forests}
 
+In Section \ref{RandomForestRegressionLabel} we analyzed different strategies to improve the performance of our model.
+While fitting a tree, the random forest model tries to get a (feature, value) tuple that best divides our data.  The criterion is to reduce the entropy of the divided data.
+This is done recursively till some set criteria (E.g., the leaf nodes should contain 7 data points).
+However,  each (feature, value) only represents an axis-aligned hyperplane.
+
+If there are some real-valued features in our data set,  we could reduce the complexity of our tree by using a hyperplane that is not axis aligned.
+For example consider approximation of the line $y = x$.
+To approximate this using an axis-aligned hyperplane,  we would require a deep tree of high complexity.
+If instead, we transform our data such that the line $y = x$ transforms to $y = k$ where $k \in \mathbf{R}$,  we only require 1 (feature, value) tuple.
+
+This can be accomplished by calculating the eigenvector of our data and transforming our feature space such that the basis vectors are the eigenvectors of the data.
+Rotation forests use this concept to reduce the complexity of their trees and to get a better quality model. 
+They were first proposed for classification.  We adapted the implementation for the regression case.
+
 The training $R^2$ score was comparable to that of the random forest regressor.
-However, this did not yield a good validation error.
+However,  we did not see much improvement in the accuracy.
 One of the reasons,  we hypothesize,  is that rotation forests are shown to be better than random forests only for the continuous feature values.
-However,  as per the domain expert,  we may have many discrete values in our feature space.
+However,  our data set has both real-valued and discrete values,  although the discrete values are encoded as the real-values for our model.
 Hence we conclude that this model is not the best model for our problem.
+
+Table~\ref{table:4} gives an overview of the performance of Rotation forests.
+The implemented model does not have an option to train weighted data.
 
 \begin{table} [h!]
 \centering
