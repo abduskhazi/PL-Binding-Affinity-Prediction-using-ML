@@ -157,7 +157,7 @@ The unit of distance used is this format is Angstrom (\si{\angstrom}).  \SI{1}{\
 
 \paragraph{PDB format:}
 PDB format is a human-readable file format used to represent the protein molecules (macromolecules).
-Within the PDB format,  the coordinates of atoms are represented like the XYZ format [see \ref{xyz_format}].
+Within the PDB format,  the coordinates of atoms are represented like the XYZ format.
 Because of the 3D information in this format,  molecular visualization of proteins is possible with specialized software. 
 It also contains information about atomic connectivity and the protein's primary,  secondary,  tertiary,  and quaternary structures.
 \cite{pdb_file_format}
@@ -166,22 +166,23 @@ Please see \cite{examplePDBFile} for an example pdb file.
 
 
 \paragraph{Structure Data File (SDF) Format:}
-SDF format file is a Chemical Table file (CT File) that contains a structure of the molecule in the X, Y, Z format.
+SDF format file is a Chemical Table file (CT File) that contains a structure of the molecule in the XYZ format.
 It contains information like atomic bonds,  connectivity information,  molecular weight,  and molecular formula. \cite{SDFformat}
 Section \ref{SDFFileexampleref} illustrates the SDF file format.
 
 \paragraph{Mol2 format:}
-Similar to the SDF format,  Mol2 also represents the 3D structure of a molecule in the X, Y, Z format.
+Similar to the SDF format,  Mol2 also represents the 3D structure of molecules in the XYZ format.
 It contains the atomic bond and connectivity information but does not contain the other data like molecular weight and formula.
-The ligands given in this format were used because more ligands in mol2 format could be processed with the RDKit feature extractor.
-Section \ref{MOL2Fileexampleref} illustrates the Mol2 file format.
+The ligands given in this format are used in the project because features of more ligands could be extracted using the RDKit feature extractor.
+Section \ref{MOL2Fileexampleref} illustrates the Mol2 file format in more detail.
 
 \paragraph{SMILES format:}
 SMILES is an acronym for Simplified Molecular-Input Line-Entry System.
 It represents a molecule using an ASCII string.
-Using the 3D data in SDF and Mol2 formats,  an atomic graph representation could be created.
-Using this graph the SMILES string for the molecule can be generated.
+Using the 3D data in SDF and Mol2 formats, a graph representing the 3D molecular structure can be created (where nodes are atoms and edges are atomic bonds).
+Using graph traversal algorithms, the SMILES string for the molecule can be generated.
 The SMILES format itself is not very helpful for us as one would lose the 3D structural information after converting to it.
+Nevertheless, it is a useful format to represent the molecules compactly.
 \cite{smilesformat}
 
 \subsection{Extraction of features}
