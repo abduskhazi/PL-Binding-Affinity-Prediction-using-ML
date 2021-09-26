@@ -81,12 +81,12 @@ Similarly, $K_i$ and $IC_{50}$ are defined using concentration albeit non-trivia
 \cite{binding_affinity_description}
 
 \subsection{PDBBind Dataset}
-Over the last few decades, researchers have been successful in building a single data archive for proteins.  This archive, called \textbf{Protein Data Bank} \cite{pdb_homepage}, holds 3-D structural data of the proteins determined by experiments like X-ray crystallographic, Nuclear magnetic resonance (NMR), and cryoelectron microscopy (cryoEM).  A subset of this data also contains information about how well a given protein and ligand bind together.  It is called binding affinity between a protein and ligands.  (It also contains data about protein-protein complexes that this project does not deal with)
+Over the last few decades, researchers have been successful in building a single data archive for proteins. This archive, called \textbf{Protein Data Bank} \cite{pdb_homepage}, holds 3-D structural data of the proteins determined by experiments like X-ray crystallographic, Nuclear magnetic resonance (NMR), and cryoelectron microscopy (cryoEM).  A subset of this data also contains information about the binding affinity between a protein and ligands. Moreover, it contains information on protein-protein complexes.
 \cite{pdbank_history}
 
-As the protein-ligand binding affinity is studied here,  only the relevant data should be filtered out from \textbf{Protein Data Bank}.  This is already done by the maintainers of the \textbf{PDBBind Data Bank}.
-\cite{pdbbind_introduction}
-Using the curated protein-ligand affinity data present in the PDBBind Data bank,  a machine learning model that learns to predict the affinity is built.
+This project aims to study the protein-ligand binding affinity. Hence, only the binding affinity data between the proteins and the ligands should be extracted from \textbf{Protein Data Bank}.  A dataset called \textbf{PDBBind Data Bank} already does this
+\cite{pdbbind_introduction}.
+Using the curated protein-ligand affinity data present in the PDBBind Data bank, the project builds a machine learning model that learns to predict this affinity.
 
 \section{Problem Formulation}
 \subsection{Problem Overview}
