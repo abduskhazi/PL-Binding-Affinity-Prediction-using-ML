@@ -270,9 +270,9 @@ The \textit{pearson} and \textit{spearman} correlations of each feature were cal
 We assumed that the features were either linearly related to the output (in the case of Pearson correlation) or had a monotonic relationship (in the case of Spearman correlation).
 20 from the ligand descriptors that were most correlated to the output were selected as inputs to the model.  Similar 20 best features from the protein descriptors were selected.
 
-\subsubsection{Using genetic algorithms \cite{genetic_algorithm}}
+\subsubsection{Using genetic algorithms}
 Since the feature space is a non-continuous problem of combinatorial complexity,
-we also studied genetic feature selection algorithms.
+we also studied genetic feature selection algorithms \cite{genetic_algorithm}.
 We represent each feature by a binary number, 1 for the inclusion of the feature and 0 for the exclusion.
 Let $\mathbb{B}$ be a binary number $\{0,  1\}$.
 Each feature selection $p \in \mathbb{B}^{456}$ (401 for ligands + 55 for proteins) is called a chromosome.
@@ -381,10 +381,10 @@ For example, if we used all the features to train a simple DNN model of size $[4
 Before fitting the model, we did a preliminary analysis of our data.  This was necessary to train our models more reliably.
 
 \subsubsection{Data cleaning}
-Using Principle component analysis (PCA) each feature's contribution in the variation of the data was analyzed. 
+Using principle component analysis (PCA) each feature's contribution in the variation of the data was analyzed. 
 During this analysis, 2 issues were found:
 \begin{itemize}
-\item There was a ligand feature named IPC that was having extremely small and extremely huge values e.g $k * 10^{39}$ where $k \in (0,1]$.
+\item There was a ligand feature named IPC which had extremely small and extremely huge values e.g $k * 10^{39}$ where $k \in (0,1]$.
 Hence we scaled this feature using a logarithm function.
 This was done for numerical safety during the training of our models.
 The effect of this scaling on the cumulative PCA is shown in Figure~\ref{fig:PCAAnalysis}.
@@ -408,7 +408,7 @@ The effect of this scaling on the cumulative PCA is shown in Figure~\ref{fig:PCA
      \label{fig:PCAAnalysis}
 \end{figure}
 
-\item There were a lot of NaN (Not a number) and zeros in our data.  Perhaps this was because the measurements done in the experiments were not recorded completely and the RDKit feature extractor could not extract these values reliably. While the presence of 0s was harmless,  we made sure that we removed all NaN values before we input the data into our model.  Figure~\ref{fig:pcaproteinanalysis} shows cumulative PCA of the protein features. 
+\item There were a lot of NaN (Not a number) and zeros in our data.  Perhaps these descriptors did not make sense for the some of the ligands. While the presence of 0s was harmless,  we made sure that we removed all NaN values before we input the data into our model.  Figure~\ref{fig:pcaproteinanalysis} shows cumulative PCA of the protein features. 
 \end{itemize}
 
 \begin{figure}[htb]
@@ -422,8 +422,7 @@ It must be noted that the scaling of ligand feature IPC must be done before we u
 This is a limitation of our model.
 
 \subsubsection{Dealing with measurement resolution}
-During the measurement of the Protein-Ligand complexes,  the measurements can be taken at various resolutions (in \si{\angstrom} units).
-The accuracy of the measurement is inversely proportional to the resolution.
+Atomic structures produced using X-ray crystallography always have a particular resolution associated with them (\si{\angstrom} units). The structural detail of the 3D image is inversely proportional to the resolution.
 As shown in a small excerpt of the PDB Databank INDEX file,  we have a resolution measurement for each of the complexes (or data points).
 
 \begin{verbatim}
@@ -449,7 +448,7 @@ We found that $\mathrm{\max{R_{1 ...  n}}} \approx 5$ \si{\angstrom} in our data
 It is necessary to add 1 to the max resolution in the linear formula to avoid data points with 0 weight.
 The formulae are depicted in Figure~\ref{fig:graphingformula}.
 Figure~\ref{fig:resolutiondistribution} shows the distribution of data points as a function of resolution.
-The resolution of the measurements ranges from 1 to 5 approximately.
+The resolution of the measurements ranges from 1 \si{\angstrom} to 5 \si{\angstrom} approximately.
 
 \begin{figure}
      \centering
@@ -471,7 +470,7 @@ The resolution of the measurements ranges from 1 to 5 approximately.
 \end{figure}
 
 Figure~\ref{fig:WeightDistribution} shows the distribution of the weights obtained from our data for the linear and hyperbolic case.
-In Figure~\ref{fig:linearweightdistribution},  we see that linear weighting gives us data points with a higher weight as compared to hyperbolic weighting.
+In Figure~\ref{fig:linearweightdistribution},  we see that linear weighting gives data points with a higher weight as compared to hyperbolic weighting.
 This makes intuitive sense because as shown Figure~\ref{fig:resolutiondistribution}, 
 most of the data points have a resolution around 2 \si{\angstrom}.
 Since linear weighting around 2 \si{\angstrom} is higher, the linearly weighted data points will have a higher weight on average.
@@ -513,21 +512,23 @@ Figure~\ref{fig:BestLinearModel} shows the best results obtained with linear reg
 
 \begin{table} [h!]
 \centering
- \begin{tabular}{ | c | c | c | c | }
+\resizebox{\linewidth}{!} {
+\begin{tabular}{ | c | c | c | c | c | c | }
 \hline
-\textbf{Features Selected} & \textbf{Training} & \textbf{Validation} & \textbf{Testing} \\ [0.5 ex]
+\textbf{No.  features} & \textbf{Feature selection} & \textbf{Weighting} & \textbf{Training} & \textbf{Validation} & \textbf{Testing} \\ [0.5 ex]
 \hline \hline
-457 (all) & 0.456 & 0.433 & 0.412\\
-\textbf{457 (Hyperbolic)} & \textbf{0.452} & \textbf{0.431} & \textbf{0.420}\\
-457 (Hyperbolic duplication) & 0.465 & 0.424 & 0.419\\
-457 (Linear) & 0.455 & 0.430 & 0.416\\
-457 (Linear Duplication) & 0.460 & 0.428 & 0.407\\
-49 (Genetic + Hyperbolic)\footnotemark[1] & $\approx$0.373 & $\approx$0.393  & $\approx$0.402\\
-40 (Pearson + Hyperbolic) & 0.288 & 0.276  & 0.286 \\ 
-40 (Spearman + Hyperbolic) & 0.291 & 0.280  & 0.289 \\ 
-176 (manual + Hyperbolic) & 0.364  & 0.342  & 0.389\\ [1ex]
+457 & - & - & 0.456 & 0.433 & 0.412\\
+\textbf{457} &  \textbf{-} & \textbf{Hyperbolic} & \textbf{0.452} & \textbf{0.431} & \textbf{0.420}\\
+457 & - & Hyperbolic duplication & 0.465 & 0.424 & 0.419\\
+457 & - & Linear & 0.455 & 0.430 & 0.416\\
+457 & - & Linear Duplication & 0.460 & 0.428 & 0.407\\
+49 & Genetic\footnotemark[1] & Hyperbolic & $\approx$0.373 & $\approx$0.393  & $\approx$0.402\\
+40 & Pearson Correlation & Hyperbolic & 0.288 & 0.276  & 0.286 \\ 
+40 & Spearman Correlation & Hyperbolic & 0.291 & 0.280  & 0.289 \\ 
+176 & Manual & Hyperbolic & 0.364  & 0.342  & 0.389\\ [1ex]
 \hline
 \end{tabular}
+}
 \caption{$R^2$ scores of the Linear Regression Model}
 \label {table:1}
 \end{table}
@@ -549,7 +550,7 @@ Figure~\ref{fig:BestLinearModel} shows the best results obtained with linear reg
         \caption{Test Accuracy}
         \label{fig:accuracytestLGHyperbolic}
      \end{subfigure}
-     \caption{Best Linear Model.  Uses all 457 features with Hyperbolic weighting.}
+     \caption{Linear Model using Hyperbolic weighting and all 457 features.}
      \label{fig:BestLinearModel}
 \end{figure}
 
@@ -558,7 +559,7 @@ This is not always true.
 One anomaly in the results is that there are some cases where the validation and testing results seem to be better than the training result.
 However, this is not always the case. 
 The results highly depend on the seed.
-If the seed changes,  the train/test data split gives us different data for training and different data for validation.
+If the seed changes,  the train/test data split gives different data for training and different data for validation.
 What is important for the validity of our model is that the results remain in a reasonable range.
 
 In the linear regression model,  we used genetic algorithms to reduce both the large feature space and to eliminate correlated features within the families. 
@@ -578,11 +579,12 @@ Hence,  taking inspiration from the hypervolume-based multi-objective optimizati
 $$
 \textrm{score} = \mathbf{R}^2 \textrm{score} * \textrm{Features Eliminated}
 $$
-Figure~\ref{fig:scorefunctionfigure} gives us an intuition about this function.
+Figure~\ref{fig:scorefunctionfigure} provides a graphical depiction of the score function.
 Here the score function represents the area of the square formed between a given point and the origin.
 Trying to improve the score means,  it will try to eliminate more features as well as try to get a higher $R^2$ score.
 In the example below,  the point $a$ is preferred over $b$ as it gives almost the same $R^2$ score and eliminates a larger number of features.
-Another advantage of this score function is that the scale of both axes is irrelevant.
+Another advantage of this score function is that we do not need to keep the values of both components (i.e. \textit{features eliminated} and \textit{$R^2$} score) in a similar range.
+Hence we need not worry about scaling any of these components.
 
 \begin{figure}[htb]
   \centering
@@ -592,7 +594,7 @@ Another advantage of this score function is that the scale of both axes is irrel
 \end{figure}
 
 \subsubsection{Initialization strategies of population}
-Two main strategies were used to initialize the population for the genetic algorithm
+Two main strategies were used to initialize the population for the genetic algorithm:
 \begin{itemize}
 \item \textbf{Random Initialization}.  A population of $2400$ chromosomes was randomly initialized and run for $500$ generations.
 \item \textbf{Specific Initialization}.  Here,  the initial population was kept at $457$.
@@ -618,13 +620,13 @@ $
 The rationale was that using the above score function we could go to a local minimum by eliminating the worst performing features rather than trying to select the best performing features as in the case of random initialization.
 \end{itemize}
 
-Both the initialization strategies gave similar results as shown in Table~\ref{table:1}
+Both the initialization strategies gave similar results as shown in Table~\ref{table:1}.
 
 \subsection{Random Forest Regression}
 \label{RandomForestRegressionLabel}
 Random forest regression is an ensemble ML model of regression trees.
 When training each tree,  the algorithm finds out which feature value can divide the data into 2 groups to yield the lowest sum of squared values on both sides (The criterion can be different as well e.g. lowest absolute error).
-Then each of the sub-data is split recursively till a stopping criterion (e.g a set number of data points in the leaf).
+Then each of the sub-data is split recursively till a stopping criterion (e.g.  a set number of data points in the leaf).
 
 For each tree,  a subset of the data is used for training. 
 The subset of data is sampled with replacement a.k.a bagging.
@@ -646,20 +648,22 @@ Moreover,  the correlated feature selection assumes that the data features have 
 
 \begin{table} [h!]
 \centering
- \begin{tabular}{ | c | c | c | c | c |}
+\resizebox{\linewidth}{!} {
+ \begin{tabular}{ | c | c |  c | c | c | c | c |}
 \hline
-\textbf{Features Selected} & \textbf{Training} & \textbf{Validation} & \textbf{OOB score} & \textbf{Testing} \\ [0.5 ex]
+\textbf{No.  Features} & \textbf{Feature Selection} & \textbf{Weighting} & \textbf{Training} & \textbf{Validation} & \textbf{OOB score} & \textbf{Testing} \\ [0.5 ex]
 \hline \hline
-457 (all) & 0.961 & 0.790 & 0.793 & 0.540\\
-457 (Hyperbolic) &  0.961 & 0.778 & 0.796 & 0.555\\
-457 (Linear)  &  0.960 & 0.800 & 0.790 & 0.542\\
-40 (Spearman) &  0.930 & 0.677 & 0.672 & 0.880  \\ 
-40 (Pearson) &  0.925 & 0.651 & 0.646 & 0.870  \\ 
-229 (Genetic Elitism)  & 0.958 &  0.791 & 0.792 & 0.537 \\
-394 (Genetic Normal) & 0.960 & 0.808 & 0.791 & 0.543 \\
-\textbf{176 (manual)}  &  \textbf{0.947} & \textbf{0.737} & \textbf{0.734} & \textbf{0.579}  \\ [1ex]
+457 & - & - & 0.961 & 0.790 & 0.793 & 0.540\\
+457 & - & Hyperbolic &  0.961 & 0.778 & 0.796 & 0.555\\
+457 & - & Linear &  0.960 & 0.800 & 0.790 & 0.542\\
+40 & Spearman Correlation & Hyperbolic &  0.930 & 0.677 & 0.672 & 0.880  \\ 
+40 & Pearson Correlation & Hyperbolic &  0.925 & 0.651 & 0.646 & 0.870  \\ 
+229 & Genetic Elitism & Hyperbolic  & 0.958 &  0.791 & 0.792 & 0.537 \\
+394 & Genetic Normal& Hyperbolic & 0.960 & 0.808 & 0.791 & 0.543 \\
+\textbf{176} & \textbf{manual}  & \textbf{Hyperbolic} &  \textbf{0.947} & \textbf{0.737} & \textbf{0.734} & \textbf{0.579}  \\ [1ex]
 \hline
 \end{tabular}
+}
 \caption{Random Forest Regression $R^2$ Score table}
 \label {table:3}
 \end{table}
@@ -687,11 +691,11 @@ Moreover,  the correlated feature selection assumes that the data features have 
 In Section \ref{CorrelationAnalysis} we discussed that within some of the families of features there are heavily correlated features.
 One way to deal with this would be to just take one feature from a family and exclude the rest.
 However, this would not be a good strategy for generalization.
-This is because in the future if this one feature is not measured,  our model would be rendered useless.
+This is because our trained model would be unusable by someone who could not measure one of these selected features (or if the measurements were incorrect).
 
 For this reason,  we made use of the stochasticity of the random forest to our advantage.
-During the creation of a regression tree,  the random forest model tries to get the best (feature,  value) tuple to divide the data. This is known as the split criteria.
-We force it to randomly select only 20\% of the features for deciding on the split criteria.
+During the creation of a regression tree,  the random forest model tries to get the best (feature,  value) tuple to divide the data. This is known as the split criterion.
+We force it to randomly select only 20\% of the features for deciding on the split criterion.
 More specifically,  we use the following values
 \begin{itemize}
 \item 400 Trees (n\_estimators)
@@ -719,10 +723,11 @@ Hence, we conclude that duplication of the data based on their weights is a wron
 When we used our weight directly in the fit function,  we could not get any noticeable improvement in our model.
 We think this is because the data is already skewed towards the $\approx$2 \si{\angstrom}
 data points.
-This can be seen in Figure~\ref{fig:resolutiondistribution}
+This can be seen in Figure~\ref{fig:resolutiondistribution}.
 
 \subsubsection{Feature Importance calculation}
 The Random Forest regression model fitting is very expensive as compared to the simple linear regression.
+For example in a machine with $4$ CPUs,  fitting a linear model on our data takes $\approx 0.51$ seconds whereas  fitting the random forest model takes $\approx 25.86$ seconds.
 Hence the same strategy cannot be used for feature selection as used in the linear models.
 We used the following strategies to determine the importance of features in the model.
 
@@ -731,9 +736,9 @@ We used the following strategies to determine the importance of features in the 
 For every feature,  it calculates how much decrease in the split criterion the feature contributes in the entire ensemble (i.e in every node it's used in all the trees).
 The disadvantage is that they cannot be reliable when the features have a high cardinality.  Figure~\ref{fig:GiniImportanceLabel} illustrates this importance.
 \item \textbf{Permutation Importance} - This is a model agnostic method.
-It tries to calculate the reduction in the accuracy we shuffle each feature.
-The importance of the features is directly proportional to the amount of reduction in the accuracy.
-The disadvantage is that since each feature is checked independently,  correlated input features make the results unreliable. 
+To calculate the importance of a feature $x$,  it takes the given data and shuffles the values of $x$.  Now the values of feature $x$ do not correspond to the correct data points,  hence there is reduction in the prediction accuracy.
+The importance of the feature is proportional to the reduction in accuracy.
+The disadvantage of this method is that since each feature is checked independently,  correlated input features make the results unreliable. 
 If feature $A$ and feature $B$ are correlated,  the shuffling of $A$ may not impact the model as the model can rely on $B$ for its prediction.  Figure~\ref{fig:PermutationImportanceLabel} illustrates this importance.
 \end{itemize}
 
@@ -767,7 +772,7 @@ In the random forest model,  however,  this scoring function selected a lot of f
 $$
 \textrm{score} = \mathbf{R}^2 * \textrm{Features Eliminated}^2
 $$
-We used a stronger signal for the number of eliminated features. This scoring function, however,  turned out to be too strong and non of the features were selected.
+We used a stronger signal for the number of eliminated features. This scoring function, however,  turned out to be too strong and none of the features were selected.
 \item \textbf{Elitism}.  Elitism is a strategy used in the genetic algorithms to select the top few elements from each generation for the next generation in addition to the newly created children. This keeps the best performing subset of the population always in the current generation in an effort to improve them further by cross-over or mutation.
 \end{itemize}
 
@@ -779,20 +784,22 @@ We trained support vector regression with the RBF kernel.
 
 \begin{table} [h!]
 \centering
- \begin{tabular}{ | c | c | c | c | }
+\resizebox{\linewidth}{!} {
+ \begin{tabular}{ | c | c | c | c | c | c | }
 \hline
-\textbf{Features Selected} & \textbf{Training} & \textbf{Validation} &  \textbf{Testing} \\ [0.5 ex]
+\textbf{No. Features} & \textbf{Feature Selection} & \textbf{Weighting} & \textbf{Training} & \textbf{Validation} &  \textbf{Testing} \\ [0.5 ex]
 \hline \hline
-457 (all) & 0.310 & 0.308 & 0.356\\
-457 (Hyperbolic) & 0.325 & 0.326 & 0.371\\
-\textbf{457 (Linear)} & \textbf{0.336} &\textbf{0.334} & \textbf{0.374}\\
-40 (Spearman + Linear) & 0.256 & 0.286  & 0.262 \\ 
-40 (Pearson + Linear) & 0.199 & 0.200 & 0.199 \\ 
-40 (Spearman + Hyperbolic) & 0.252 & 0.266 & 0.254 \\ 
-40 (Pearson + Hyperbolic) & 0.169 & 0.169 & 0.169 \\ 
-176 (manual) &  0.306  & 0.298  & 0.358\\ [1ex]
+457 & - & - & 0.310 & 0.308 & 0.356\\
+457 & - & Hyperbolic & 0.325 & 0.326 & 0.371\\
+\textbf{457} & \textbf{-} & \textbf{Linear}  & \textbf{0.336} &\textbf{0.334} & \textbf{0.374}\\
+40 & Spearman Correlation & Linear & 0.256 & 0.286  & 0.262 \\ 
+40 & Pearson Correlation & Linear & 0.199 & 0.200 & 0.199 \\ 
+40 & Spearman Correlation & Hyperbolic & 0.252 & 0.266 & 0.254 \\ 
+40 & Pearson Correlation & Hyperbolic & 0.169 & 0.169 & 0.169 \\ 
+176 & Manual & Linear &  0.306  & 0.298  & 0.358\\ [1ex]
 \hline
 \end{tabular}
+}
 \caption{Table showing  $R^2$ Scores for SVR}
 \label {table:2}
 \end{table}
@@ -899,7 +906,7 @@ Figures~\ref{fig:accuracyRotationFRvalidate} and ~\ref{fig:accuracyRotationFRtes
 \end{figure}
 
 \section{Discussion}
-In this project, we tried to determine the protein-ligand binding affinity by using spacial features extracted by RDKit and D-Pocket.
+In this project, we tried to determine the protein-ligand binding affinity by using spatial features extracted by RDKit and D-Pocket.
 We believe that 2D/3D features made our data more accessible to simple machine learning models. 
 It was crucial because the complex models that directly get the 3D features from the data (E.g., 3D convolutions) require a lot of data which is expensive to accumulate.
 
@@ -917,7 +924,10 @@ Nevertheless,  we were able to run genetic algorithms on this model to get the b
 We failed to do this in the case of the Random Forest Regression model.
 
 From our study of genetic algorithms, we conclude that it was not very helpful in improving the performance of our model. However, we were able to reduce (eliminate) around 200 features for the Random Regression Model and around 400 features in the Linear Regression without hampering the performance to a large degree.
-One issue we found with genetic algorithms is that they make the model very reliant on the selected features.
+
+One issue with feature selection algorithms is that they make the model dependent on the selected features.
+This would hamper the model generalization.
+A single unavailable feature or a single feature measured incorrectly would render our model useless.
 This hard constraint may not be good when the data collection process is expensive and error-prone.
 
 We found that the Random Forest Regression could deal with all the above specific properties of our data.

@@ -65,7 +65,17 @@ print("y.shape =", y.shape)
 # Reporting Linear Regression accuracy with all features included (R^2 score)
 X_train, X_validate, y_train, y_validate, w_train, w_validate = bakery.test_train_split(X, y, weights, test_size=0.2)
 #X_train, y_train, w_train = bakery.duplicate_data(X_train, y_train, w_train)
+
+import time
+start = time.time()
+
 reg = LinearRegression().fit(X_train, y_train, w_train)
+
+end = time.time()
+print("Fitting time for Linear regression: " + str(end - start))
+
+
+
 plot_figures(X_validate, y_validate, X_test, y_test)
 
 training_r2_score = reg.score(X_train, y_train)

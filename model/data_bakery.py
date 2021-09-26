@@ -45,8 +45,8 @@ def bake_Xy(output_variable_file, input_variable_file):
     for key in resolution:
         hist_plot += [resolution[key]]
     n, bins, patches = plt.hist(hist_plot, bins=20, density=False)
-    plt.xlabel("resolution")
-    plt.ylabel("frequency")
+    plt.xlabel("Resolution (A\u00b0)")
+    plt.ylabel("Frequency")
     fig.savefig('resolution_distribution.png', dpi=fig.dpi)
 
     with open(input_variable_file) as input_var_f:
