@@ -47,7 +47,8 @@
 \subsection{Biological Background}
 Proteins are the workhorses of our body.  They are necessary for many essential functions in the body.  Ligands are molecules that bind to proteins to form protein-ligand complexes.  They can be molecules that the protein transports (e.g., a Haemoglobin transporter). They can also act as stimulating agents.  In addition to this, the ligands can also start/stop the protein from doing its function. The correct functioning of these protein-ligand complexes is thus essential for any living organism.
 
-The study of protein-ligand complexes is an intrinsic part of the drug discovery field. It is because drugs are small molecules that act as ligands. As the drug molecules (ligands) bind to the target proteins, they can artificially influence the protein behavior. This binding between protein and ligand causes a therapeutic effect.
+The study of protein-ligand complexes is an intrinsic part of the drug discovery field. It is because drugs are small molecules that act as ligands. As the drug molecules (ligands) bind to the target proteins, they can artificially influence the protein behavior. This binding between protein and ligand causes a therapeutic effect
+\cite{proteinlingandbindingpaper}.
 
 \begin{figure}[htb]
   \centering
@@ -57,7 +58,7 @@ The study of protein-ligand complexes is an intrinsic part of the drug discovery
 \end{figure}
 
 
-When one finds a target drug candidate,  one has to answer questions like - How easily does the drug bind to the target protein? Does it bind to any other protein - If so, is it desirable? Does it have any unforeseen effect on the protein function?  To answer these questions, biologists and pharmacists conduct wet-lab experiments that are expensive.
+When one finds a target drug candidate,  one has to answer questions like - How easily does the drug bind to the target protein? Does it bind to any other protein - If so, is it desirable? Does it have any unforeseen effect on the protein function?  To answer these questions, biologists and pharmacists conduct wet-lab experiments that are expensive \cite{drugdiscoverycost}.
 
 One way to reduce the cost of these experiments is to make a data-driven selection of the drugs.  Using experimental data collected over many years, one can build models to predict the behavior of the proposed drug computationally.  These 'In-Silico' computational methods can aid in the elimination of undesirable drug candidates as well as guide the drug selection process.
 
@@ -77,8 +78,8 @@ $$[P] + [L] \rightleftharpoons [PL]$$
 The binding affinity $K_d$ can be quantified by using the concentrations in the above system at equilibrium.
 $$K_d = \frac{[P][L]}{[PL]} = \frac{k_{-1}}{k_1}$$
 where $k_{-1}$ is the dissociation rate constant and $k_1$ is the association rate constant.
-Similarly, $K_i$ and $IC_{50}$ are defined using concentration albeit non-trivially. 
-\cite{binding_affinity_description}
+Similarly, $K_i$ and $IC_{50}$ are defined using concentration albeit non-trivially
+\cite{binding_affinity_description} \cite{proteinlingandbindingpaper}.
 
 \subsection{PDBBind Dataset}
 Over the last few decades, researchers have been successful in building a single data archive for proteins. This archive, called \textbf{Protein Data Bank} \cite{pdb_homepage}, holds 3-D structural data of the proteins determined by experiments like X-ray crystallographic, Nuclear magnetic resonance (NMR), and cryoelectron microscopy (cryoEM).  A subset of this data also contains information about the binding affinity between a protein and ligands. Moreover, it contains information on protein-protein complexes.
@@ -105,7 +106,7 @@ Figure~\ref{fig:plproblemclassification} shows how the Protein-Ligand problem ca
 
 The 3D structure of proteins and ligands strongly influences how they bind.
 Figure~\ref{fig:lockandkey} illustrates a hypothesis called \textit{Lock and Key}.
-The shape of the protein's binding location and the shape of the ligand must be complementary for the binding.
+The shape of the protein's binding location and the shape of the ligand must be complementary for the binding \cite{proteinlingandbindingpaper}.
 
 \begin{figure}[htb]
   \centering
@@ -159,9 +160,9 @@ The unit of distance used is this format is Angstrom (\si{\angstrom}).  \SI{1}{\
 PDB format is a human-readable file format used to represent the protein molecules (macromolecules).
 Within the PDB format,  the coordinates of atoms are represented like the XYZ format.
 Because of the 3D information in this format,  molecular visualization of proteins is possible with specialized software. 
-It also contains information about atomic connectivity and the protein's primary,  secondary,  tertiary,  and quaternary structures.
+It also contains information about atomic connectivity and the protein's primary,  secondary,  tertiary,  and quaternary structures
 \cite{pdb_file_format}
-\cite{understanding_pdb_format}
+\cite{understanding_pdb_format}.
 Please see \cite{examplePDBFile} for an example pdb file.
 
 
@@ -178,12 +179,12 @@ Section \ref{MOL2Fileexampleref} illustrates the Mol2 file format in more detail
 
 \paragraph{SMILES format:}
 SMILES is an acronym for Simplified Molecular-Input Line-Entry System.
-It represents a molecule using an ASCII string.
+It represents a molecule using an ASCII string \cite{smilesformatresearchpaper}.
 Using the 3D data in SDF and Mol2 formats, a graph representing the 3D molecular structure can be created (where nodes are atoms and edges are atomic bonds).
 Using graph traversal algorithms, the SMILES string for the molecule can be generated.
 The SMILES format itself is not very helpful for us as one would lose the 3D structural information after converting to it.
-Nevertheless, it is a useful format to represent the molecules compactly.
-\cite{smilesformat}
+Nevertheless, it is a useful format to represent the molecules compactly
+\cite{smilesformat}.
 
 \subsection{Extraction of features}
 As the file formats are different for proteins and ligands,  different tools were used to extract their features.
@@ -194,7 +195,7 @@ Using the module \textit{RDKit.Chem.Descriptors}, $402$ features were extracted 
 Each descriptor value is encoded as a real-valued number, hence the ligand feature space is $\mathbf{R}^{402}$ before any feature elimination.
 
 \subsubsection{Protein Features using fpocket/dpocket descriptors}
-\textit{Fpocket} stands for "Find pocket" whereas \textit{Dpocket} stands for "Describe pocket".
+\textit{Fpocket} stands for "Find pocket" whereas \textit{Dpocket} stands for "Describe pocket"\cite{fpocketpaper}.
 \textit{Fpocket} uses 3D Voronoi tessalation and the concepts of "Alpha Spheres" to find out pockets in the protein structure \cite{fpocketmanual} \cite{voronoitesselationshortvideo}.
 The descriptors (features) of all pockets in the protein are extracted from the given protein PDB file.
 For every pocket,  55 descriptors are obtained in total. They are taken as real-valued numbers, $\mathbf{R}$.
@@ -236,7 +237,7 @@ The features extracted from the PDB files and the ligand files can be classified
 Some of the important ones are - AUTOCORR2d\_, Chi, EState\_VSA,  PEOE\_VSA,  SMR\_VSA,  SlogP\_VSA,  VSA\_EState, and fr\_.
 Figure~\ref{fig:correlationheatmap} shows the correlation matrices of 2 families, AUTOCORR2d\_ and Chi.
 As can be seen in the heatmap, there is a heavy correlation between features within these families.
-Hence a strategy to deal with this is also required.
+Hence a strategy to deal with this is also required \cite{collinearityissueindifferentliterature}.
 The correlation heat maps for the other families are shown in section \ref{CorrHeatMapsAppendix}.
 
 \begin{figure}[htb]
@@ -267,13 +268,13 @@ This is because one would have to try $\binom{402}{k_1} * \binom{55}{k_1}$ ($k_1
 In the subsequent subsections, a few feature selection strategies considered in this project are discussed.
 
 \paragraph{Selection by output correlation:}
-The \textit{pearson} and \textit{spearman} correlations of each feature were calculated against the output variable.
+The \textit{pearson} and \textit{spearman} correlations of each feature were calculated against the output variable \cite{spearmanpearsoncorrelation}.
 An assumption that the features were either linearly related to the output (in the case of Pearson correlation) or had a monotonic relationship (in the case of Spearman correlation) was made.
 20 Ligand descriptors that were the most correlated to the output variable were selected.  Similarly, the best 20 protein descriptors that were the most correlated to the output variable were selected.
 
 \paragraph{Using genetic algorithms:}
 \label{geneticalgorithmssection}
-Since the feature space is a non-continuous problem of combinatorial complexity, genetic feature selection algorithms \cite{genetic_algorithm} were also studied.
+Since the feature space is a non-continuous problem of combinatorial complexity, genetic feature selection algorithms \cite{geneticalgorithmsresearchpaper} \cite{genetic_algorithm} were also studied.
 Each feature was represented by a binary number, 1 for its inclusion and 0 for its exclusion.
 Let $\mathbb{B}$ be a binary number $\{0,  1\}$.
 Each feature selection $p \in \mathbb{B}^{456}$ (401 for ligands + 55 for proteins) is called a chromosome (in other words, an individual in a population).
@@ -504,7 +505,7 @@ The calculated weights are used in the following two ways during the model train
 After the duplication, $\approx 39000$ data points are obtained for the linear weighting formula and $\approx 62000$ for the hyperbolic weighting.
 
 \subsection{Linear regression}
-Linear regression fits a linear model to a given data.
+Linear regression fits a linear model to a given data \cite{linearregressionreview}.
 It tries to minimize the square of errors between the predicted output value and the actual output value.
 It is the cheapest ML model (computationally) that fits the data in the project.
 Table~\ref{table:1} shows the overview of the analysis with this model.
@@ -623,7 +624,7 @@ Table~\ref{table:1} illustrates the results for the linear regression model.
 
 \subsection{Random Forest Regression}
 \label{RandomForestRegressionLabel}
-Random forest regression is an ensemble ML model of regression trees.
+Random forest regression is an ensemble ML model of regression trees \cite{randomforestpaper}.
 When training each tree,  the algorithm finds out which feature value can divide the data into two groups to yield the lowest sum of squared values on both sides. The criterion can be different as well. An example of this is the lowest absolute error.
 Subsequently, each of the two data groups is split recursively till a stopping criterion. E.g., a set number of data points $n$ must be present in every tree leaf.
 
@@ -779,7 +780,7 @@ A stronger signal was used for the number of eliminated features. This scoring f
 
 
 \subsection{Support Vector Regression}
-Support vector regression is a non-linear regression method that fits a curve such that the margin of error between the model's prediction and the original value is kept within a minimum range.
+Support vector regression is a non-linear regression method that fits a curve such that the margin of error between the model's prediction and the original value is kept within a minimum range \cite{supportvectorregressionpaper}.
 Any error higher than this minimum error is penalized during the training of the model.
 Support vector regression used in our project was trained with the RBF kernel.
 
@@ -842,7 +843,7 @@ Figures~\ref{fig:SVRvalidate} and ~\ref{fig:SVRtest} visualize the validation an
 
 \subsection{Rotation Forests}
 
-In Section \ref{RandomForestRegressionLabel} various strategies were analyzed to improve the performance of the random forest regression models.
+In Section \ref{RandomForestRegressionLabel} various strategies were analyzed to improve the performance of the random forest regression models \cite{bagnall2020rotation}.
 While fitting a tree, the random forest model tries to get a list of (feature, value) tuples that best divides the training data.
 However,  each (feature, value) tuple only represents an axis-aligned hyperplane.
 
@@ -852,7 +853,7 @@ To approximate these using axis-aligned hyperplanes,  one would require a deep t
 If the data is transformed such that the line $y = x$ transforms (or rotates) to $y = 0$,  only 1 (feature, value) tuple is needed to approximate each of these lines.
 
 This transformation can be accomplished by first computing the eigenvector of the training data. The input feature space can then be transformed (rotated) such that the basis vectors of the new feature space are the eigenvectors of the training data.
-Rotation forests use this computation to reduce the complexity of their trees and obtain a better quality model. 
+Rotation forests use this computation to reduce the complexity of their trees and obtain a better quality model \cite{rotationforestpaper2}.
 They were first proposed and built for the classification problem. The implementation of the rotation forests was hence adapted for the regression case in this project.
 
 The training $R^2$ score for the rotation forests was comparable to that of the random forest regressor.
