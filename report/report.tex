@@ -421,7 +421,7 @@ Figure~\ref{fig:PCAAnalysis} illustrates the effect of this scaling on the cumul
 Figure~\ref{fig:pcaproteinanalysis} shows cumulative PCA of the protein features. The ligand feature IPC must be scaled before it is input into the model. This requirement is a limitation of the models studied in this project.
 
 \subsubsection{Dealing with measurement resolution}
-Atomic structures produced using X-ray crystallography always have a particular resolution associated with them (\si{\angstrom} units). The structural detail of the 3D image is inversely proportional to the resolution.
+Atomic structures produced using X-ray crystallography always have a particular measurement resolution associated with them in \si{\angstrom} units. The structural detail of the 3D image is inversely proportional to the measurement resolution.
 As shown in a small excerpt of the PDB Databank INDEX file, a resolution measurement for each of the complexes (or data points) is also present in the data.
 
 \begin{verbatim}
@@ -436,7 +436,7 @@ As shown in a small excerpt of the PDB Databank INDEX file, a resolution measure
 1w8l  1.80  2004   0.49  Ki=320mM      // 1w8l.pdf (1P3)
 \end{verbatim}
 
-Using the resolution, the following 2 ways to calculate the weight of each data point were devised.
+Using the resolution, the following 2 ways to calculate the weight of each data point were devised:
 \begin{itemize}
 \item Hyperbolic formula: $  W_i = \frac{ \mathrm{\max{R_{1 ...  n}}}}{R_i}  $
 \item Linear formula: $ W_i = (\mathrm{\max{R_{1 ...  n}}} + 1) - R_i $
@@ -464,15 +464,15 @@ The resolution of the measurements ranges from 1 \si{\angstrom} to 5 \si{\angstr
         \caption{Resolution distribution}
         \label{fig:resolutiondistribution}
      \end{subfigure}
-     \caption{ Weight calculation and resolution distribution}
+     \caption{Weight calculation and resolution distribution.}
      \label{fig:ResolutionWeightStats}
 \end{figure}
 
 Figure~\ref{fig:WeightDistribution} shows the distribution of the weights obtained from the data for the linear and hyperbolic case.
-Figure~\ref{fig:linearweightdistribution} shows that linear weighting of data points results in data points with a higher weight as compared to hyperbolic weighting.
-This makes intuitive sense. As shown in Figure~\ref{fig:resolutiondistribution}, 
-most of the data points have a resolution around 2 \si{\angstrom}.
-Since linear weighting around 2 \si{\angstrom} is higher, the linearly weighted data points will have a higher weight on average.
+Figure~\ref{fig:linearweightdistribution} shows that linear weighting of data points results in data points with a higher weight on average as compared to hyperbolic weighting.
+It makes intuitive sense. As shown in Figure~\ref{fig:resolutiondistribution}, 
+most of the data points have a resolution of around 2 \si{\angstrom}.
+Since linear weighting around 2 \si{\angstrom} is higher than the hyperbolic weighting (See Figure~\ref{fig:graphingformula}), the linearly weighted data points will have a higher weight on average.
 
 \begin{figure}
      \centering
@@ -493,14 +493,14 @@ Since linear weighting around 2 \si{\angstrom} is higher, the linearly weighted 
      \label{fig:WeightDistribution}
 \end{figure}
 
-The calculated weights were used in two ways during the model training
+The calculated weights are used in the following two ways during the model training:
 
 \begin{itemize}
 \item Duplicating the data points.
 \item Using the weights directly in the fit function.
 \end{itemize}
 
-After the duplication, $\approx 39000$ data points were obtained for the linear weighting formula and $\approx 62000$ for the hyperbolic weighting.
+After the duplication, $\approx 39000$ data points are obtained for the linear weighting formula and $\approx 62000$ for the hyperbolic weighting.
 
 \subsection{Linear regression}
 Linear regression fits a linear model to a given data.
