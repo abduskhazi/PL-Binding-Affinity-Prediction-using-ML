@@ -505,7 +505,7 @@ After the duplication, $\approx 39000$ data points are obtained for the linear w
 \subsection{Linear regression}
 Linear regression fits a linear model to a given data.
 It tries to minimize the square of errors between the predicted output value and the actual output value.
-It was the cheapest model (computationally) that was used to fit the data.
+It is the cheapest ML model (computationally) that fits the data in the project.
 Table~\ref{table:1} shows the overview of the analysis with this model.
 Figure~\ref{fig:BestLinearModel} shows the best results obtained with linear regression.
 
@@ -554,35 +554,36 @@ Figure~\ref{fig:BestLinearModel} shows the best results obtained with linear reg
 \end{figure}
 
 The reason for the low $R^2$ score is that linear models assume strong linearity between the input variables and the output variable.
-This is not always true.
+It is not always true.
 One anomaly in the results is that there are some cases where the validation and testing results seem to be better than the training result.
 However, this is not always the case. 
 The results highly depend on the seed.
 If the seed changes, the train/test data split gives different data for training and validation.
-What is important for the validity of the model is that the results remain in a reasonable range.
+What is essential for the validity of the model is that the results remain in a reasonable range.
 
 In the linear regression model,  genetic algorithms were used to reduce both the large feature space and to eliminate the correlated features within families. 
 
 \subsubsection{Score function of genetic feature selection}
 \label{GenerationScoringFunction}
-Because the linear regression model was computationally cheap, refitting the model multiple times in the genetic algorithm was affordable.
-There were two objectives at hand
+Because the linear regression model was computationally cheap, refitting the model multiple times in the genetic algorithm was practical.
+There were two objectives at hand:
 \begin{itemize}
 \item Getting the best performing model.
 \item Reducing the number of input features to make the model simple and explainable.
 \end{itemize}
 The above objectives were not always against each other.
-This is because removing a feature that has no correlation (or random correlation) with the output may improve the model. On the other hand, removing a feature that is` correlated with the output degrades the model.
+Removing a feature that is not correlated with the output variable may improve the model performance. On the contrary, removing a feature that is correlated with the output variable degrades its performance.
 
-Hence, taking inspiration from the hypervolume-based multi-objective optimization, the following score function was designed.
+Hence, taking inspiration from the hypervolume-based multi-objective optimization, the following score function was designed:
+
 $$
 \textrm{score} = \mathbf{R}^2 \textrm{score} * \textrm{Features Eliminated}
 $$
 Figure~\ref{fig:scorefunctionfigure} provides a graphical depiction of the score function.
 Here the score function represents the area of the square formed between a given point and the origin.
-Trying to improve the score means,  it will try to eliminate more features as well as try to get a higher $R^2$ score.
-In the example below,  the point $a$ is preferred over $b$ as it gives almost the same $R^2$ score and eliminates a larger number of features.
-Another advantage of this score function is that one does not need to keep the values of both components (i.e. \textit{features eliminated} and \textit{$R^2$} score) in a similar range.
+The genetic algorithm tries to improve the score. It will try to eliminate more features as well as try to get a higher $R^2$ score.
+In the example below, the genetic algorithm prefers point $a$ over $b$. It is because $a$ gives almost the same $R^2$ score but eliminates more features when compared with $b$.
+Another advantage of this score function is that one does not need to keep the values of both components (\textit{features eliminated} and \textit{$R^2$} score) in a similar range.
 Hence one need not worry about scaling any of these components.
 
 \begin{figure}[htb]
@@ -593,12 +594,12 @@ Hence one need not worry about scaling any of these components.
 \end{figure}
 
 \subsubsection{Initialization strategies of population}
-Two main strategies were used to initialize the population for the genetic algorithm:
+The following two strategies were used to initialize the population for the genetic algorithm:
 \begin{itemize}
 \item \textbf{Random Initialization}.  A population of $2400$ chromosomes was randomly initialized and run for $500$ generations.
-\item \textbf{Specific Initialization}.  Here,  the initial population was kept at $457$.
+\item \textbf{Specific Initialization}.  Here, the initial population was kept at $457$.
 The algorithm was run for $2000$ generations.
-Each chromosome in the population had 1 distinct feature excluded.  The following represents the initialization of the chromosomes.
+Each chromosome in the population had one distinct feature excluded.  The following represents the initialization of the chromosomes:
 
 $
 c_1 = [0 1 1 1 1 ......  1 1]
@@ -616,10 +617,10 @@ $
 c_{457} = [1 1 1 1 1 ......  1 0]
 $
 
-The rationale was that using the above score function, a local minimum could be obtained by eliminating the worst performing features rather than trying to select the best performing features as in the case of random initialization.
+The rationale was that using the above score function, a local minimum could be obtained by eliminating the worst performing features rather than trying to select the best performing features as in the case of random initialization. However, both the initialization strategies gave similar results.
 \end{itemize}
 
-Both the initialization strategies gave similar results as shown in Table~\ref{table:1}.
+Table~\ref{table:1} illustrates the results for the linear regression model.
 
 \subsection{Random Forest Regression}
 \label{RandomForestRegressionLabel}
