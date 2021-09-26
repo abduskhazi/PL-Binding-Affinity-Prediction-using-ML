@@ -61,7 +61,7 @@ When a target drug candidate is found,  one has to answer questions like - How e
 
 One way to reduce the cost of these experiments is to make a data-driven selection of the drugs.  Using experimental data collected over many years, one can build models to predict the behavior of the proposed drug computationally.  These 'In-Silico' computational methods can aid in the elimination of undesirable drugs as well as guide the drug selection process.
 
-This project aims to answer one of the above questions - How well does a given drug bind to the target protein? This is determined computationally by building a machine learning model that trains on the previous data.  Using this model,  the goal of the project is to reduce the drug discovery costs. 
+This project aims to answer one of the above questions - How well does a given drug bind to the target protein? This is determined computationally by building a machine learning model that trains on the previous data.  Using this model,  the goal of the project is to reduce drug discovery costs. 
 
 \subsection{Understanding Binding Affinity}
 The binding affinity between a protein and a ligand is quantified by the $K_d$, $K_i$ and $IC_{50}$ measures in the PDBBind Data bank.
@@ -81,10 +81,10 @@ Similarly, $K_i$ and $IC_{50}$ are defined using concentration albeit non-trivia
 \cite{binding_affinity_description}
 
 \subsection{PDBBind Dataset}
-Over the last few decades, researchers have been successful in building a single data archive for proteins.  This archive, called \textbf{Protein Data Bank} \cite{pdb_homepage} , holds 3-D structural data of the proteins determined by experiments like X-ray crystallographic, Nuclear magnetic resonance (NMR), and cryoelectron microscopy (cryoEM).  A subset of this data also contains information about how well a given protein and ligand bind together.  It is called binding affinity between a protein and ligands.  (It also contains data about protein-protein complexes that this project does not deal with)
+Over the last few decades, researchers have been successful in building a single data archive for proteins.  This archive, called \textbf{Protein Data Bank} \cite{pdb_homepage}, holds 3-D structural data of the proteins determined by experiments like X-ray crystallographic, Nuclear magnetic resonance (NMR), and cryoelectron microscopy (cryoEM).  A subset of this data also contains information about how well a given protein and ligand bind together.  It is called binding affinity between a protein and ligands.  (It also contains data about protein-protein complexes that this project does not deal with)
 \cite{pdbank_history}
 
-As the protein-ligand binding affinity is studied here,  only the relavent data should be filtered out from \textbf{Protein Data Bank}.  This is already done by the maintainers of the \textbf{PDBBind Data Bank}.
+As the protein-ligand binding affinity is studied here,  only the relevant data should be filtered out from \textbf{Protein Data Bank}.  This is already done by the maintainers of the \textbf{PDBBind Data Bank}.
 \cite{pdbbind_introduction}
 Using the curated protein-ligand affinity data present in the PDBBind Data bank,  a machine learning model that learns to predict the affinity is built.
 
@@ -104,7 +104,7 @@ Figure~\ref{fig:plproblemclassification} shows how the Protein-Ligand problem ca
 
 The binding of proteins and ligands is heavily influenced by their respective 3D structures.
 Figure~\ref{fig:lockandkey} illustrates a hypothesis called \textit{Lock and Key}.
-It is very crucial that the shape of the protein's binding location and the shape of the ligand be complementary for the binding.
+The shape of the protein's binding location and the shape of the ligand must be complementary for the binding.
 
 \begin{figure}[htb]
   \centering
@@ -116,11 +116,11 @@ It is very crucial that the shape of the protein's binding location and the shap
 The other parts of the protein are not involved in the binding process directly.
 Hence,  only the features of the binding location were obtained.
 Any potential binding location in the 3D structure of a protein is called a pocket.
-A 3D based LBS prediction package called \textit{fpocket} was used to find the potential pockets.
+A 3D-based LBS prediction package called \textit{fpocket} was used to find the potential pockets.
 A submodule in the package called \textit{dpocket} is used to extract the binding pocket's features.
 
 To give a plug-and-play input to the model,  the features of proteins and ligands were kept distinct till the training phase.
-That is,  the combined features were not used in any pre-processing of the ML pipeline e.g.  feature reduction.
+That is,  the combined features were not used in any pre-processing of the ML pipeline e.g. feature reduction.
 This helps the model to provide the binding affinity between any protein and any ligand.
 
 
@@ -134,7 +134,7 @@ The \textbf{PDBBind Data bank} extracts information about the PL complexes from 
 \end{itemize}
 
 All of the above formats contain the 3D information that is essential in the prediction of the binding affinity.
-All the above mentioned formats use the \textbf{XYZ format} internally to represent the 3D structure of their molecules.
+All the above-mentioned formats use the \textbf{XYZ format} internally to represent the 3D structure of their molecules.
 
 \subsubsection{XYZ format}
 \label{xyz_format}
@@ -164,12 +164,12 @@ Please see \cite{examplePDBFile} for an example pdb file.
 
 
 \subsubsection{Structure Data File (SDF) Format}
-SDF format file is a Chemical Table file (CT File) that contains structure of the molecule in the X,Y,Z format.
+SDF format file is a Chemical Table file (CT File) that contains a structure of the molecule in the X, Y, Z format.
 It contains information like atomic bonds,  connectivity information,  molecular weight,  and molecular formula. \cite{SDFformat}
 Section \ref{SDFFileexampleref} illustrates the SDF file format.
 
 \subsubsection{Mol2 format}
-Similar to SDF format,  Mol2 also represents the 3D structure of a molecule in the X,Y,Z format.
+Similar to the SDF format,  Mol2 also represents the 3D structure of a molecule in the X, Y, Z format.
 It contains the atomic bond and connectivity information but does not contain the other data like molecular weight and formula.
 The ligands given in this format were used because more ligands in mol2 format could be processed with the RDKit feature extractor.
 Section \ref{MOL2Fileexampleref} illustrates the Mol2 file format.
@@ -195,7 +195,7 @@ Each descriptor value is taken as a real number,  hence the input space of ligan
 \textit{Fpocket} stands for "Find pocket" whereas \textit{Dpocket} stands for "Describe pocket".
 \textit{Fpocket} uses 3D Voronoi tessalation and the concepts of "Alpha Spheres" to find out pockets in the protein structure \cite{fpocketmanual} \cite{voronoitesselationshortvideo}.
 Given a protein PDB file,  the descriptors of all pockets in the protein could be extracted.
-For every pocket,  55 descriptors were obtained in total which were taken as real values,  $\mathbf{R}$.
+For every pocket,  55 descriptors were obtained in total. They were taken as real values, $\mathbf{R}$.
 Hence the input space for protein features is $\mathbf{R}^{55}$.
 
 
@@ -214,7 +214,7 @@ This file contains the descriptors of all explicit pockets in the PL complex.
 \end{itemize}
 
 In the project,  dpout\_fpocketnp.txt files were not used as they contain the non-binding pockets.
-In the other 2 files,  the pocket descriptors given by dpout\_fpocketp.txt were preferred as explicitly defined pockets are heavily biased towards the ligand.
+In the other 2 files,  the pocket descriptors that were given by dpout\_fpocketp.txt were preferred as explicitly defined pockets are heavily biased towards the ligand.
 
 \section{Feature selection}
 \subsection{Requirement of feature selection}
@@ -231,10 +231,10 @@ Hence some methods to reduce the input dimensions are required.
 
 \subsection{Feature Family analysis}
 \label{CorrelationAnalysis}
-All the features extracted from the pdb and the ligand files can be classified into various families.
-Some of the important ones are - AUTOCORR2d\_, Chi, EState\_VSA,  PEOE\_VSA,  SMR\_VSA,  SlogP\_VSA,  VSA\_EState and fr\_.
-Figure~\ref{fig:correlationheatmap} shows correlation matrix of 2 of the most interesting families AUTOCORR2d\_ and Chi.
-As can be seen in the heatmap there is heavy correlation within the families.
+All the features extracted from the PDB and the ligand files can be classified into various families.
+Some of the important ones are - AUTOCORR2d\_, Chi, EState\_VSA,  PEOE\_VSA,  SMR\_VSA,  SlogP\_VSA,  VSA\_EState, and fr\_.
+Figure~\ref{fig:correlationheatmap} shows the correlation matrix of 2 of the most interesting families AUTOCORR2d\_ and Chi.
+As can be seen in the heatmap there is a heavy correlation within the families.
 Hence a strategy to deal with this is also required.
 The correlation heat maps for the other families are illustrated in Section \ref{CorrHeatMapsAppendix}.
 
@@ -263,7 +263,7 @@ The features of proteins and ligands were selected separately.
 This helps us make the model plug-and-play as discussed in section \ref{ProblemOverviewlabel}.
 The best combination,  i.e Global Optima,  cannot be obtained practically by brute force algorithms.
 This is because one would have to try $\binom{402}{k_1} * \binom{55}{k_1}$ ($k_1, k_2 \in \mathbf{I}^+$) possibilities which is impractical.
-In the next subsections a few feature selection strategies that were considered in this project are discussed.
+In the next subsections, a few feature selection strategies that were considered in this project are discussed.
 
 \subsubsection{Selection by output correlation}
 The \textit{pearson} and \textit{spearman} correlations of each feature were calculated against the output variable.
@@ -281,7 +281,7 @@ For each generation,  the best pairs of chromosomes are selected as parents.
 The next generation is created by crossover and mutation of the chromosomes.
 Algorithm~\ref{alg:GeneticAlgo} below gives complete pseudocode for this.
 
-The scoring function used to select the best chromosome can vary according to the type of the model being fit. [See Section~\ref{MachineLearningModelslabel}]
+The scoring function used to select the best chromosome can vary according to the model type. [See Section~\ref{MachineLearningModelslabel}]
 
 \begin{algorithm}
 \caption{Selection of features for the model using genetic algorithm \cite{genetic_algorithm}}
@@ -318,7 +318,7 @@ The scoring function used to select the best chromosome can vary according to th
 \end{algorithm}
 
 \subsubsection{Manual Feature selection}
-A selected list of 121 ligand descriptors were given to us by Simon Bray. 
+A selected list of 121 ligand descriptors was given by Simon Bray. 
 All protein descriptors were used as they were only a few in number.
 
 \section{Testing}
@@ -344,7 +344,7 @@ $$R^2(y, \hat{y}) = 1 - \frac{\sum_{i=1}^{n} (y_i - \hat{y}_i)^2}{\sum_{i=1}^{n}
 \item A 2D scatter plot of expected values vs the model's output is plotted. 
 \end{itemize}
 
-A perfect model would have all the points on the $y = x$ line.  This corresponds to $R^2$ score of $1.0$. 
+A perfect model would have all the points on the $y = x$ line.  This corresponds to a $R^2$ score of $1.0$. 
 Figure~\ref{fig:modelQualityVisualization},  shows the validation accuracy of a sample \textit{Random Forest Regressor} model.
 $y\_validate$ ($x$ axis) represents the actual validation data.
 $y\_validate\_pred$ ($y$ axis) represents the predicted output from the model.
@@ -380,7 +380,7 @@ For example, if all the features were used to train a simple DNN model of size $
 Before fitting the model,  a preliminary analysis of the data was performed.  This was necessary to train the models more reliably.
 
 \subsubsection{Data cleaning}
-Using principle component analysis (PCA) each feature's contribution in the variation of the data was analyzed. 
+Using principal component analysis (PCA) each feature's contribution in the variation of the data was analyzed. 
 During this analysis, 2 issues were found:
 \begin{itemize}
 \item There was a ligand feature named IPC which had extremely small and extremely huge values e.g $k * 10^{39}$ where $k \in (0,1]$.
@@ -407,7 +407,7 @@ The effect of this scaling on the cumulative PCA is shown in Figure~\ref{fig:PCA
      \label{fig:PCAAnalysis}
 \end{figure}
 
-\item There were a lot of NaN (Not a number) and zeros in our data.  Perhaps these descriptors did not make sense for the some of the ligands. While the presence of 0s was harmless,  we made sure that we removed all NaN values before we input the data into our model.  Figure~\ref{fig:pcaproteinanalysis} shows cumulative PCA of the protein features. 
+\item There were a lot of NaN (Not a number) and zeros in our data.  Perhaps these descriptors did not make sense for some of the ligands. While the presence of 0s was harmless,  we made sure that we removed all NaN values before we input the data into our model.  Figure~\ref{fig:pcaproteinanalysis} shows cumulative PCA of the protein features. 
 \end{itemize}
 
 \begin{figure}[htb]
@@ -429,7 +429,7 @@ As shown in a small excerpt of the PDB Databank INDEX file,  we have a resolutio
 # List of protein-ligand complexes with known binding data in PDBbind v.2019
 # 17679 protein-ligand complexes in total, sorted by binding data
 # Latest update: Dec 2019
-# PDB code, resolution, release year, -logKd/Ki, Kd/Ki, reference, ligand name
+# PDB code, resolution, release year, -log Kd/Ki, Kd/Ki, reference, ligand name
 # ==============================================================================
 3zzf  2.20  2012   0.40  Ki=400mM      // 3zzf.pdf (NLG)
 3gww  2.46  2009   0.45  IC50=355mM    // 3gwu.pdf (SFX)
@@ -625,7 +625,7 @@ Both the initialization strategies gave similar results as shown in Table~\ref{t
 \label{RandomForestRegressionLabel}
 Random forest regression is an ensemble ML model of regression trees.
 When training each tree,  the algorithm finds out which feature value can divide the data into 2 groups to yield the lowest sum of squared values on both sides (The criterion can be different as well e.g. lowest absolute error).
-Then each of the sub-data is split recursively till a stopping criterion (e.g.  a set number of data points in the leaf).
+Then each of the sub-data is split recursively till a stopping criterion (e.g. a set number of data points in the leaf).
 
 For each tree,  a subset of the data is used for training. 
 The subset of data is sampled with replacement a.k.a bagging.
@@ -726,7 +726,7 @@ This can be seen in Figure~\ref{fig:resolutiondistribution}.
 
 \subsubsection{Feature Importance calculation}
 The Random Forest regression model fitting is very expensive as compared to the simple linear regression.
-For example in a machine with $4$ CPUs,  fitting a linear model on our data takes $\approx 0.51$ seconds whereas  fitting the random forest model takes $\approx 25.86$ seconds.
+For example in a machine with $4$ CPUs,  fitting a linear model on our data takes $\approx 0.51$ seconds whereas fitting the random forest model takes $\approx 25.86$ seconds.
 Hence the same strategy cannot be used for feature selection as used in the linear models.
 We used the following strategies to determine the importance of features in the model.
 
@@ -735,7 +735,7 @@ We used the following strategies to determine the importance of features in the 
 For every feature,  it calculates how much decrease in the split criterion the feature contributes in the entire ensemble (i.e in every node it's used in all the trees).
 The disadvantage is that they cannot be reliable when the features have a high cardinality.  Figure~\ref{fig:GiniImportanceLabel} illustrates this importance.
 \item \textbf{Permutation Importance} - This is a model agnostic method.
-To calculate the importance of a feature $x$,  it takes the given data and shuffles the values of $x$.  Now the values of feature $x$ do not correspond to the correct data points,  hence there is reduction in the prediction accuracy.
+To calculate the importance of a feature $x$,  it takes the given data and shuffles the values of $x$.  Now the values of feature $x$ do not correspond to the correct data points,  hence there is a reduction in the prediction accuracy.
 The importance of the feature is proportional to the reduction in accuracy.
 The disadvantage of this method is that since each feature is checked independently,  correlated input features make the results unreliable. 
 If feature $A$ and feature $B$ are correlated,  the shuffling of $A$ may not impact the model as the model can rely on $B$ for its prediction.  Figure~\ref{fig:PermutationImportanceLabel} illustrates this importance.
@@ -767,12 +767,12 @@ This is because it is very expensive to refit the model and cheap enough to chec
 We used 2 different strategies to get them for our genetic algorithms -
 \begin{itemize}
 \item \textbf{Using specific scoring function}.  In Section ~\ref{GenerationScoringFunction},  we discussed intuition behind the scoring function used in our genetic model.
-In the random forest model,  however,  this scoring function selected a lot of features ($> 400$). Hence we researched the following scoring function in an effort to reduce the number of features. 
+In the random forest model,  however,  this scoring function selected a lot of features ($> 400$). Hence we researched the following scoring function to reduce the number of features. 
 $$
 \textrm{score} = \mathbf{R}^2 * \textrm{Features Eliminated}^2
 $$
 We used a stronger signal for the number of eliminated features. This scoring function, however,  turned out to be too strong and none of the features were selected.
-\item \textbf{Elitism}.  Elitism is a strategy used in the genetic algorithms to select the top few elements from each generation for the next generation in addition to the newly created children. This keeps the best performing subset of the population always in the current generation in an effort to improve them further by cross-over or mutation.
+\item \textbf{Elitism}.  Elitism is a strategy used in the genetic algorithms to select the top few elements from each generation for the next generation in addition to the newly created children. This keeps the best performing subset of the population always in the current generation to improve them further by cross-over or mutation.
 \end{itemize}
 
 
@@ -924,7 +924,7 @@ We failed to do this in the case of the Random Forest Regression model.
 
 From our study of genetic algorithms, we conclude that it was not very helpful in improving the performance of our model. However, we were able to reduce (eliminate) around 200 features for the Random Regression Model and around 400 features in the Linear Regression without hampering the performance to a large degree.
 
-One issue with feature selection algorithms is that they make the model dependent on the selected features.
+One issue with feature selection algorithms is that they make the model depend on the selected features.
 This would hamper the model generalization.
 A single unavailable feature or a single feature measured incorrectly would render our model useless.
 This hard constraint may not be good when the data collection process is expensive and error-prone.
@@ -1098,3 +1098,4 @@ This section shows the correlation heat maps of the most interesting feature fam
 \end{figure}
 
 \end{document}
+
