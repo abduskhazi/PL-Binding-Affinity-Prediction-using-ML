@@ -378,15 +378,15 @@ Because of the lack of data, Deep Neural Networks were not suitable for this pro
 For example, if all the features were used to train a simple DNN model of size $[457,  20, 10,  1]$,  there would be 9350 parameters to train.  As only 16,000 data points were present to train the model,  the deep learning model would over-fit drastically.
 
 \subsection{Data Preprocessing}
-Before fitting the model,  a preliminary analysis of the data was performed.  This was necessary to train the models more reliably.
+Before fitting the model,  a preliminary analysis of the data was performed.  This analysis was necessary to train the models more reliably.
 
 \subsubsection{Data cleaning}
-Using principal component analysis (PCA) each feature's contribution in the variation of the data was analyzed. 
-During this analysis, 2 issues were found:
+Using principal component analysis (PCA), each feature's contribution to the variation of the data was analyzed. 
+During this analysis, two issues were found:
 \begin{itemize}
 \item There was a ligand feature named IPC which had extremely small and extremely huge values e.g $k * 10^{39}$ where $k \in (0,1]$.
 Hence, this feature was scaled using a logarithm function.
-This was done for numerical safety during the training of the models.
+This scaling was required for the numerical safety of the model training process.
 Figure~\ref{fig:PCAAnalysis} illustrates the effect of this scaling on the cumulative PCA.
 
 \begin{figure}
