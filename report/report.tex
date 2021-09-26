@@ -408,7 +408,7 @@ Figure~\ref{fig:PCAAnalysis} illustrates the effect of this scaling on the cumul
      \label{fig:PCAAnalysis}
 \end{figure}
 
-\item There were a lot of NaN (Not a number) and zeros in the data.  Perhaps these descriptors did not make sense for some of the ligands. As the presence of 0s was harmless, they were not changed in the input data. However, the NaN values were removed before the data was input into the model. Figure~\ref{fig:pcaproteinanalysis} shows cumulative PCA of the protein features. 
+\item There were a lot of NaN (Not a number) and zeros in the data.  Perhaps these descriptors did not make sense for some of the ligands. As the presence of zeros was harmless, they were kept unchanged in the input data. However, the NaN values were removed before the data was input into the model. 
 \end{itemize}
 
 \begin{figure}[htb]
@@ -418,7 +418,7 @@ Figure~\ref{fig:PCAAnalysis} illustrates the effect of this scaling on the cumul
     \label{fig:pcaproteinanalysis}
 \end{figure}
 
-The ligand feature IPC must be scaled before it is input into the model. This is a limitation of the models studied in this project.
+Figure~\ref{fig:pcaproteinanalysis} shows cumulative PCA of the protein features. The ligand feature IPC must be scaled before it is input into the model. This requirement is a limitation of the models studied in this project.
 
 \subsubsection{Dealing with measurement resolution}
 Atomic structures produced using X-ray crystallography always have a particular resolution associated with them (\si{\angstrom} units). The structural detail of the 3D image is inversely proportional to the resolution.
