@@ -57,11 +57,11 @@ The study of protein-ligand complexes is an intrinsic part of the drug discovery
 \end{figure}
 
 
-When we find a target drug candidate, we have to answer questions like - How easily does the drug bind to the target protein? Does it bind to any other protein - If so, is it desirable? Does it have any unforeseen effect on the protein function? etc...  To answer these questions biologists and pharmacists conduct wet-lab experiments that are expensive.
+When a target drug candidate is found,  one has to answer questions like - How easily does the drug bind to the target protein? Does it bind to any other protein - If so, is it desirable? Does it have any unforeseen effect on the protein function? etc...  To answer these questions biologists and pharmacists conduct wet-lab experiments that are expensive.
 
 One way to reduce the cost of these experiments is to make a data-driven selection of the drugs.  Using experimental data collected over many years, one can build models to predict the behavior of the proposed drug computationally.  These 'In-Silico' computational methods can aid in the elimination of undesirable drugs as well as guide the drug selection process.
 
-Our project aims to answer one of the above questions - How well does a given drug bind to the target protein? We determine this computationally by building a machine learning model that trains on the previous data.  We hope that this model will help reduce the costs of drug discovery. 
+This project aims to answer one of the above questions - How well does a given drug bind to the target protein? This is determined computationally by building a machine learning model that trains on the previous data.  Using this model,  the goal of the project is to reduce the drug discovery costs. 
 
 \subsection{Understanding Binding Affinity}
 The binding affinity between a protein and a ligand is quantified by the $K_d$, $K_i$ and $IC_{50}$ measures in the PDBBind Data bank.
@@ -74,25 +74,25 @@ To understand $K_d$, consider a protein and a ligand binding and unbinding conti
 In this system, let $[P]$, $[L]$, and $[PL]$ represent the concentrations of the Protein, the Ligand, and the Protein-Ligand complex respectively.
 This is represented by the following equation:
 $$[P] + [L] \rightleftharpoons [PL]$$
-We can quantify the binding affinity $K_d$ by using the concentrations in the above system at equilibrium.
+The binding affinity $K_d$ can be quantified by using the concentrations in the above system at equilibrium.
 $$K_d = \frac{[P][L]}{[PL]} = \frac{k_{-1}}{k_1}$$
 where $k_{-1}$ is the disassociation rate constant and $k_1$ is the association rate constant.
 Similarly, $K_i$ and $IC_{50}$ are defined using concentration albeit non-trivially. 
 \cite{binding_affinity_description}
 
 \subsection{PDBBind Dataset}
-Over the last few decades, researchers have been successful in building a single data archive for proteins.  This archive, called \textbf{Protein Data Bank} \cite{pdb_homepage} , holds 3-D structural data of the proteins determined by experiments like X-ray crystallographic, Nuclear magnetic resonance (NMR), and cryoelectron microscopy (cryoEM).  A subset of this data also contains information about how well a given protein and ligand bind together.  It is called binding affinity between a protein and ligands.  (It also contains data about protein-protein complexes that our project does not deal with)
+Over the last few decades, researchers have been successful in building a single data archive for proteins.  This archive, called \textbf{Protein Data Bank} \cite{pdb_homepage} , holds 3-D structural data of the proteins determined by experiments like X-ray crystallographic, Nuclear magnetic resonance (NMR), and cryoelectron microscopy (cryoEM).  A subset of this data also contains information about how well a given protein and ligand bind together.  It is called binding affinity between a protein and ligands.  (It also contains data about protein-protein complexes that this project does not deal with)
 \cite{pdbank_history}
 
-As we study the protein-ligand binding affinity here, we would like to filter out this data from the \textbf{Protein Data Bank}  It is what is done by the maintainers of the \textbf{PDBBind Data Bank}.
+As the protein-ligand binding affinity is studied here,  only the relavent data should be filtered out from \textbf{Protein Data Bank}.  This is already done by the maintainers of the \textbf{PDBBind Data Bank}.
 \cite{pdbbind_introduction}
-Using the curated protein-ligand affinity data present in the PDBBind Data bank, we build a machine learning model that learns to predict the affinity. 
+Using the curated protein-ligand affinity data present in the PDBBind Data bank,  a machine learning model that learns to predict the affinity is built.
 
 \section{Problem Formulation}
 \subsection{Problem Overview}
 \label{ProblemOverviewlabel}
-The problem that we are solving is - \textit{Given $K_d$/$K_i$/$IC_{50}$ for various complexes in the PDBBind Data bank,
-can we predict this affinity measure for new protein-ligand complexes?}
+The problem that is solved is - \textit{Given $K_d$/$K_i$/$IC_{50}$ for various complexes in the PDBBind Data bank,
+can this affinity measure be predicted for new protein-ligand complexes?}
 Figure~\ref{fig:plproblemclassification} shows how the Protein-Ligand problem can be classified.
 
 \begin{figure}[htb]
@@ -114,14 +114,14 @@ It is very crucial that the shape of the protein's binding location and the shap
 \end{figure}
 
 The other parts of the protein are not involved in the binding process directly.
-Hence,  we only get the features of the binding location.
+Hence,  only the features of the binding location were obtained.
 Any potential binding location in the 3D structure of a protein is called a pocket.
-We use a 3D based LBS prediction package called \textit{fpocket} to find the potential pockets.
+A 3D based LBS prediction package called \textit{fpocket} was used to find the potential pockets.
 A submodule in the package called \textit{dpocket} is used to extract the binding pocket's features.
 
-To give a plug-and-play input to our model, we keep the features of proteins and ligands distinct till the training phase.
-That is,  we do not use the combined features in any pre-processing of the ML pipeline e.g.  feature reduction.
-This helps our model to provide the binding affinity between any protein and any ligand.
+To give a plug-and-play input to the model,  the features of proteins and ligands were kept distinct till the training phase.
+That is,  the combined features were not used in any pre-processing of the ML pipeline e.g.  feature reduction.
+This helps the model to provide the binding affinity between any protein and any ligand.
 
 
 
@@ -171,35 +171,35 @@ Section \ref{SDFFileexampleref} illustrates the SDF file format.
 \subsubsection{Mol2 format}
 Similar to SDF format,  Mol2 also represents the 3D structure of a molecule in the X,Y,Z format.
 It contains the atomic bond and connectivity information but does not contain the other data like molecular weight and formula.
-We use the ligands given in this format because more ligands in mol2 format could be processed with the RDKit feature extractor.
+The ligands given in this format were used because more ligands in mol2 format could be processed with the RDKit feature extractor.
 Section \ref{MOL2Fileexampleref} illustrates the Mol2 file format.
 
 \subsubsection{SMILES format}
 SMILES is an acronym for Simplified Molecular-Input Line-Entry System.
 It represents a molecule using an ASCII string.
-Using the 3D data in SDF and Mol2 formats,  we can create an atomic graph representation.
+Using the 3D data in SDF and Mol2 formats,  an atomic graph representation could be created.
 Using this graph the SMILES string for the molecule can be generated.
-The SMILES format itself is not very helpful for us as we lose the 3D structural information after converting to it.
+The SMILES format itself is not very helpful for us as one would lose the 3D structural information after converting to it.
 \cite{smilesformat}
 
 \subsection{Extraction of features}
-As the file formats are different for proteins and ligands,  we use different tools to extract their features.
+As the file formats are different for proteins and ligands,  different tools were used to extract their features.
 \subsubsection{Ligand Features using RDKit}
 RDKit is an open-source cheminformatics software \cite{rdkitofficalpage}.
 The core data structures and algorithms of RDKit are written in C++ and the
 python wrappers are generated using Boost.Python.
-Using the module, \textit{RDKit.Chem.Descriptors} we extract $402$ features for each ligand \cite{rdkitbioinformaticsfreiburg}.
+Using the module, \textit{RDKit.Chem.Descriptors} $402$ features were extracted for each ligand \cite{rdkitbioinformaticsfreiburg}.
 Each descriptor value is taken as a real number,  hence the input space of ligand features is $\mathbf{R}^{402}$ before any feature elimination.
 
 \subsubsection{Protein Features using fpocket/dpocket descriptors}
 \textit{Fpocket} stands for "Find pocket" whereas \textit{Dpocket} stands for "Describe pocket".
 \textit{Fpocket} uses 3D Voronoi tessalation and the concepts of "Alpha Spheres" to find out pockets in the protein structure \cite{fpocketmanual} \cite{voronoitesselationshortvideo}.
-Given a protein PDB file, we can extract the descriptors of all pockets in the protein.
-For every pocket, we get 55 descriptors in total which are taken as real values,  $\mathbf{R}$.
+Given a protein PDB file,  the descriptors of all pockets in the protein could be extracted.
+For every pocket,  55 descriptors were obtained in total which were taken as real values,  $\mathbf{R}$.
 Hence the input space for protein features is $\mathbf{R}^{55}$.
 
 
-To get the descriptors of the ligand-binding pockets,  we use \textit{Dpocket}.
+To get the descriptors of the ligand-binding pockets,  \textit{Dpocket} was used.
 \textit{Dpocket} is provided with the protein PDB file and the ligand ID of the PL complex as input.
 It generates 3 files as output files,  namely,  dpout\_fpocketp.txt, dpout\_fpocketnp.txt,  and  dpout\_explicitp.txt.
 \begin{itemize}
@@ -213,29 +213,29 @@ This distance is 4 \r{A} by default.
 This file contains the descriptors of all explicit pockets in the PL complex. 
 \end{itemize}
 
-In our project, we do not use dpout\_fpocketnp.txt as they contain non-binding pockets.
-In the other 2 files,  we prefer using pocket descriptors given by dpout\_fpocketp.txt as explicitly defined pockets are heavily biased towards the ligand.
+In the project,  dpout\_fpocketnp.txt files were not used as they contain the non-binding pockets.
+In the other 2 files,  the pocket descriptors given by dpout\_fpocketp.txt were preferred as explicitly defined pockets are heavily biased towards the ligand.
 
 \section{Feature selection}
 \subsection{Requirement of feature selection}
 Both the protein and the ligand are equally responsible for the affinity of the PL complex.
-Hence we concatenate their descriptors to get a high dimensional $\mathbf{R}^{457}$ input for our model.
+Hence their descriptors were concatenated to get a high dimensional $\mathbf{R}^{457}$ input for the model.
 There are a couple of issues with using all of the descriptors.
 \begin{itemize}
 \item The amount of data is not very large. 
-For example,  we could only get $\approx$ 35000 data points after concatenating the ligand features with the \textit{fpocketp} pocket descriptors.
+For example,  only $\approx$ 35000 data points could be obtained after concatenating the ligand features with the \textit{fpocketp} pocket descriptors.
 \item The number of ligand descriptors $>>$ protein descriptors.
 This creates a data imbalance and may lead the model to select only ligand features for their prediction.
 \end{itemize}
-Hence we need some methods to reduce the input dimensions.
+Hence some methods to reduce the input dimensions are required.
 
 \subsection{Feature Family analysis}
 \label{CorrelationAnalysis}
 All the features extracted from the pdb and the ligand files can be classified into various families.
 Some of the important ones are - AUTOCORR2d\_, Chi, EState\_VSA,  PEOE\_VSA,  SMR\_VSA,  SlogP\_VSA,  VSA\_EState and fr\_.
 Figure~\ref{fig:correlationheatmap} shows correlation matrix of 2 of the most interesting families AUTOCORR2d\_ and Chi.
-As we can see from the heatmap there is heavy correlation within the families.
-Hence we also require a strategy to deal with this.
+As can be seen in the heatmap there is heavy correlation within the families.
+Hence a strategy to deal with this is also required.
 The correlation heat maps for the other families are illustrated in Section \ref{CorrHeatMapsAppendix}.
 
 \begin{figure}[htb]
@@ -259,21 +259,21 @@ The correlation heat maps for the other families are illustrated in Section \ref
 %The data if it is complementary is better for solving the problem.
 %The accuracy measure of the protein LBS prediction is the same as the dichotomous problems in math.
 
-We try to select features of the protein and the ligand separately.
-This helps us make our model plug-and-play as discussed in section \ref{ProblemOverviewlabel}.
+The features of proteins and ligands were selected separately.
+This helps us make the model plug-and-play as discussed in section \ref{ProblemOverviewlabel}.
 The best combination,  i.e Global Optima,  cannot be obtained practically by brute force algorithms.
-This is because we would have to try $\binom{402}{k_1} * \binom{55}{k_1}$ ($k_1, k_2 \in \mathbf{I}^+$) possibilities which is impractical.
-In the next subsections we discuss a few feature selection strategies that were considered in our project.
+This is because one would have to try $\binom{402}{k_1} * \binom{55}{k_1}$ ($k_1, k_2 \in \mathbf{I}^+$) possibilities which is impractical.
+In the next subsections a few feature selection strategies that were considered in this project are discussed.
 
 \subsubsection{Selection by output correlation}
 The \textit{pearson} and \textit{spearman} correlations of each feature were calculated against the output variable.
-We assumed that the features were either linearly related to the output (in the case of Pearson correlation) or had a monotonic relationship (in the case of Spearman correlation).
+It was assumed that the features were either linearly related to the output (in the case of Pearson correlation) or had a monotonic relationship (in the case of Spearman correlation).
 20 from the ligand descriptors that were most correlated to the output were selected as inputs to the model.  Similar 20 best features from the protein descriptors were selected.
 
 \subsubsection{Using genetic algorithms}
 Since the feature space is a non-continuous problem of combinatorial complexity,
-we also studied genetic feature selection algorithms \cite{genetic_algorithm}.
-We represent each feature by a binary number, 1 for the inclusion of the feature and 0 for the exclusion.
+genetic feature selection algorithms \cite{genetic_algorithm} were also studied.
+Each feature was represented by a binary number, 1 for the inclusion of the feature and 0 for its exclusion.
 Let $\mathbb{B}$ be a binary number $\{0,  1\}$.
 Each feature selection $p \in \mathbb{B}^{456}$ (401 for ligands + 55 for proteins) is called a chromosome.
 A "population" of $n$ chromosomes is maintained.
@@ -284,7 +284,7 @@ Algorithm~\ref{alg:GeneticAlgo} below gives complete pseudocode for this.
 The scoring function used to select the best chromosome can vary according to the type of the model being fit. [See Section~\ref{MachineLearningModelslabel}]
 
 \begin{algorithm}
-\caption{Selection of features in our model using genetic algorithm \cite{genetic_algorithm}}
+\caption{Selection of features for the model using genetic algorithm \cite{genetic_algorithm}}
 \label{alg:GeneticAlgo}
 \begin{algorithmic}[1]
 \Procedure{GENETIC\_ALGORITHM\_BASED\_SELECTOR}{}
@@ -318,9 +318,8 @@ The scoring function used to select the best chromosome can vary according to th
 \end{algorithm}
 
 \subsubsection{Manual Feature selection}
-A selected list of features were given to us by Simon Bray. 
-We investigated manually selected 121 ligand descriptors. 
-We continued to use all of the protein descriptors as they were only a few in number as compared to the ligand descriptors.
+A selected list of 121 ligand descriptors were given to us by Simon Bray. 
+All protein descriptors were used as they were only a few in number.
 
 \section{Testing}
 \subsection{Reproducibility}
@@ -330,19 +329,19 @@ Reproducible ML models are very crucial for verifying any project or research re
 \item Controlling the randomness of the trained models. It is done by setting the seed of the pseudo-random algorithms.
 \end{itemize}
 
-We use the second approach in our project. Every script, when executed, reports an execution ID. This is the random seed used during the execution. If we want to reproduce the exact results, we give this execution ID to the script as the first argument.
+The second approach was used in this project. Every script, when executed, reports an execution ID. This is the random seed used during the execution.  The exact results can be reproduced by using this execution ID as the first argument to the script.
 
 \subsection{Model Quality Analysis}
-We are trying to predict the following function
+The following function is predicted by the model
 $$ \textrm{Binding affinity prediction} : \mathbf{R}^n \mapsto \mathbf{R} \;\; \textrm{where} \;\; n \in \mathbf{I}^+$$
-Since the input space is multi-dimensional, we cannot fully visualize our model as a function of the input space.
-To get around this using the following methods
+Since the input space is multi-dimensional,  one cannot fully visualize the model as a function of the input space.
+To get around this,
 \begin{itemize}
-\item We report \textit{Coefficient of determination}, $R^2  \in (- \infty, 1.0]$ where $1.0$ is the best score. \cite{r_squared_score}
+\item \textit{Coefficient of determination} is reported. $R^2  \in (- \infty, 1.0]$ where $1.0$ is the best score. \cite{r_squared_score}
 $$R^2(y, \hat{y}) = 1 - \frac{\sum_{i=1}^{n} (y_i - \hat{y}_i)^2}{\sum_{i=1}^{n} (y_i - \bar{y})^2} \;\; \textrm{where} \;\; \bar{y} = \frac{1}{n} \sum_{i=1}^{n} y_i \;\;
 \textrm{and} \;\; \sum_{i=1}^{n} (y_i - \hat{y}_i)^2 = \sum_{i=1}^{n} \epsilon_i^2$$
 
-\item For visualizing the results,  we plot a 2D plot of expected values against the model's output. 
+\item A 2D scatter plot of expected values vs the model's output is plotted. 
 \end{itemize}
 
 A perfect model would have all the points on the $y = x$ line.  This corresponds to $R^2$ score of $1.0$. 
@@ -362,7 +361,7 @@ $y\_validate\_pred$ ($y$ axis) represents the predicted output from the model.
 
 \section{Machine Learning Models}
 \label{MachineLearningModelslabel}
-We decided to use the following machine learning models for our problem:
+The following machine learning models were used:
 \begin{itemize}
 \item Linear Regression
 \item Support Vector Regression
@@ -371,14 +370,14 @@ We decided to use the following machine learning models for our problem:
 \end{itemize}
 
 By far, the most impressive performance was given by Random Forest Regression.
-Hence we spent more time on Random Forest regression to understand the reasons for its performance.
+Hence more time was spent on the Random Forest regression models to understand the reasons for their good performance.
 
-Because of the lack of data, Deep Neural Networks were not suitable for our problem. 
-For example, if we used all the features to train a simple DNN model of size $[457,  20, 10,  1]$,  there would be 9350 parameters to train.  As we only have 16,000 data points to train our model,  the deep learning model would over-fit drastically.
+Because of the lack of data, Deep Neural Networks were not suitable for this project. 
+For example, if all the features were used to train a simple DNN model of size $[457,  20, 10,  1]$,  there would be 9350 parameters to train.  As only 16,000 data points were present to train the model,  the deep learning model would over-fit drastically.
 
 
 \subsection{Data Preprocessing}
-Before fitting the model, we did a preliminary analysis of our data.  This was necessary to train our models more reliably.
+Before fitting the model,  a preliminary analysis of the data was performed.  This was necessary to train the models more reliably.
 
 \subsubsection{Data cleaning}
 Using principle component analysis (PCA) each feature's contribution in the variation of the data was analyzed. 
@@ -930,24 +929,24 @@ This would hamper the model generalization.
 A single unavailable feature or a single feature measured incorrectly would render our model useless.
 This hard constraint may not be good when the data collection process is expensive and error-prone.
 
-We found that the Random Forest Regression could deal with all the above specific properties of our data.
+The Random Forest Regression model could deal with all the above specific properties of our data.
 Random Forest Regression deals with both Real valued and discrete input features because the main aim of a fitting tree (in the random forest) is to reduce the entropy of the divided data.
 Since all the discrete features in our data were extracted as real-valued numbers,  the trees can easily find a midpoint between the discrete values to divide the data. 
-Interestingly,  we could also use the feature correlation within families to our advantage to improve the robustness of our model. 
-By increasing the randomness of our feature selection during the data split we force our model to rely less on a specific feature.
+Interestingly,  the feature correlation within families can be used as an advantage to improve the robustness of the model. 
+By increasing the randomness of our feature selection during the data split the model is forced to rely less on a specific feature.
 Hence a wrong measurement or a corrupted feature would not hamper our model significantly.
 
-Since we are getting an $R^2$ score of $>$ 0.5 consistently,  the binding affinity predicted by our model for any new PL complex can be taken as a reference for drug-testing decisions.
+Since the random forest model gives an $R^2$ score of $>$ 0.5 consistently,  the binding affinity predicted by the model for any new PL complex can be taken as a reference for the drug-testing decisions.
 For example,  one can use the results to prioritize testing of new ligands in a wet lab experiment to save resources for the important ligands.
 
-As with any model,  our model and approach do have limitations. 
+As with any model,  the model and approach do have limitations. 
 Firstly, Random Forest Regression models cannot be explained easily.
 With hundreds of trees in our random forest, the model at best can only be treated as a Black Box.
 Because of its complexity,  we were not able to show why some features were very important as compared to the others (E.g., in the feature importance calculation).
 Secondly, our model relies heavily on the ligand features. 
 The model, hence, assumes that the binding only slightly depends on the protein features. On the contrary, the protein and ligand features are both equally responsible for the binding affinity.
-Also, we could not perform hyper-parameter optimization,
-in conjunction with the genetic feature selection algorithms as it is prohibitively expensive.
+Also,  hyper-parameter optimization could not be performed
+in conjunction with the genetic feature selection algorithms as it was prohibitively expensive.
 
 \section{Conclusion}
 In this project, we studied methods and preprocessing techniques to predict the protein-ligand binding affinity.
