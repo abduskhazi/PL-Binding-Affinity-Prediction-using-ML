@@ -188,11 +188,10 @@ Nevertheless, it is a useful format to represent the molecules compactly.
 \subsection{Extraction of features}
 As the file formats are different for proteins and ligands,  different tools were used to extract their features.
 \subsubsection{Ligand Features using RDKit}
-RDKit is an open-source cheminformatics software \cite{rdkitofficalpage}.
-The core data structures and algorithms of RDKit are written in C++ and the
-python wrappers are generated using Boost.Python.
-Using the module, \textit{RDKit.Chem.Descriptors} $402$ features were extracted for each ligand \cite{rdkitbioinformaticsfreiburg}.
-Each descriptor value is taken as a real number,  hence the input space of ligand features is $\mathbf{R}^{402}$ before any feature elimination.
+RDKit is an open-source cheminformatics software library \cite{rdkitofficalpage}.
+The core data structures and algorithms of RDKit are written in C++, and the Python wrappers are generated using the \textit{Boost.Python} package.
+Using the module \textit{RDKit.Chem.Descriptors}, $402$ features were extracted for each ligand \cite{rdkitbioinformaticsfreiburg}.
+Each descriptor value is encoded as a real-valued number, hence the ligand feature space is $\mathbf{R}^{402}$ before any feature elimination.
 
 \subsubsection{Protein Features using fpocket/dpocket descriptors}
 \textit{Fpocket} stands for "Find pocket" whereas \textit{Dpocket} stands for "Describe pocket".
