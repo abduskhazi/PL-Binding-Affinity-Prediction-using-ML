@@ -688,42 +688,41 @@ Moreover,  the correlated feature selection process assumes that the data featur
 \end{figure}
 
 \subsubsection{Dealing with correlated features}
-In Section \ref{CorrelationAnalysis} it was discussed that within some of the families of features there are heavily correlated features.
-One way to deal with this would be to just take one feature from a family and exclude the rest.
+In Section \ref{CorrelationAnalysis} it was discussed that within some feature families, there are heavily correlated features.
+One way to deal with this would be to take one feature per family and exclude the rest.
 However, this would not be a good strategy for generalization.
-This is because our trained model would be unusable by someone who could not measure one of these selected features (or if the measurements were incorrect).
+It is because our trained model would be unusable by someone who could not measure one of these selected features (or if the measurements of some of the selected features were incorrect).
 
-For this reason, the stochasticity of the random forest was used as an advantage.
-During the creation of a regression tree,  the random forest model tries to get the best (feature,  value) tuple to divide the data. This is known as the split criterion.
-The model was forced to randomly select only 20\% of the features for deciding on the split criterion.
-More specifically, the following values were used
+For this reason, the stochasticity of the random forest regression models can be used as an advantage.
+During the creation of a regression tree,  the random forest model tries to get the best (feature,  value) tuple to divide the data at each node in the tree. The list of constructed tuples becomes a decision criterion when predicting new outputs.
+The random forest model was forced to randomly select 20\% of the features for deciding the (feature, value) tuple at each tree node for every tree in the ensemble.
+More specifically, the following hyperparameter values are used by the model:
 \begin{itemize}
 \item 400 Trees (n\_estimators)
-\item 20\% of feature selection (max\_features). This increased the stochasticity of the model.
-\item A minimum of 2 data points for each leaf.  (min\_samples\_leaf)
+\item Using 20\% of the features for selecting a (feature, value) tuple at each tree node (max\_features). (Increased the stochasticity of the model)
+\item A requirement that at least 2 data points be present in each leaf of each tree in the ensemble.  (min\_samples\_leaf)
 \end{itemize}
 These hyperparameters were determined after some empirical testing.
-The number of estimators had to be increased as the stochasticity of our ensemble was higher.
-Our model would hence be dependent on the entire family of features and not rely on a single feature heavily.
+The number of estimators had to be increased as the stochasticity of the ensemble was higher.
+The random forest model would hence be dependent on the entire family of features. It would not rely on a single feature heavily.
 
 
 \subsubsection{Dealing with measurement resolution}
+The model was initially trained by duplicating the data according to their weights. 
+The following results were obtained after the training - Training $R^2$ score = 0.995,  Validation $R^2$ score = 0.8298 and  Out Of Bag (OOB) score = 0.977.
 
-The model was trained by duplicating the data according to their weights. 
-The following results were obtained after training - Training $R^2$ score = 0.995,  Validation $R^2$ score = 0.8298 and  Out Of Bag (OOB) score = 0.977.
-
-The following issues were found with this strategy:
+The following issues were found with this data duplication strategy:
 \begin{itemize}
-\item The out-of-bag error (OOB score) is erroneously high here. This is because of repeated data points. Many points are both inside the selected bag and outside it.
-\item Due to duplication of data points,  the trees may end up being more correlated to each other.  This will affect the generalization of our model.
+\item The out-of-bag error (OOB score) was erroneously high here. It is because of repeated data points. Many points are both inside the selected bag and outside it.
+\item Due to duplication of data points,  the trees may end up being more correlated to each other.  It will affect the generalization of our model.
 \item As training this model is costly, duplicating the data points further increases the cost of training.
 \end{itemize}
 Hence, it was concluded that the duplication of data based on their weights is a wrong strategy for this model.
 
-When the weights were directly used in the fit function, no noticeable improvement was seen in our model.
-This is because the data is already skewed towards the $\approx$2 \si{\angstrom}
+When the weights were directly used in the fit function, no improvement was seen in our model.
+It is because the data is already skewed towards the $\approx$2 \si{\angstrom}
 data points.
-This can be seen in Figure~\ref{fig:resolutiondistribution}.
+Figure~\ref{fig:resolutiondistribution} illustrates this skew.
 
 \subsubsection{Feature Importance calculation}
 The Random Forest regression model fitting is very expensive as compared to the simple linear regression.
