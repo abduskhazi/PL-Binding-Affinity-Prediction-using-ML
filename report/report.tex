@@ -424,6 +424,7 @@ Figure~\ref{fig:pcaproteinanalysis} shows cumulative PCA of the protein features
 Atomic structures produced using X-ray crystallography always have a particular measurement resolution associated with them in \si{\angstrom} units. The structural detail of the 3D image is inversely proportional to the measurement resolution.
 As shown in a small excerpt of the PDB Databank INDEX file, a resolution measurement for each of the complexes (or data points) is also present in the data.
 
+
 \begin{verbatim}
 # ==============================================================================
 # List of protein-ligand complexes with known binding data in PDBbind v.2019
@@ -765,6 +766,7 @@ If feature $A$ and feature $B$ are correlated,  the shuffling of $A$ may not imp
 \subsubsection{Permutation Importance and genetic algorithm}
 To overcome the issue with the above feature importance calculations, a combination of permutation importance and the genetic algorithm was used to obtain the importance of features.
 The reason for using this combination is that it was expensive to refit the random forest model repeatedly. However, it was computationally cheap to evaluate the predicted results of the model after shuffling the features.
+For example,  the time it takes to get the $R^2$ score for the validation data is $\approx 0.0004$ seconds.
 
 The following 2 strategies were used with the genetic algorithms:
 \begin{itemize}
@@ -816,7 +818,8 @@ What must be observed is that the approximate range in which the values are obta
 As the performance of this model was not on par with other models,
 the costly genetic algorithm for feature selection was not run on SVR.
 Moreover,  the time it took to get the $R^2$ score (validation and testing) was very high and which made the model not suitable to be used in a permutation-based genetic algorithm as discussed in the random forest section.
-The issues of within family feature correlation as well as feature selection were hence dealt with by either using output correlation or by manual feature selection methods.
+For example, the fitting for the model on a computer with 4 CPUs takes $\approx$ 99.07 seconds, and testing the model on validation data $\approx$ 27.01 seconds on the same computer. 
+Hence,  the issues of within family feature correlation as well as feature selection were hence dealt with by either using output correlation or by manual feature selection methods.
 
 Figures~\ref{fig:SVRvalidate} and ~\ref{fig:SVRtest} visualize the validation and testing accuracy of the best SVR model.
 
@@ -859,6 +862,8 @@ The training $R^2$ score for the rotation forests was comparable to that of the 
 However,  a considerable improvement in the accuracy was not observed.
 One of the reasons,  is that rotation forests are shown to be better than random forests only for the continuous feature space.
 The data set in this project contained both real-valued features and discrete-valued features (although the discrete values are encoded as real-values for the model).
+Moreover, the training time of this model was the highest of all models in the project.
+The implementation did not support multithreading/multiprocessing and it took $\approx$ 25 minutes 29 seconds to train the model.
 Hence it can be concluded that this model is not the best model for the Protein-Ligand binding affinity prediction.
 
 Table~\ref{table:4} gives an overview of the performance of Rotation forests.
