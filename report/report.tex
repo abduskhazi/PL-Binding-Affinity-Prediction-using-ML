@@ -780,8 +780,8 @@ A stronger signal was used for the number of eliminated features. This scoring f
 
 \subsection{Support Vector Regression}
 Support vector regression is a non-linear regression method that fits a curve such that the margin of error between the model's prediction and the original value is kept within a minimum range.
-Any error higher than this minimum range is penalized during the training of the model.
-Support vector regression was trained with the RBF kernel.
+Any error higher than this minimum error is penalized during the training of the model.
+Support vector regression used in our project was trained with the RBF kernel.
 
 \begin{table} [h!]
 \centering
@@ -805,19 +805,18 @@ Support vector regression was trained with the RBF kernel.
 \label {table:2}
 \end{table}
 
-Data duplication strategy was not used for this model because the training time complexity is $O(n^2)$ where n is the number of data points.
-However, the data point weights were used during the fit function of the training.
+Data duplication strategy could not be used for this model because its training time complexity was $O(n^2)$ where n is the number of data points. However, the data point weights were used during the fit function of the training.
 
 The results are reported in Table~\ref{table:2}.
 The linear weighting of the data gave the best results in SVR.
-The reason testing $R^2$ score is around the same range as the training score maybe because the testing data is of better quality data as compared to the validation data.
-However, this varies very highly depending on the random seed used.
+The reason testing $R^2$ score is around the same range as the training score may be because the testing data is of better quality as compared to the validation data.
+However, this varies very highly depending on the random seed.
 What must be observed is that the approximate range in which the values are obtained is small.
 
-As the performance of the model was not on par with other models,
+As the performance of this model was not on par with other models,
 the costly genetic algorithm for feature selection was not run on SVR.
-Moreover,  the time it took to get the $R^2$ score (validation and testing) was very high and was not suitable to be used in a permutation-based genetic algorithm as discussed in the random forest section.
-The issues of within family feature correlation as well as feature selection were hence dealt with by either using output correlation or by manual feature selection.
+Moreover,  the time it took to get the $R^2$ score (validation and testing) was very high and which made the model not suitable to be used in a permutation-based genetic algorithm as discussed in the random forest section.
+The issues of within family feature correlation as well as feature selection were hence dealt with by either using output correlation or by manual feature selection methods.
 
 Figures~\ref{fig:SVRvalidate} and ~\ref{fig:SVRtest} visualize the validation and testing accuracy of the best SVR model.
 
