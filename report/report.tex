@@ -318,21 +318,22 @@ The scoring function used to select the best chromosome can vary according to th
 \end{algorithmic}
 \end{algorithm}
 
-\paragraph{Manual Feature selection}
+\paragraph{Manual Feature selection:}
 A selected list of 121 ligand descriptors was given by Simon Bray. 
 All protein descriptors were used as they were only a few in number.
 
-\section{Testing}
-\subsection{Reproducibility}
+\subsection{Testing}
+\subsubsection{Reproducibility}
 Reproducible ML models are very crucial for verifying any project or research results. Due to the stochastic nature of many ML training processes, reproducing the exact model (and consequently the exact output) is a challenge. Two methods can be employed to produce verifiable results:
 \begin{itemize}
 \item Training many models and reporting the average results.
-\item Controlling the randomness of the trained models. It is done by setting the seed of the pseudo-random algorithms.
+\item Controlling the randomness of the trained models. One can set the seed of the pseudorandom algorithms used in the training process to accomplish this.
 \end{itemize}
 
-The second approach was used in this project. Every script, when executed, reports an execution ID. This is the random seed used during the execution.  The exact results can be reproduced by using this execution ID as the first argument to the script.
+The second approach is used in this project. Every script, when executed, reports an execution ID. It is the random seed used during the execution.  The exact results can be reproduced by using this execution ID as the first argument to the script.
 
-\subsection{Model Quality Analysis}
+
+\subsubsection{Model Quality Analysis}
 The following function is predicted by the model
 $$ \textrm{Binding affinity prediction} : \mathbf{R}^n \mapsto \mathbf{R} \;\; \textrm{where} \;\; n \in \mathbf{I}^+$$
 Since the input space is multi-dimensional,  one cannot fully visualize the model as a function of the input space.
@@ -342,10 +343,10 @@ To get around this,
 $$R^2(y, \hat{y}) = 1 - \frac{\sum_{i=1}^{n} (y_i - \hat{y}_i)^2}{\sum_{i=1}^{n} (y_i - \bar{y})^2} \;\; \textrm{where} \;\; \bar{y} = \frac{1}{n} \sum_{i=1}^{n} y_i \;\;
 \textrm{and} \;\; \sum_{i=1}^{n} (y_i - \hat{y}_i)^2 = \sum_{i=1}^{n} \epsilon_i^2$$
 
-\item A 2D scatter plot of expected values vs the model's output is plotted. 
+\item A 2D scatter plot of expected values versus the model's predicted output is plotted.
 \end{itemize}
 
-A perfect model would have all the points on the $y = x$ line.  This corresponds to a $R^2$ score of $1.0$. 
+A perfect model would have all the points on the $y = x$ line. It corresponds to a $R^2$ score of $1.0$. 
 Figure~\ref{fig:modelQualityVisualization},  shows the validation accuracy of a sample \textit{Random Forest Regressor} model.
 $y\_validate$ ($x$ axis) represents the actual validation data.
 $y\_validate\_pred$ ($y$ axis) represents the predicted output from the model.
@@ -360,7 +361,7 @@ $y\_validate\_pred$ ($y$ axis) represents the predicted output from the model.
 %\includegraphics[scale=0.7]{accuracy_validate}
 %\includegraphics[scale=0.7]{accuracy_train}
 
-\section{Machine Learning Models}
+\section{Results}
 \label{MachineLearningModelslabel}
 The following machine learning models were used:
 \begin{itemize}
