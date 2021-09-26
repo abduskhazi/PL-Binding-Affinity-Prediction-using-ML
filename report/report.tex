@@ -196,27 +196,26 @@ Each descriptor value is encoded as a real-valued number, hence the ligand featu
 \subsubsection{Protein Features using fpocket/dpocket descriptors}
 \textit{Fpocket} stands for "Find pocket" whereas \textit{Dpocket} stands for "Describe pocket".
 \textit{Fpocket} uses 3D Voronoi tessalation and the concepts of "Alpha Spheres" to find out pockets in the protein structure \cite{fpocketmanual} \cite{voronoitesselationshortvideo}.
-Given a protein PDB file,  the descriptors of all pockets in the protein could be extracted.
-For every pocket,  55 descriptors were obtained in total. They were taken as real values, $\mathbf{R}$.
-Hence the input space for protein features is $\mathbf{R}^{55}$.
+The descriptors (features) of all pockets in the protein are extracted from the given protein PDB file.
+For every pocket,  55 descriptors are obtained in total. They are taken as real-valued numbers, $\mathbf{R}$.
+Hence, the input space for protein features is $\mathbf{R}^{55}$.
 
 
-To get the descriptors of the ligand-binding pockets,  \textit{Dpocket} was used.
+The descriptors of the ligand-binding pockets are extracted from \textit{Dpocket}.
 \textit{Dpocket} is provided with the protein PDB file and the ligand ID of the PL complex as input.
-It generates 3 files as output files,  namely,  dpout\_fpocketp.txt, dpout\_fpocketnp.txt,  and  dpout\_explicitp.txt.
+It generates three files as output files,  namely,  dpout\_fpocketp.txt, dpout\_fpocketnp.txt,  and  dpout\_explicitp.txt.
 \begin{itemize}
 \item \textbf{dpout\_fpocketp.txt}.
-This file contains the descriptors (a.k.a features) of all pockets that are considered to be binding pockets based on a binding criterion.
+This file contains the descriptors (a.k.a features) of all the pockets that are the binding pockets based on a criterion.
 The ligand can bind at different locations (pockets) in the protein 3D structure.
-Hence,  there may be features of more than 1 pocket in this file.
-\item \textbf{dpout\_fpocketnp.txt}.  This file contains the descriptors of all pockets that are non-binding according to the criteria.
-\item \textbf{dpout\_explicitp.txt}.  An explicit pocket is defined as a pocket consisting of all vertices/atoms situated at a specific distance from the ligand in the PL complex.
-This distance is 4 \r{A} by default.
-This file contains the descriptors of all explicit pockets in the PL complex. 
+Hence,  there may be features of more than one pocket in this file.
+\item \textbf{dpout\_fpocketnp.txt}.  This file contains the descriptors of all pockets that are non-binding according to the criterion.
+\item \textbf{dpout\_explicitp.txt}.  This file contains the descriptors of all explicit pockets in the PL complex. An explicit pocket is a pocket that consists of all vertices/atoms situated at a specific distance from the ligand in the PL complex.
+This distance is 4 \r{A} by default. 
 \end{itemize}
 
-In the project,  dpout\_fpocketnp.txt files were not used as they contain the non-binding pockets.
-In the other 2 files,  the pocket descriptors that were given by dpout\_fpocketp.txt were preferred as explicitly defined pockets are heavily biased towards the ligand.
+In the project,  dpout\_fpocketnp.txt files are not used as they contain the non-binding pockets.
+The pocket descriptors of the dpout\_fpocketp.txt file are preferred because explicitly defined pockets of \textbf{dpout\_explicitp.txt} are heavily biased towards the ligand.
 
 \section{Feature selection}
 \subsection{Requirement of feature selection}
