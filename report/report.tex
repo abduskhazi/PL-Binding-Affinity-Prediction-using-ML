@@ -557,10 +557,8 @@ Figure~\ref{fig:BestLinearModel} shows the best results obtained with linear reg
 The reason for the low $R^2$ score is that linear models assume strong linearity between the input variables and the output variable.
 It is not always true.
 One anomaly in the results is that there are some cases where the validation and testing results seem to be better than the training result.
-However, this is not always the case. 
-The results highly depend on the seed.
-If the seed changes, the train/test data split gives different data for training and validation.
-What is essential for the validity of the model is that the results remain in a reasonable range.
+However, this is not always the case.
+What is essential for the validity of the model is that the results remain in a reasonable range (See section \ref{testingissuesection}).
 
 In the linear regression model,  genetic algorithms were used to reduce both the large feature space and to eliminate the correlated features within families. 
 
@@ -643,7 +641,7 @@ Figure~\ref{fig:RFMModel} shows the validation and testing accuracy obtained by 
 The model with manually selected features outperforms the other features selection strategies.
 
 Table~\ref{table:3} gives an overview of the random forest model.
-The table shows that the features selected by output correlation (Spearman and Pearson correlations) seem to generalize well to the test data.
+The table shows that the features selected by output correlation (Spearman and Pearson correlations) seem to generalize well to the test data (See section \ref{testingissuesection}).
 However,  one cannot consider the models with these features good because their validation errors and the corresponding test errors are not in the same range.
 Moreover,  the correlated feature selection process assumes that the data features have a linear (or monotonic) correlation with the output variable. However, this assumption may not be correct with the given data set. Hence, these models are not considered to be the best models.
 
@@ -812,8 +810,7 @@ Data duplication strategy could not be used for this model because its training 
 The results are reported in Table~\ref{table:2}.
 The linear weighting of the data gave the best results in SVR.
 The reason testing $R^2$ score is around the same range as the training score may be because the testing data is of better quality as compared to the validation data.
-However, this varies very highly depending on the random seed.
-What must be observed is that the approximate range in which the values are obtained is small.
+What must be observed is that the approximate range in which the values are obtained is small (See Section \ref{testingissuesection}).
 
 As the performance of this model was not on par with other models,
 the costly genetic algorithm for feature selection was not run on SVR.
@@ -1050,6 +1047,13 @@ GAST_HUCK
 @<TRIPOS>SUBSTRUCTURE
      1 DMJ         1
 \end{verbatim}
+
+\subsection{Testing results better than validation results}
+\label{testingissuesection}
+It is observed on a few occasions that the testing results were better than the validation results. The reason for this anomaly is that the number of data points in the test set was very less ($\approx$ 500) as compared to the training ($\approx$ 15000)/validation ($\approx$ 2000) sets. This difference was due to a mistake in the early test/train split in which the testing data and the training/validation data had similar PL complexes. To test completely unseen data points, some of the complexes from the test set had to be removed. This created an odd situation in which there were more noisy data points in the training/validation set than the testing set. It resulted in the testing set sometimes outperforming the validation/training sets. As the test set should not be touched till the end of the project, this bug was found only at the final stage of the project.
+However, this issue was only seen in some of the test cases.
+
+This issue can be solved when the new version of the PDB databank is released. Testing can then can be performed on the new complexes released in the newest version of the PDB databank.
 
 \subsection{Correlation Heat Maps}
 \label{CorrHeatMapsAppendix}
