@@ -217,8 +217,8 @@ This distance is 4 \r{A} by default.
 In the project,  dpout\_fpocketnp.txt files are not used as they contain the non-binding pockets.
 The pocket descriptors of the dpout\_fpocketp.txt file are preferred because explicitly defined pockets of \textbf{dpout\_explicitp.txt} are heavily biased towards the ligand.
 
-\section{Feature selection}
-\subsection{Requirement of feature selection}
+\subsection{Feature selection}
+\subsubsection{Requirement of feature selection}
 Both the protein and the ligand are equally responsible for the affinity of the PL complex.
 Hence their descriptors were concatenated to get a high dimensional $\mathbf{R}^{457}$ input for the model.
 There are a couple of issues with using all of the descriptors.
@@ -226,18 +226,18 @@ There are a couple of issues with using all of the descriptors.
 \item The amount of data is not very large. 
 For example,  only $\approx$ 35000 data points could be obtained after concatenating the ligand features with the \textit{fpocketp} pocket descriptors.
 \item The number of ligand descriptors $>>$ protein descriptors.
-This creates a data imbalance and may lead the model to select only ligand features for their prediction.
+It creates a data imbalance and may lead the model to select only ligand features for their prediction.
 \end{itemize}
 Hence some methods to reduce the input dimensions are required.
 
-\subsection{Feature Family analysis}
+\subsubsection{Feature Family analysis}
 \label{CorrelationAnalysis}
-All the features extracted from the PDB and the ligand files can be classified into various families.
+The features extracted from the PDB files and the ligand files can be classified into various families.
 Some of the important ones are - AUTOCORR2d\_, Chi, EState\_VSA,  PEOE\_VSA,  SMR\_VSA,  SlogP\_VSA,  VSA\_EState, and fr\_.
-Figure~\ref{fig:correlationheatmap} shows the correlation matrix of 2 of the most interesting families AUTOCORR2d\_ and Chi.
-As can be seen in the heatmap there is a heavy correlation within the families.
+Figure~\ref{fig:correlationheatmap} shows the correlation matrices of 2 families, AUTOCORR2d\_ and Chi.
+As can be seen in the heatmap, there is a heavy correlation between features within these families.
 Hence a strategy to deal with this is also required.
-The correlation heat maps for the other families are illustrated in Section \ref{CorrHeatMapsAppendix}.
+The correlation heat maps for the other families is shown in section \ref{CorrHeatMapsAppendix}.
 
 \begin{figure}[htb]
     \begin{subfigure}[b]{0.45\textwidth}
@@ -255,7 +255,7 @@ The correlation heat maps for the other families are illustrated in Section \ref
      \label{fig:correlationheatmap}
 \end{figure}
 
-\subsection{Feature Selection Strategies}
+\subsubsection{Feature Selection Strategies}
 
 %The data if it is complementary is better for solving the problem.
 %The accuracy measure of the protein LBS prediction is the same as the dichotomous problems in math.
@@ -266,12 +266,12 @@ The best combination,  i.e Global Optima,  cannot be obtained practically by bru
 This is because one would have to try $\binom{402}{k_1} * \binom{55}{k_1}$ ($k_1, k_2 \in \mathbf{I}^+$) possibilities which is impractical.
 In the next subsections, a few feature selection strategies that were considered in this project are discussed.
 
-\subsubsection{Selection by output correlation}
+\paragraph{Selection by output correlation}
 The \textit{pearson} and \textit{spearman} correlations of each feature were calculated against the output variable.
 It was assumed that the features were either linearly related to the output (in the case of Pearson correlation) or had a monotonic relationship (in the case of Spearman correlation).
 20 from the ligand descriptors that were most correlated to the output were selected as inputs to the model.  Similar 20 best features from the protein descriptors were selected.
 
-\subsubsection{Using genetic algorithms}
+\paragraph{Using genetic algorithms}
 \label{geneticalgorithmssection}
 Since the feature space is a non-continuous problem of combinatorial complexity,
 genetic feature selection algorithms \cite{genetic_algorithm} were also studied.
@@ -319,7 +319,7 @@ The scoring function used to select the best chromosome can vary according to th
 \end{algorithmic}
 \end{algorithm}
 
-\subsubsection{Manual Feature selection}
+\paragraph{Manual Feature selection}
 A selected list of 121 ligand descriptors was given by Simon Bray. 
 All protein descriptors were used as they were only a few in number.
 
