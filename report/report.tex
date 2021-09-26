@@ -88,8 +88,9 @@ This project aims to study the protein-ligand binding affinity. Hence, only the 
 \cite{pdbbind_introduction}.
 Using the curated protein-ligand affinity data present in the PDBBind Data bank, the project builds a machine learning model that learns to predict this affinity.
 
-\section{Problem Formulation}
-\subsection{Problem Overview}
+\section{Methods}
+\subsection{Problem Formulation}
+\subsubsection{Problem Overview}
 \label{ProblemOverviewlabel}
 The problem that is solved is - \textit{Given $K_d$/$K_i$/$IC_{50}$ for various complexes in the PDBBind Data bank,
 can this affinity measure be predicted for new protein-ligand complexes?}
@@ -102,7 +103,7 @@ Figure~\ref{fig:plproblemclassification} shows how the Protein-Ligand problem ca
     \label{fig:plproblemclassification}
 \end{figure}
 
-The binding of proteins and ligands is heavily influenced by their respective 3D structures.
+The 3D structure of proteins and ligands strongly influences how they bind.
 Figure~\ref{fig:lockandkey} illustrates a hypothesis called \textit{Lock and Key}.
 The shape of the protein's binding location and the shape of the ligand must be complementary for the binding.
 
@@ -113,19 +114,19 @@ The shape of the protein's binding location and the shape of the ligand must be 
     \label{fig:lockandkey}
 \end{figure}
 
-The other parts of the protein are not involved in the binding process directly.
-Hence,  only the features of the binding location were obtained.
-Any potential binding location in the 3D structure of a protein is called a pocket.
-A 3D-based LBS prediction package called \textit{fpocket} was used to find the potential pockets.
-A submodule in the package called \textit{dpocket} is used to extract the binding pocket's features.
+Any potential binding location in the 3D structure of a protein is called a pocket. The other parts of the protein do not have a direct influence during the binding. Hence only pocket features are extracted from the data.
+A 3D-based LBS prediction package called \textit{fpocket} is used to find the potential pockets.
+A submodule in the package, called \textit{dpocket}, is used to extract the binding pocket's features.
 
-To give a plug-and-play input to the model,  the features of proteins and ligands were kept distinct till the training phase.
-That is,  the combined features were not used in any pre-processing of the ML pipeline e.g. feature reduction.
-This helps the model to provide the binding affinity between any protein and any ligand.
+The features of proteins and ligands are kept separate till the training phase as much as possible.
+In other words, the features are not concatenated before the preprocessing of the ML pipeline (For example, before the output correlation calculation).
+It helps the model's input become plug and play.
+Hence, the binding affinity between any protein and any ligand is predictable by the trained model.
+However, one must note that the concatenation of features is done during the feature selection phase using genetic algorithms because the training of models is a requirement for running them (Section \ref{geneticalgorithmssection}).
 
 
 
-\subsection{Overview of file formats}
+\subsubsection{File formats overview}
 The \textbf{PDBBind Data bank} extracts information about the PL complexes from the \textbf{Protein Data bank} and creates the following files for every complex
 \begin{itemize}
 \item \textbf{PDB Format} - For the Protein.
@@ -133,15 +134,16 @@ The \textbf{PDBBind Data bank} extracts information about the PL complexes from 
 \item \textbf{SDF} - For the ligand.
 \end{itemize}
 
-All of the above formats contain the 3D information that is essential in the prediction of the binding affinity.
-All the above-mentioned formats use the \textbf{XYZ format} internally to represent the 3D structure of their molecules.
+All of the above formats contain the essential 3D structural information required for predicting the binding affinity.
+These formats use the \textbf{XYZ format} internally to represent the 3D structure of their molecules.
 
-\subsubsection{XYZ format}
+\paragraph{XYZ format:}
 \label{xyz_format}
 XYZ format is a chemical file format that represents the geometry of a molecule.
-It specifies the number of atoms and their Cartesian X, Y, Z coordinates hence the name XYZ format.
-The following text illustrates the XYZ format.
-Section \ref{XYZFileexampleref} gives an example.
+It specifies the atoms in a molecule along with their cartesian coordinates in the X, Y, and Z-axes.
+Hence it is named \textit{XYZ format}.
+The following text illustrates the format.
+Section \ref{XYZFileexampleref} gives a detailed example.
 \cite{XYZ_format}
 \begin{verbatim}
 <number of atoms>
@@ -150,10 +152,10 @@ comment line
 ...
 \end{verbatim}
 
-The unit of distance used is Angstrom (\si{\angstrom}).  \SI{1}{\angstrom} $ = 10^{-10}$ m.
+The unit of distance used is this format is Angstrom (\si{\angstrom}).  \SI{1}{\angstrom} $ = 10^{-10}$ m.
 \cite{XYZ_format}
 
-\subsubsection{PDB format}
+\paragraph{PDB format:}
 PDB format is a human-readable file format used to represent the protein molecules (macromolecules).
 Within the PDB format,  the coordinates of atoms are represented like the XYZ format [see \ref{xyz_format}].
 Because of the 3D information in this format,  molecular visualization of proteins is possible with specialized software. 
@@ -163,18 +165,18 @@ It also contains information about atomic connectivity and the protein's primary
 Please see \cite{examplePDBFile} for an example pdb file.
 
 
-\subsubsection{Structure Data File (SDF) Format}
+\paragraph{Structure Data File (SDF) Format:}
 SDF format file is a Chemical Table file (CT File) that contains a structure of the molecule in the X, Y, Z format.
 It contains information like atomic bonds,  connectivity information,  molecular weight,  and molecular formula. \cite{SDFformat}
 Section \ref{SDFFileexampleref} illustrates the SDF file format.
 
-\subsubsection{Mol2 format}
+\paragraph{Mol2 format:}
 Similar to the SDF format,  Mol2 also represents the 3D structure of a molecule in the X, Y, Z format.
 It contains the atomic bond and connectivity information but does not contain the other data like molecular weight and formula.
 The ligands given in this format were used because more ligands in mol2 format could be processed with the RDKit feature extractor.
 Section \ref{MOL2Fileexampleref} illustrates the Mol2 file format.
 
-\subsubsection{SMILES format}
+\paragraph{SMILES format:}
 SMILES is an acronym for Simplified Molecular-Input Line-Entry System.
 It represents a molecule using an ASCII string.
 Using the 3D data in SDF and Mol2 formats,  an atomic graph representation could be created.
@@ -271,6 +273,7 @@ It was assumed that the features were either linearly related to the output (in 
 20 from the ligand descriptors that were most correlated to the output were selected as inputs to the model.  Similar 20 best features from the protein descriptors were selected.
 
 \subsubsection{Using genetic algorithms}
+\label{geneticalgorithmssection}
 Since the feature space is a non-continuous problem of combinatorial complexity,
 genetic feature selection algorithms \cite{genetic_algorithm} were also studied.
 Each feature was represented by a binary number, 1 for the inclusion of the feature and 0 for its exclusion.
