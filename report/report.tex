@@ -625,26 +625,26 @@ Table~\ref{table:1} illustrates the results for the linear regression model.
 \subsection{Random Forest Regression}
 \label{RandomForestRegressionLabel}
 Random forest regression is an ensemble ML model of regression trees.
-When training each tree,  the algorithm finds out which feature value can divide the data into 2 groups to yield the lowest sum of squared values on both sides (The criterion can be different as well e.g. lowest absolute error).
-Then each of the sub-data is split recursively till a stopping criterion (e.g. a set number of data points in the leaf).
+When training each tree,  the algorithm finds out which feature value can divide the data into two groups to yield the lowest sum of squared values on both sides. The criterion can be different as well. An example of this is the lowest absolute error.
+Subsequently, each of the two data groups is split recursively till a stopping criterion. E.g., a set number of data points $n$ must be present in every tree leaf.
 
 For each tree,  a subset of the data is used for training. 
-The subset of data is sampled with replacement a.k.a bagging.
-After training,  the bunch of "Experts" that are good at different data subsets predict the output of new given inputs.
+The subset of data is sampled with replacement. This sampling with replacement is known as bagging.
+After training several trees in the ensemble, each tree becomes an expert in a subset of the data. These "experts" are then used to predict the output of new given inputs.
 The average of the predicted outputs is the result of the whole random forest regressor.
 
-This model is non-linear.
-One advantage is that there is no need for any assumption about the data.
-Moreover,  random forests can handle categorical features together with the real-valued features very easily.
-On the negative side,  the function represented by the ensemble cannot be easily represented and has to be interpreted as a black-box function.
+The random forest regression model is a non-linear ML model.
+One advantage of this is that there is no need for any assumption about the data.
+Moreover, random forests can easily handle categorical features together with the real-valued features.
+On the negative side,  the function represented by the ensemble cannot be easily understood and is interpreted as a black-box function at best.
 
 Figure~\ref{fig:RFMModel} shows the validation and testing accuracy obtained by a random forest with manually selected features.
-This model outperforms the other features selection strategies.
+The model with manually selected features outperforms the other features selection strategies.
 
 Table~\ref{table:3} gives an overview of our model.
-The table shows that features selected by output correlation (Spearman and Pearson correlations) seem to generalize well to the test data.
-However,  one cannot consider this as a good model because the validation error and the test error are not in agreement with each other.
-Moreover,  the correlated feature selection assumes that the data features have a strong linear or monotonic relation with the output which may not be correct in our case. Hence, these models were not considered to be the best models.
+The table shows that the features selected by output correlation (Spearman and Pearson correlations) seem to generalize well to the test data.
+However,  one cannot consider the models with these features good because their validation errors and the corresponding test errors are not in the same range.
+Moreover,  the correlated feature selection process assumes that the data features have a linear (or monotonic) correlation with the output variable. However, this assumption may not be correct with the given data set. Hence, these models are not considered to be the best models.
 
 \begin{table} [h!]
 \centering
