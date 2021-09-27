@@ -4,6 +4,19 @@
 \graphicspath{ {./images/} }
 \usepackage{amsmath}
 
+
+\usepackage{amssymb}
+\usepackage{algpseudocode}
+\usepackage{algorithm}
+\usepackage{setspace}
+\usepackage{graphicx}
+\graphicspath{ {./images/} }
+\usepackage{hyperref}
+\usepackage{siunitx}
+\usepackage{amsmath}
+\usepackage{caption}
+\usepackage{subcaption}
+
 \title[Binding affinity prediction of PL complexes using ML]{Binding Affinity Prediction of Protein-Ligand complexes using Machine Learning}
 
 \author[Abdus Salam Khazi]
@@ -171,8 +184,29 @@ Our model's approximated function $ f : \mathbf{R}^n \mapsto \mathbf{R} \;\; \te
 
 \begin{frame}[t]{Data Preprocessing}
 \begin{itemize}
-\item .
-\end{itemize} 
+\item Anomalies such as NaN (Not a number) values were removed from the data before sending them as input to the model.
+\item We used PCA (principle component analysis) to find that the ligand feature \textit{IPC} was having log scale values.
+\end{itemize}
+
+\begin{figure}
+     \centering
+     \begin{subfigure}[b]{0.4\textwidth}
+         \centering
+    \includegraphics[scale=0.25]{images/pcaligandanalysisIPC}
+    \caption{With original Ligand feature IPC.}
+    \label{fig:pcaproteinanalysisIPC}
+     \end{subfigure}
+     \hfill
+     \begin{subfigure}[b]{0.4\textwidth}
+         \centering
+        \includegraphics[scale=0.25]{images/pcawithscaledIPC}
+        \caption{With log scaled Ligand feature IPC.}
+        \label{fig:pcawithscaledIPC}
+     \end{subfigure}
+     \caption{Cumulative PCA of ligand features.}
+     \label{fig:PCAAnalysis}
+\end{figure}
+
 \end{frame}
 
 \section{Q \& A}
