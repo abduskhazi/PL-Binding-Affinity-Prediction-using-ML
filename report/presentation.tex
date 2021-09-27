@@ -209,6 +209,28 @@ Our model's approximated function $ f : \mathbf{R}^n \mapsto \mathbf{R} \;\; \te
 
 \end{frame}
 
+
+\begin{frame}[t]{Dealing with measurement resolution}
+\begin{itemize}
+\item In the PDB databank,  each complex also has a corresponding measurement resolution.
+\item The structural
+detail of the 3D image is inversely proportional to the measurement
+resolution.
+\item The weighting of each data point was done according to hyperbolic formulae and linear formulae.
+$  W_i = \frac{ \mathrm{\max{R_{1 ...  n}}}}{R_i}  ;  W_i = (\mathrm{\max{R_{1 ...  n}}} + 1) - R_i $
+\end{itemize}
+
+\begin{figure}
+     \centering
+         \centering
+    \includegraphics[scale=0.3]{images/graphingformula}
+    \caption{Weight calculation formulae.}
+    \label{fig:graphingformula}
+\end{figure}
+
+\end{frame}
+
+
 \section{Q \& A}
 
 \begin{frame}[t]{Q \& A}
