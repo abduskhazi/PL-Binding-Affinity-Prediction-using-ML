@@ -423,7 +423,7 @@ Figure~\ref{fig:pcaproteinanalysis} shows cumulative PCA of the protein features
 
 \subsubsection{Dealing with measurement resolution}
 Atomic structures produced using X-ray crystallography always have a particular measurement resolution associated with them in \si{\angstrom} units. The structural detail of the 3D image is inversely proportional to the measurement resolution.
-As shown in a small excerpt of the PDB Databank INDEX file, a resolution measurement for each of the complexes (or data points) is also present in the data.
+As shown in a small excerpt of the PDB bind Databank INDEX file, a resolution measurement for each of the complexes (or data points) is also present in the data.
 
 
 \begin{verbatim}
@@ -914,7 +914,7 @@ Figures~\ref{fig:accuracyRotationFRvalidate} and ~\ref{fig:accuracyRotationFRtes
 It is observed on a few occasions that the testing results were better than the validation results. The reason for this anomaly is that the number of data points in the test set was very less ($\approx$ 500) as compared to the training ($\approx$ 15000)/validation ($\approx$ 2000) sets. This difference was due to a mistake in the early test/train split in which the testing data and the training/validation data had similar PL complexes. To test completely unseen data points, some of the complexes from the test set had to be removed. This created an odd situation in which there were more noisy data points in the training/validation set than the testing set. It resulted in the testing set sometimes outperforming the validation/training sets. As the test set should not be touched till the end of the project, this bug was found only at the final stage of the project.
 However, this issue was only seen in some of the test cases.
 
-This issue can be solved when the new version of the PDB databank is released. Testing can then can be performed on the new complexes released in the newest version of the PDB databank.
+This issue can be solved when the new version of the PDB bind databank is released. Testing can then can be performed on the new complexes released in the newest version of the PDB bind databank.
 
 \subsection{General discussion}
 In this project, the protein-ligand binding affinity was determined using spatial features extracted by RDKit and D-Pocket.
