@@ -908,6 +908,15 @@ Figures~\ref{fig:accuracyRotationFRvalidate} and ~\ref{fig:accuracyRotationFRtes
 \end{figure}
 
 \section{Discussion}
+
+\subsection{Testing results better than validation results}
+\label{testingissuesection}
+It is observed on a few occasions that the testing results were better than the validation results. The reason for this anomaly is that the number of data points in the test set was very less ($\approx$ 500) as compared to the training ($\approx$ 15000)/validation ($\approx$ 2000) sets. This difference was due to a mistake in the early test/train split in which the testing data and the training/validation data had similar PL complexes. To test completely unseen data points, some of the complexes from the test set had to be removed. This created an odd situation in which there were more noisy data points in the training/validation set than the testing set. It resulted in the testing set sometimes outperforming the validation/training sets. As the test set should not be touched till the end of the project, this bug was found only at the final stage of the project.
+However, this issue was only seen in some of the test cases.
+
+This issue can be solved when the new version of the PDB databank is released. Testing can then can be performed on the new complexes released in the newest version of the PDB databank.
+
+\subsection{General discussion}
 In this project, the protein-ligand binding affinity was determined using spatial features extracted by RDKit and D-Pocket.
 The 2D/3D features made the data more accessible to simple machine learning models. 
 It was crucial because the complex models that directly get the 3D features from the protein-ligand complexes (E.g., 3D convolutions) require data that is expensive to accumulate.
@@ -1048,13 +1057,6 @@ GAST_HUCK
 @<TRIPOS>SUBSTRUCTURE
      1 DMJ         1
 \end{verbatim}
-
-\subsection{Testing results better than validation results}
-\label{testingissuesection}
-It is observed on a few occasions that the testing results were better than the validation results. The reason for this anomaly is that the number of data points in the test set was very less ($\approx$ 500) as compared to the training ($\approx$ 15000)/validation ($\approx$ 2000) sets. This difference was due to a mistake in the early test/train split in which the testing data and the training/validation data had similar PL complexes. To test completely unseen data points, some of the complexes from the test set had to be removed. This created an odd situation in which there were more noisy data points in the training/validation set than the testing set. It resulted in the testing set sometimes outperforming the validation/training sets. As the test set should not be touched till the end of the project, this bug was found only at the final stage of the project.
-However, this issue was only seen in some of the test cases.
-
-This issue can be solved when the new version of the PDB databank is released. Testing can then can be performed on the new complexes released in the newest version of the PDB databank.
 
 \subsection{Correlation Heat Maps}
 \label{CorrHeatMapsAppendix}
