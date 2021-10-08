@@ -129,56 +129,10 @@ $$K_d = \frac{[P][L]}{[PL]}$$
 
 \end{frame}
 
-\section{Methods}
-\subsection{Feature Extraction}
+\section{Machine Learning Pipeline}
 
-\begin{frame}[t]{Feature Extraction}
-\textbf{PDB databank} (v2019) was used to extract input features.
-\begin{itemize}
-\item We use \textit{fpocket/dpocket} ligand binding site prediction library to get the features of pockets pockets in proteins.
-\item \textit{RDKit} library is used to extract features for each ligand.
-\item \textbf{Ligand Features:} Using \textit{RDKit.Chem.Descriptors}, $402$ features were extracted for each ligand.  Hence the ligand features space was $\mathbf{R}^{402}$.
-\item \textbf{Protein Features:} For every pocket,  55 descriptors are obtained in total. Hence, the input space for protein features is $\mathbf{R}^{55}$
-\end{itemize}
-The concatinated input feature space before input feature elimination $\mathbf{R}^{457}$.
 
-\end{frame}
-
-\subsection{Feature Selection}
-
-\begin{frame}[t]{Feature Selection}
-We only had $16000$ data points to train a feature space of $\mathbf{R}^{457}$. 
-We reduced our features using the following feature selection strategies:
-\begin{itemize}
-\item \textbf{Output Correlation}: The input features that have the best \textit{Pearson} and \textit{Spearman} correlation were selected. \cite{spearmanpearsoncorrelation}.
-\item \textbf{Genetic Algorithms}: Genetic algorithms with the following score function was used to select the best features \cite{geneticalgorithmsresearchpaper}:
-$$
-\textrm{score} = \mathbf{R}^2 \textrm{score} * \textrm{Features Eliminated}
-$$
-\item \textbf{Manual Feature Selection:} A selected list of 121 ligand descriptors was
-used with all protein descriptors as input to the model.
-\end{itemize} 
-\end{frame}
-
-\subsection{Testing strategy}
-
-\begin{frame}[t]{Testing strategy}
-We use the following methods to determine the quality of results and reproducing them:
-\begin{itemize}
-\item \textbf{Reproducibility}: To reproduce the results, we use report random seed (Execution ID) for every execution. 
-\item \textbf{$R^2$ score} (\textit{Coefficient of determination}) \cite{r_squared_score}: . $R^2  \in (- \infty, 1.0]$ where $1.0$ is the best score. 
-\item \textbf{Visualization:}
-Our model's approximated function $ f : \mathbf{R}^n \mapsto \mathbf{R} \;\; \textrm{where} \;\; n \in \mathbf{I}^+$ is visualized as a 2D scatter plot.
-
-\begin{figure}[htb]
-  \centering
-    \includegraphics[width=0.40\textwidth]{images/accuracy_validate}
-    \caption{(Sample) Visualizing accuracy.  $R^2 \approx 0.805$.}
-    \label{fig:modelQualityVisualization}
-\end{figure}
-
-\end{itemize} 
-\end{frame}
+\section{Data Processing}
 
 \subsection{Data preprocessing}
 
@@ -209,7 +163,35 @@ Our model's approximated function $ f : \mathbf{R}^n \mapsto \mathbf{R} \;\; \te
 
 \end{frame}
 
+\subsection{Feature Extraction \& Selection}
 
+\begin{frame}[t]{Feature Extraction}
+\textbf{PDB databank} (v2019) was used to extract input features.
+\begin{itemize}
+\item We use \textit{fpocket/dpocket} ligand binding site prediction library to get the features of pockets pockets in proteins.
+\item \textit{RDKit} library is used to extract features for each ligand.
+\item \textbf{Ligand Features:} Using \textit{RDKit.Chem.Descriptors}, $402$ features were extracted for each ligand.  Hence the ligand features space was $\mathbf{R}^{402}$.
+\item \textbf{Protein Features:} For every pocket,  55 descriptors are obtained in total. Hence, the input space for protein features is $\mathbf{R}^{55}$
+\end{itemize}
+The concatinated input feature space before input feature elimination $\mathbf{R}^{457}$.
+
+\end{frame}
+
+\begin{frame}[t]{Feature Selection}
+We only had $16000$ data points to train a feature space of $\mathbf{R}^{457}$. 
+We reduced our features using the following feature selection strategies:
+\begin{itemize}
+\item \textbf{Output Correlation}: The input features that have the best \textit{Pearson} and \textit{Spearman} correlation were selected. \cite{spearmanpearsoncorrelation}.
+\item \textbf{Genetic Algorithms}: Genetic algorithms with the following score function was used to select the best features \cite{geneticalgorithmsresearchpaper}:
+$$
+\textrm{score} = \mathbf{R}^2 \textrm{score} * \textrm{Features Eliminated}
+$$
+\item \textbf{Manual Feature Selection:} A selected list of 121 ligand descriptors was
+used with all protein descriptors as input to the model.
+\end{itemize} 
+\end{frame}
+
+\subsection{Measurement resolution}
 \begin{frame}[t]{Dealing with measurement resolution}
 \begin{itemize}
 \item In the PDB databank,  each complex also has a corresponding measurement resolution.
@@ -230,6 +212,52 @@ $  W_i = \frac{ \mathrm{\max{R_{1 ...  n}}}}{R_i}  ;  W_i = (\mathrm{\max{R_{1 .
 
 \end{frame}
 
+\section{Machine Learning Models}
+\begin{frame}[t]{Machine Learning models}
+\end{frame}
+
+\subsection{Simple Linear Regression}
+\subsection{Random Forest Regression}
+\subsection{Support Vector Regression}
+\subsection{Rotation Forest Regression}
+
+\section{Testing strategy}
+
+\begin{frame}[t]{Testing strategy}
+We use the following methods to determine the quality of results and reproducing them:
+\begin{itemize}
+\item \textbf{Reproducibility}: To reproduce the results, we use report random seed (Execution ID) for every execution. 
+\item \textbf{$R^2$ score} (\textit{Coefficient of determination}) \cite{r_squared_score}: . $R^2  \in (- \infty, 1.0]$ where $1.0$ is the best score. 
+\item \textbf{Visualization:}
+Our model's approximated function $ f : \mathbf{R}^n \mapsto \mathbf{R} \;\; \textrm{where} \;\; n \in \mathbf{I}^+$ is visualized as a 2D scatter plot.
+
+\begin{figure}[htb]
+  \centering
+    \includegraphics[width=0.40\textwidth]{images/accuracy_validate}
+    \caption{(Sample) Visualizing accuracy.  $R^2 \approx 0.805$.}
+    \label{fig:modelQualityVisualization}
+\end{figure}
+
+\end{itemize} 
+\end{frame}
+
+\section{Results}
+\begin{frame}[t]{Results}
+The following are the results:
+\begin{itemize}
+\item 2,3,4
+\item
+\end{itemize} 
+\end{frame}
+
+\section{Discussion}
+\begin{frame}[t]{Discussion}
+The following points can be noted:
+\begin{itemize}
+\item Testing results were sometimes better than validation results.
+\item
+\end{itemize} 
+\end{frame}
 
 \section{Q \& A}
 
@@ -247,23 +275,17 @@ $  W_i = \frac{ \mathrm{\max{R_{1 ...  n}}}}{R_i}  ;  W_i = (\mathrm{\max{R_{1 .
 \bibitem{proteinlingandbindingpaper}
 \alert{Du,  Li,  Xia,  Ai,  Liang,  Sang,  Ji and Liu; Insights into Protein–Ligand Interactions: Mechanisms, Models, and Methods (2016)}
 
+\bibitem{fpocketpaper}
+\alert{Le Guilloux,  Schmidtke, and Tuffery; Fpocket: An open source platform for ligand pocket detection(2009)}
+
 \bibitem{drugdiscoverycost}
 \alert{DiMasi,  Grabowski and Hansen; nnovation in the pharmaceutical industry: New estimates of R \& D costs (2016)}
-
-\bibitem{r_squared_score}
-\alert{scikit-learn; R2 score, the coefficient of determination},
 
 \bibitem{geneticalgorithmsresearchpaper}
 \alert{John H. Holland.  Genetic Algorithms. (1960)}
 
-\bibitem{spearmanpearsoncorrelation}
-\alert{Schober, Boer and Schwarte. Correlation Coefficients: Appropriate Use and Interpretation. (2018)}
-
-\bibitem{PL_complex_introduction}
-\alert{Protein–Ligand complex; Wikipedia.}
-
-\bibitem{lockandkeyformatpng}
-\alert{Docking (molecular); Wikipedia.}
+\bibitem{bagnall2020rotation}
+\alert{Is rotation forest the best classifier for problems with continuous features? A. Bagnall, M. Flynn, J. Large, J. Line, A. Bostrom, and G. Cawley (2020)}
 
 \end{thebibliography}
 

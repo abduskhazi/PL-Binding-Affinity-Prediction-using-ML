@@ -955,7 +955,7 @@ Interestingly, the feature correlation within families can be used as an advanta
 By increasing the randomness of the (feature, value) tuple selection during the data split, the model is forced to rely less on a specific feature.
 Hence a wrong measurement or a corrupted feature would not hamper the model significantly.
 
-Since the random forest model gives an $R^2$ score of $>$ 0.5 consistently,  the binding affinity predicted by the model for any new PL complex can be taken as a reference for the drug-testing decisions.
+Since the random forest model gives an $R^2$ score of $>$ 0.4 consistently,  the binding affinity predicted by the model for any new PL complex can be taken as a reference for the drug-testing decisions.
 For example,  one can use the results to prioritize testing of new ligands in a wet lab experiment to save resources for the important ligands.
 
 As with any model,  the model and approach used in this project do have limitations. 
@@ -968,15 +968,18 @@ Also,  hyper-parameter optimization could not be performed
 in conjunction with the genetic feature selection algorithms as it was prohibitively expensive.
 
 \section{Conclusion}
+
 In this project, methods and preprocessing techniques to predict the protein-ligand binding affinity were studied.
 In conclusion, using random forest regression for this problem is suggested because of the ease of its training and its generalization capability.
 Random forest regression can also be used as a baseline to compare any new models.
 
-In further work,  there is scope for improving the feature selection process of the model.
+One extension of this project is to weight the pockets in the complex ( i.e fp descriptors) based on the overlap between the protein and the ligand within the pocket.
+There is also a scope for improving the feature selection process of the model.
 The random forest regression model used in the project depends heavily on the ligand features.
 Further investigation on new models that do not have this limitation would be helpful.
 One way could be to build a model with all protein features and one family of ligand features. This procedure can be repeated for other families of ligand features.
 The most important features in each ligand family can be used as surrogates for the whole family.
+
 In addition to this, more study needs to be conducted to create explainable models.
 It would be both accepted by the Cheminformatics community and would also be helpful to further the understanding of the protein-ligand binding affinity.
 
