@@ -68,7 +68,7 @@ What are a proteins and ligands?
 \begin{figure}[htb]
   \centering
     \includegraphics[scale=0.07]{images/pl_complex}
-    \caption{Haemoglobin transporter protein \cite{PL_complex_introduction}.}
+    \caption{Haemoglobin transporter protein.}
     \label{fig:HaemoglobinTransporterImage}
 \end{figure}
 
@@ -87,7 +87,7 @@ pocket.
 \begin{figure}[htb]
   \centering
     \includegraphics[scale=0.45]{images/lock_and_key}
-    \caption{Lock and Key hypothesis in molecular docking \cite{lockandkeyformatpng}.}
+    \caption{Lock and Key hypothesis in molecular docking.}
     \label{fig:lockandkey}
 \end{figure}
 
@@ -98,10 +98,11 @@ pocket.
 Understanding Protein-Binding Affinity.
 
 \begin{itemize}
+\item Assume a dynamic system in which protein $P$ and ligand $L$ are binding and unbinding continously.
 \item Binding affinity between a protein and a ligand is quantified by the $K_d$, $K_i$ and $IC_{50}$.
 Here $K_d$ refers to the dissociation constant, $K_i$ to inhibition constant, and $IC_{50}$ to 
 inhibitory concentration 50\%.
-\item $K_d$ can be quantified by using protein concentration $[P]$ and ligand concentration $[L]$ at equillibrium \cite{proteinlingandbindingpaper}.
+\item $K_d$ can be quantified by using protein concentration $[P]$ and ligand concentration $[L]$ at equillibrium.
 $$K_d = \frac{[P][L]}{[PL]}$$
 \item $K_i$ and $IC_{50}$ are similarly defined.
 \end{itemize}
@@ -129,10 +130,13 @@ $$K_d = \frac{[P][L]}{[PL]}$$
 
 \end{frame}
 
-\section{Machine Learning Pipeline}
+\section{Machine Learning / Project Pipeline}
+\begin{frame}[t]{Machine Learning / Project Pipeline}
 
 
-\section{Data Processing}
+\end{frame}
+
+\section{Data Processing and Analysis}
 
 \subsection{Data preprocessing}
 
@@ -181,7 +185,7 @@ The concatinated input feature space before input feature elimination $\mathbf{R
 We only had $16000$ data points to train a feature space of $\mathbf{R}^{457}$. 
 We reduced our features using the following feature selection strategies:
 \begin{itemize}
-\item \textbf{Output Correlation}: The input features that have the best \textit{Pearson} and \textit{Spearman} correlation were selected. \cite{spearmanpearsoncorrelation}.
+\item \textbf{Output Correlation}: The input features that have the best \textit{Pearson} and \textit{Spearman} correlation were selected.
 \item \textbf{Genetic Algorithms}: Genetic algorithms with the following score function was used to select the best features \cite{geneticalgorithmsresearchpaper}:
 $$
 \textrm{score} = \mathbf{R}^2 \textrm{score} * \textrm{Features Eliminated}
@@ -212,14 +216,34 @@ $  W_i = \frac{ \mathrm{\max{R_{1 ...  n}}}}{R_i}  ;  W_i = (\mathrm{\max{R_{1 .
 
 \end{frame}
 
+\subsection{Feature Families Correlations}
+\begin{frame}[t]{Feature Family Correlations}
+\begin{itemize}
+\item Features can be divided into families.
+\item Important ones are - AUTOCORR2d\_, Chi, EState\_VSA,  PEOE\_VSA,  SMR\_VSA,  SlogP\_VSA,  VSA\_EState, and fr\_.
+\item Within Chi and AUTOCORR2d\_, the features are correlated.
+\item ML models need to take into account this issue.
+\end{itemize}
+\begin{figure}[htb]
+    \begin{subfigure}[b]{0.49\textwidth}
+         \centering
+         \includegraphics[scale=0.25]{images/correlationChi}
+        \label{fig:correlationChi}
+     \end{subfigure}
+     \hfill
+    \begin{subfigure}[b]{0.49\textwidth}
+         \centering
+         \includegraphics[scale=0.25]{images/correlationAUTOCORR2D}
+        \label{fig:correlationfr}
+     \end{subfigure}
+     \caption{Correlation Heat Map.}
+     \label{fig:correlationheatmap}
+\end{figure}
+\end{frame}
+
 \section{Machine Learning Models}
 \begin{frame}[t]{Machine Learning models}
 \end{frame}
-
-\subsection{Simple Linear Regression}
-\subsection{Random Forest Regression}
-\subsection{Support Vector Regression}
-\subsection{Rotation Forest Regression}
 
 \section{Testing strategy}
 
@@ -242,8 +266,14 @@ Our model's approximated function $ f : \mathbf{R}^n \mapsto \mathbf{R} \;\; \te
 \end{frame}
 
 \section{Results}
+\subsection{Simple Linear Regression}
+\subsection{Random Forest Regression}
+\subsection{Support Vector Regression}
+\subsection{Rotation Forest Regression}
+
+
 \begin{frame}[t]{Results}
-The following are the results:
+Results:
 \begin{itemize}
 \item 2,3,4
 \item
@@ -252,11 +282,30 @@ The following are the results:
 
 \section{Discussion}
 \begin{frame}[t]{Discussion}
-The following points can be noted:
+Notable points:
 \begin{itemize}
-\item Testing results were sometimes better than validation results.
-\item
+\item Best models: Linear Regression and Random Forest Regression.
+\item RF uses correlated features to make itself more robust.
+\item RF can deal with both discrete and real valued features.
 \end{itemize} 
+Limitations:
+\begin{itemize}
+\item Linear regression assumes data linearity.
+\item RF depends Heavy reliance on ligand features.
+\item Both models were black box models.
+\item Testing results were sometimes better than validation results. This is because test data $<$ validation data.
+But the difference is minimal.
+\end{itemize} 
+\end{frame}
+
+\begin{frame}[t]{Discussion}
+Further work:
+\begin{itemize}
+\item Weighting a pocket descriptor based on the overlap between protein and ligand.
+\item Improvement of feature selection: Build 1 model per family of features. Use the best feature as a family surrogate.
+\item A more explainable model needs to be built.
+\end{itemize} 
+
 \end{frame}
 
 \section{Q \& A}
