@@ -518,15 +518,15 @@ Figure~\ref{fig:BestLinearModel} shows the best results obtained with linear reg
 \hline
 \textbf{No.  features} & \textbf{Feature selection} & \textbf{Weighting} & \textbf{Training} & \textbf{Validation} & \textbf{Testing} \\ [0.5 ex]
 \hline \hline
-457 & - & - & 0.456 & 0.433 & 0.412\\
-\textbf{457} &  \textbf{-} & \textbf{Hyperbolic} & \textbf{0.452} & \textbf{0.431} & \textbf{0.420}\\
-457 & - & Hyperbolic duplication & 0.465 & 0.424 & 0.419\\
-457 & - & Linear & 0.455 & 0.430 & 0.416\\
-457 & - & Linear Duplication & 0.460 & 0.428 & 0.407\\
-49 & Genetic\footnotemark[1] & Hyperbolic & $\approx$0.373 & $\approx$0.393  & $\approx$0.402\\
-40 & Pearson Correlation & Hyperbolic & 0.288 & 0.276  & 0.286 \\ 
-40 & Spearman Correlation & Hyperbolic & 0.291 & 0.280  & 0.289 \\ 
-176 & Manual & Hyperbolic & 0.364  & 0.342  & 0.389\\ [1ex]
+457 & - & - & 0.461 & 0.415 & 0.320\\
+457 &  - & Hyperbolic & 0.454 & 0.427 & 0.337\\
+457 & - & Hyperbolic duplication & 0.465 & 0.416 & 0.326\\
+457 & - & Linear & 0.458 & 0.419 & 0.328\\
+457 & - & Linear Duplication & 0.460 & 0.428 & 0.327\\
+\textbf{49} & \textbf{Genetic}\footnotemark[1] & \textbf{Hyperbolic} & \textbf{$\approx$0.377} & \textbf{$\approx$0.374}  & \textbf{$\approx$0.364}\\
+40 & Pearson Correlation & Hyperbolic & 0.287 & 0.278  & 0.285 \\ 
+40 & Spearman Correlation & Hyperbolic & 0.289 & 0.294  & 0.290 \\ 
+176 & Manual & Hyperbolic & 0.362  & 0.346  & 0.331\\ [1ex]
 \hline
 \end{tabular}
 }
@@ -551,7 +551,7 @@ Figure~\ref{fig:BestLinearModel} shows the best results obtained with linear reg
         \caption{Test Accuracy.}
         \label{fig:accuracytestLGHyperbolic}
      \end{subfigure}
-     \caption{Linear Model using Hyperbolic weighting and all 457 features.}
+     \caption{Linear Model using Hyperbolic weighting and all 49 features selected by genetic algorithm.}
      \label{fig:BestLinearModel}
 \end{figure}
 
@@ -653,14 +653,14 @@ Moreover,  the correlated feature selection process assumes that the data featur
 \hline
 \textbf{No.  Features} & \textbf{Feature Selection} & \textbf{Weighting} & \textbf{Training} & \textbf{Validation} & \textbf{OOB score} & \textbf{Testing} \\ [0.5 ex]
 \hline \hline
-457 & - & - & 0.961 & 0.790 & 0.793 & 0.540\\
-457 & - & Hyperbolic &  0.961 & 0.778 & 0.796 & 0.555\\
-457 & - & Linear &  0.960 & 0.800 & 0.790 & 0.542\\
-40 & Spearman Correlation & Hyperbolic &  0.930 & 0.677 & 0.672 & 0.880  \\ 
-40 & Pearson Correlation & Hyperbolic &  0.925 & 0.651 & 0.646 & 0.870  \\ 
-229 & Genetic Elitism & Hyperbolic  & 0.958 &  0.791 & 0.792 & 0.537 \\
-394 & Genetic Normal& Hyperbolic & 0.960 & 0.808 & 0.791 & 0.543 \\
-\textbf{176} & \textbf{manual}  & \textbf{Hyperbolic} &  \textbf{0.947} & \textbf{0.737} & \textbf{0.734} & \textbf{0.579}  \\ [1ex]
+457 & - & - & 0.961 & 0.790 & 0.791 & 0.447\\
+457 & - & Hyperbolic &  0.961 & 0.773 & 0.794 & 0.448\\
+457 & - & Linear &  0.960 & 0.785 & 0.794 & 0.443\\
+40 & Spearman Correlation & Hyperbolic &  0.930 & 0.664 & 0.671 & 0.878  \\ 
+40 & Pearson Correlation & Hyperbolic &  0.925 & 0.642 & 0.645 & 0.868  \\ 
+229 & Genetic Elitism & Hyperbolic  & 0.958 &  0.779 & 0.793 & 0.444 \\
+394 & Genetic Normal& Hyperbolic & 0.961 & 0.776 & 0.795 & 0.448 \\
+\textbf{176} & \textbf{manual}  & \textbf{Hyperbolic} &  \textbf{0.949} & \textbf{0.734} & \textbf{0.736} & \textbf{0.463}  \\ [1ex]
 \hline
 \end{tabular}
 }
@@ -791,14 +791,14 @@ Support vector regression used in our project was trained with the RBF kernel.
 \hline
 \textbf{No. Features} & \textbf{Feature Selection} & \textbf{Weighting} & \textbf{Training} & \textbf{Validation} &  \textbf{Testing} \\ [0.5 ex]
 \hline \hline
-457 & - & - & 0.310 & 0.308 & 0.356\\
-457 & - & Hyperbolic & 0.325 & 0.326 & 0.371\\
-\textbf{457} & \textbf{-} & \textbf{Linear}  & \textbf{0.336} &\textbf{0.334} & \textbf{0.374}\\
-40 & Spearman Correlation & Linear & 0.256 & 0.286  & 0.262 \\ 
-40 & Pearson Correlation & Linear & 0.199 & 0.200 & 0.199 \\ 
-40 & Spearman Correlation & Hyperbolic & 0.252 & 0.266 & 0.254 \\ 
-40 & Pearson Correlation & Hyperbolic & 0.169 & 0.169 & 0.169 \\ 
-176 & Manual & Linear &  0.306  & 0.298  & 0.358\\ [1ex]
+457 & - & - & 0.311 & 0.290 & 0.314\\
+457 & - & Hyperbolic & 0.330 & 0.323 & 0.327\\
+\textbf{457} & \textbf{-} & \textbf{Linear}  & \textbf{0.344} &\textbf{0.319} & \textbf{0.335}\\
+40 & Spearman Correlation & Linear & 0.260 & 0.268  & 0.262 \\ 
+40 & Pearson Correlation & Linear & 0.198 & 0.196 & 0.197 \\ 
+40 & Spearman Correlation & Hyperbolic & 0.254 & 0.265 & 0.256 \\ 
+40 & Pearson Correlation & Hyperbolic & 0.168 & 0.171 & 0.168 \\ 
+176 & Manual & Linear &  0.311  & 0.283  & 0.310\\ [1ex]
 \hline
 \end{tabular}
 }
@@ -875,10 +875,10 @@ The models trained by using features selected by output correlation were not con
 \hline
 \textbf{No.  Features} & \textbf{Selected} & \textbf{Training} & \textbf{Validation} & \textbf{Testing} \\ [0.5 ex]
 \hline \hline
-457 & - & 0.967 & 0.756 & 0.543\\
-40 & Person Correlation & 0.948 & 0.596 & 0.878\\
-40 & Spearman Correlation & 0.951 & 0.667 &0.896 \\
-\textbf{176} & \textbf{manual} & \textbf{0.960} & \textbf{0.724} & \textbf{0.572} \\ [1ex]
+457 & - & 0.967 & 0.767 & 0.449\\
+40 & Spearman Correlation & 0.952 & 0.650 & 0.890\\
+40 & Pearson Correlation & 0.951 & 0.629 & 0.883 \\
+\textbf{176} & \textbf{manual} & \textbf{0.960} & \textbf{0.716} & \textbf{0.471} \\ [1ex]
 \hline
 \end{tabular}
 }
