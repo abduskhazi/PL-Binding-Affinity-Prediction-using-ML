@@ -51,15 +51,13 @@
 \tableofcontents
 \end{frame}
 
-\section{Introduction}
-
-\subsection{Biological Background}
+\section{Introduction: Biological Background}
 
 \begin{frame}[t]{Biological Background}
 What are a proteins and ligands? 
 \begin{itemize}
 \item \textbf{Proteins:} Complex molecules that are work-horses (machines) of a living organism.
-\item \textbf{Ligands:} Molecules that bind to particular proteins, called receptor proteins.
+\item \textbf{Ligands:} Molecules that bind to (receptor) proteins.
 
 \item Proteins and ligands bind together to form protein-ligand complexes.
 
@@ -81,7 +79,7 @@ Protein-Ligand complexes
 \item Any potential binding location in the 3D structure of a protein is called a
 pocket.
 \item The pockets of proteins only bind to ligands of complementary shape.
-\item Drugs are just ligand molecules that bind to protein to cause a therapeutic effect.
+\item Drugs are just ligand molecules that bind to proteins to cause a therapeutic effect.
 \end{itemize}
 
 \begin{figure}[htb]
@@ -95,43 +93,53 @@ pocket.
 \end{frame}
 
 \begin{frame}[t]{Biological Background}
-Understanding Protein-Binding Affinity.
+Protein-Binding Affinity
 
 \begin{itemize}
-\item Assume a dynamic system in which protein $P$ and ligand $L$ are binding and unbinding continously.
-\item Binding affinity between a protein and a ligand is quantified by the $K_d$, $K_i$ and $IC_{50}$.
-Here $K_d$ refers to the dissociation constant, $K_i$ to inhibition constant, and $IC_{50}$ to 
-inhibitory concentration 50\%.
-\item $K_d$ can be quantified by using protein concentration $[P]$ and ligand concentration $[L]$ at equillibrium.
-$$K_d = \frac{[P][L]}{[PL]}$$
-\item $K_i$ and $IC_{50}$ are similarly defined.
+\item Assume a dynamic system in which protein $P$ and ligand $L$ are binding and unbinding continuously.
+\item Let $[P]$ be the concentration of the protein and $[L]$ be the concentration of the ligand.
+Let $[PL]$ be the concentration of the protein ligand complex.
+\item Binding affinity can be quantified by using $[P]$, $[L]$ and $[PL]$ (\textbf{at equilibrium}).
+$$\mathrm{Binding Affinity} = \frac{[P][L]}{[PL]}$$
 \end{itemize}
 
 
 \end{frame}
 
-\subsection{Problem Definition.}
+\section{Problem Definition}
 
 \begin{frame}[t]{Problem Definition}
 
 \begin{itemize}
 \item Determining if a potential drug (ligand) can bind to a target protein is very costly processes \cite{drugdiscoverycost}.
-\item The project aims to predict the ligand affinity based on previously recorded data ("In-Silico" method).  This reduces the drug discovery costs.
-\item We use PDB databank,  which holds PL affinity data collected over many decades.
+\item The project aim: Reduce the drug discovery costs by eliminating bad leads.
+\item Predict protein-ligand binding affinity using "In-Silico" methods. 
 \end{itemize}
 
 \begin{figure}[htb]
   \centering
-    \includegraphics[scale=0.25]{images/pl_problem_classification}
-    \caption{Protein-Ligand problem classifcation.}
-    \label{fig:plproblemclassification}
+    \includegraphics[scale=0.4]{images/ProjectOverview}
+    \caption{Project Overview}
+    \label{fig:ProjectOverviewImage}
 \end{figure}
-
 
 \end{frame}
 
-\section{Machine Learning / Project Pipeline}
-\begin{frame}[t]{Machine Learning / Project Pipeline}
+
+\begin{frame}[t]{Problem Definition}
+
+\begin{itemize}
+\item The input data to the ML model is extracted from a database called PDB Data bank.
+\item We make use of Binding site prediction algorithms (fpocket/dpocket) for getting pocket data.
+\item The features contain information about the 3D structures in our data.
+\end{itemize}
+
+\begin{figure}[htb]
+  \centering
+    \includegraphics[scale=0.46]{images/DataInputOverview}
+    \caption{Data Input Overview.}
+    \label{fig:projectoverviewimage}
+\end{figure}
 
 
 \end{frame}
@@ -182,10 +190,9 @@ The concatinated input feature space before input feature elimination $\mathbf{R
 \end{frame}
 
 \begin{frame}[t]{Feature Selection}
-We only had $16000$ data points to train a feature space of $\mathbf{R}^{457}$. 
-We reduced our features using the following feature selection strategies:
+Feature selection strategies:
 \begin{itemize}
-\item \textbf{Output Correlation}: The input features that have the best \textit{Pearson} and \textit{Spearman} correlation were selected.
+\item \textbf{Output Correlation}: The input features that have the best \textit{Pearson} and \textit{Spearman} correlation with the output were selected.
 \item \textbf{Genetic Algorithms}: Genetic algorithms with the following score function was used to select the best features \cite{geneticalgorithmsresearchpaper}:
 $$
 \textrm{score} = \mathbf{R}^2 \textrm{score} * \textrm{Features Eliminated}
@@ -251,7 +258,7 @@ $  W_i = \frac{ \mathrm{\max{R_{1 ...  n}}}}{R_i}  ;  W_i = (\mathrm{\max{R_{1 .
 We use the following methods to determine the quality of results and reproducing them:
 \begin{itemize}
 \item \textbf{Reproducibility}: To reproduce the results, we use report random seed (Execution ID) for every execution. 
-\item \textbf{$R^2$ score} (\textit{Coefficient of determination}) \cite{r_squared_score}: . $R^2  \in (- \infty, 1.0]$ where $1.0$ is the best score. 
+\item \textbf{$R^2$ score} (\textit{Coefficient of determination}): . $R^2  \in (- \infty, 1.0]$ where $1.0$ is the best score. 
 \item \textbf{Visualization:}
 Our model's approximated function $ f : \mathbf{R}^n \mapsto \mathbf{R} \;\; \textrm{where} \;\; n \in \mathbf{I}^+$ is visualized as a 2D scatter plot.
 
@@ -337,6 +344,18 @@ Further work:
 \alert{Is rotation forest the best classifier for problems with continuous features? A. Bagnall, M. Flynn, J. Large, J. Line, A. Bostrom, and G. Cawley (2020)}
 
 \end{thebibliography}
+
+\end{frame}
+
+\section{Appendix}
+
+\begin{frame}[t]{Appendix}
+
+\begin{itemize}
+\item Binding affinity between a protein and a ligand is quantified by the $K_d$, $K_i$ and $IC_{50}$.
+Here $K_d$ refers to the dissociation constant, $K_i$ to inhibition constant, and $IC_{50}$ to 
+inhibitory concentration 50\%.
+\end{itemize}
 
 \end{frame}
 
