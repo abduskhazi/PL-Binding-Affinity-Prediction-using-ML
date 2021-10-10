@@ -54,7 +54,7 @@
 \section{Introduction: Biological Background}
 
 \begin{frame}[t]{Biological Background}
-What are a proteins and ligands? 
+What are proteins and ligands? 
 \begin{itemize}
 \item \textbf{Proteins:} Complex molecules that are work-horses (machines) of a living organism.
 \item \textbf{Ligands:} Molecules that bind to (receptor) proteins.
@@ -73,13 +73,17 @@ What are a proteins and ligands?
 \end{frame}
 
 \begin{frame}[t]{Biological Background}
-Protein-Ligand complexes
+\textbf{Protein-Ligand complexes}
 
 \begin{itemize}
-\item Any potential binding location in the 3D structure of a protein is called a
-pocket.
-\item The pockets of proteins only bind to ligands of complementary shape.
-\item Drugs are just ligand molecules that bind to proteins to cause a therapeutic effect.
+\item Ligands bind to proteins at "cavity" like locations called pockets.
+\item The pockets and the ligands are complementary in shape.
+\end{itemize}
+
+\textbf{Drugs}
+\begin{itemize}
+\item Drugs are ligand molecules that bind to proteins.
+\item They cause a therapeutic effect after binding to the proteins.
 \end{itemize}
 
 \begin{figure}[htb]
@@ -111,9 +115,9 @@ $$\mathrm{Binding Affinity} = \frac{[P][L]}{[PL]}$$
 \begin{frame}[t]{Problem Definition}
 
 \begin{itemize}
-\item Determining if a potential drug (ligand) can bind to a target protein is very costly processes \cite{drugdiscoverycost}.
-\item The project aim: Reduce the drug discovery costs by eliminating bad leads.
-\item Predict protein-ligand binding affinity using "In-Silico" methods. 
+\item Determining if a potential drug (ligand) can bind to a target protein is very expensive \cite{drugdiscoverycost}.
+\item The project tries to reduce the drug discovery costs by eliminating bad leads.
+\item \textbf{Problem definition}: Predict protein-ligand binding affinity using "In-Silico" methods. 
 \end{itemize}
 
 \begin{figure}[htb]
@@ -125,13 +129,24 @@ $$\mathrm{Binding Affinity} = \frac{[P][L]}{[PL]}$$
 
 \end{frame}
 
+\begin{frame}[t]{Problem Definition}
+There are various problems in the protein-ligand domain.  The following figure shows the classification tree.
+
+\begin{figure}[htb]
+  \centering
+    \includegraphics[scale=0.35]{images/pl_problem_classification}
+    \caption{Protein-Ligand problem classifcation.}
+    \label{fig:plproblemclassification}
+\end{figure}
+
+\end{frame}
 
 \begin{frame}[t]{Problem Definition}
 
 \begin{itemize}
 \item The input data to the ML model is extracted from a database called PDB Data bank.
-\item We make use of Binding site prediction algorithms (fpocket/dpocket) for getting pocket data.
-\item The features contain information about the 3D structures in our data.
+\item \textit{fpocket} and \textit{RDKit} were used to extract the features of proteins and ligands.
+\item The input features contain information about the 3D structures of the proteins and the ligands.
 \end{itemize}
 
 \begin{figure}[htb]
@@ -146,12 +161,32 @@ $$\mathrm{Binding Affinity} = \frac{[P][L]}{[PL]}$$
 
 \section{Data Processing and Analysis}
 
-\subsection{Data preprocessing}
+\begin{frame}[t]{Feature Extraction}
+\textbf{Protein Features:}
+\begin{itemize}
+\item \textit{fpocket} is an LBS prediction algorithm used to predict ligand binding pockets.
+\item There can be multiple binding pockets for a PL complex.
+\item Using \textit{dpocket},  $55$ descriptors were obtained for every (potentially) binding pocket as real values.
+\end{itemize}
+
+\textbf{Ligand Features:}
+\begin{itemize}
+\item Using \textit{RDKit.Chem.Descriptors} module,  $402$ features were extracted as real values.
+\end{itemize}
+
+\textbf{Concatenation:}
+\begin{itemize}
+\item The (concatinated) input feature space to the model was $\mathbf{R}^{457}$.
+\item It was less than $\mathbf{R}^{457}$ if feature selection is done before model training.
+\end{itemize}
+
+\end{frame}
 
 \begin{frame}[t]{Data Preprocessing}
 \begin{itemize}
-\item Anomalies such as NaN (Not a number) values were removed from the data before sending them as input to the model.
-\item We used PCA (principle component analysis) to find that the ligand feature \textit{IPC} was having log scale values.
+\item Data points containing NaN (Not a number) values were removed from the data.
+\item PCA (Principle Component Analysis) was used to find the variance contribution of the features.
+\item Feature \textit{IPC} was log scaled for numerical safety during training.
 \end{itemize}
 
 \begin{figure}
@@ -175,55 +210,45 @@ $$\mathrm{Binding Affinity} = \frac{[P][L]}{[PL]}$$
 
 \end{frame}
 
-\subsection{Feature Extraction \& Selection}
-
-\begin{frame}[t]{Feature Extraction}
-\textbf{PDB databank} (v2019) was used to extract input features.
-\begin{itemize}
-\item We use \textit{fpocket/dpocket} ligand binding site prediction library to get the features of pockets pockets in proteins.
-\item \textit{RDKit} library is used to extract features for each ligand.
-\item \textbf{Ligand Features:} Using \textit{RDKit.Chem.Descriptors}, $402$ features were extracted for each ligand.  Hence the ligand features space was $\mathbf{R}^{402}$.
-\item \textbf{Protein Features:} For every pocket,  55 descriptors are obtained in total. Hence, the input space for protein features is $\mathbf{R}^{55}$
-\end{itemize}
-The concatinated input feature space before input feature elimination $\mathbf{R}^{457}$.
-
-\end{frame}
-
 \begin{frame}[t]{Feature Selection}
 Feature selection strategies:
 \begin{itemize}
-\item \textbf{Output Correlation}: The input features that have the best \textit{Pearson} and \textit{Spearman} correlation with the output were selected.
-\item \textbf{Genetic Algorithms}: Genetic algorithms with the following score function was used to select the best features \cite{geneticalgorithmsresearchpaper}:
-$$
-\textrm{score} = \mathbf{R}^2 \textrm{score} * \textrm{Features Eliminated}
-$$
-\item \textbf{Manual Feature Selection:} A selected list of 121 ligand descriptors was
-used with all protein descriptors as input to the model.
+\item \textbf{Manual:} 121 ligand descriptors + all protein descriptors.
+\item \textbf{Output Correlation}: Features with the best \textit{Pearson} or \textit{Spearman} correlation w.r.t the affinity score (output) were selected.
+\item \textbf{Genetic Algorithms}: Genetic algorithms with a population score function "$ \mathbf{R}2 \; \textrm{score} * \textrm{Features Eliminated} $" was used to select the best features \cite{geneticalgorithmsresearchpaper}:
+
+\begin{figure}[htb]
+  \centering
+    \includegraphics[scale=0.25]{images/scoreFuntionMultiObject}
+    \caption{Genetic Algorithm score function representation.}
+    \label{fig:scorefunctionfigure}
+\end{figure}
+
 \end{itemize} 
+
 \end{frame}
 
-\subsection{Measurement resolution}
 \begin{frame}[t]{Dealing with measurement resolution}
 \begin{itemize}
-\item In the PDB databank,  each complex also has a corresponding measurement resolution.
+\item In PDB bind databank,  each complex has a corresponding measurement resolution (\si{\angstrom} units).
 \item The structural
 detail of the 3D image is inversely proportional to the measurement
 resolution.
-\item The weighting of each data point was done according to hyperbolic formulae and linear formulae.
-$  W_i = \frac{ \mathrm{\max{R_{1 ...  n}}}}{R_i}  ;  W_i = (\mathrm{\max{R_{1 ...  n}}} + 1) - R_i $
+\item The weighting of each data point was done according to hyperbolic formulae (or) linear formulae:
+$ W_\mathrm{Hyperbolic} = \frac{ \mathrm{\max{R_{1 ...  n}}}}{R_i}  \;\; W_\mathrm{Linear}  = (\mathrm{\max{R_{1 ...  n}}} + 1) - R_i $
 \end{itemize}
 
 \begin{figure}
      \centering
          \centering
-    \includegraphics[scale=0.3]{images/graphingformula}
+    \includegraphics[scale=0.30]{images/graphingformula}
     \caption{Weight calculation formulae.}
     \label{fig:graphingformula}
 \end{figure}
 
 \end{frame}
 
-\subsection{Feature Families Correlations}
+
 \begin{frame}[t]{Feature Family Correlations}
 \begin{itemize}
 \item Features can be divided into families.
@@ -255,12 +280,16 @@ $  W_i = \frac{ \mathrm{\max{R_{1 ...  n}}}}{R_i}  ;  W_i = (\mathrm{\max{R_{1 .
 \section{Testing strategy}
 
 \begin{frame}[t]{Testing strategy}
-We use the following methods to determine the quality of results and reproducing them:
+For every execution, we report the \textbf{random seed} used in it.
+This random seed can be used as a script argument (Execution ID) to reproduce the exact results. To determine the result quality we use:
+
 \begin{itemize}
-\item \textbf{Reproducibility}: To reproduce the results, we use report random seed (Execution ID) for every execution. 
-\item \textbf{$R^2$ score} (\textit{Coefficient of determination}): . $R^2  \in (- \infty, 1.0]$ where $1.0$ is the best score. 
+\item $\mathbf{R}^2$ \textbf{score} (\textit{Coefficient of determination}): $R^2  \in (- \infty, 1.0]$ where $1.0$ is the best score. 
 \item \textbf{Visualization:}
-Our model's approximated function $ f : \mathbf{R}^n \mapsto \mathbf{R} \;\; \textrm{where} \;\; n \in \mathbf{I}^+$ is visualized as a 2D scatter plot.
+The model's prediction is visualized as a 2D scatter plot. 
+The best plot is $y = x$ line which corresponds to the best $R^2$ score of 1.0.
+
+\end{itemize}
 
 \begin{figure}[htb]
   \centering
@@ -269,7 +298,6 @@ Our model's approximated function $ f : \mathbf{R}^n \mapsto \mathbf{R} \;\; \te
     \label{fig:modelQualityVisualization}
 \end{figure}
 
-\end{itemize} 
 \end{frame}
 
 \section{Results}
@@ -298,7 +326,7 @@ Notable points:
 Limitations:
 \begin{itemize}
 \item Linear regression assumes data linearity.
-\item RF depends Heavy reliance on ligand features.
+\item RF has heavy reliance on ligand features.
 \item Both models were black box models.
 \item Testing results were sometimes better than validation results. This is because test data $<$ validation data.
 But the difference is minimal.
@@ -308,9 +336,12 @@ But the difference is minimal.
 \begin{frame}[t]{Discussion}
 Further work:
 \begin{itemize}
-\item Weighting a pocket descriptor based on the overlap between protein and ligand.
+\item A new weighting strategy: Weighting a pocket descriptor based on the overlap between the pocket and the ligand.  For example,
+$$
+W_\mathrm{Total} = W_\mathrm{Hyperbolic} * W_\mathrm{Overlap}
+$$
 \item Improvement of feature selection: Build 1 model per family of features. Use the best feature as a family surrogate.
-\item A more explainable model needs to be built.
+\item A more explainable model can be built.
 \end{itemize} 
 
 \end{frame}
