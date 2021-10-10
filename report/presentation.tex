@@ -435,10 +435,67 @@ $$\mathrm{Importance}(f) = \mathrm{Accuracy_{pred}}(X) - \mathrm{Accuracy_{pred}
 \end{frame}
 
 \begin{frame}[t]{Support Vector Regression}
+\begin{itemize}
+\item It is a non linear model.
+\item It fits a $\epsilon$ radius pipe to the data.
+\item The model was not suitable for running genetic algorithms (for both normal and permutation genetics).  Training took $\approx 99.07 s$ and validation took $\approx 27.01 s$.
+\item Features were selected using either output correlation or manual feature selection.
+\item Contrary to other models,  linear weighting of data gave the best results.
+\end{itemize}
+
+\begin{table} [h!]
+\centering
+\resizebox{0.7\linewidth}{!} {
+ \begin{tabular}{ | c | c | c | c | c | c | }
+\hline
+\textbf{No. Features} & \textbf{Feature Selection} & \textbf{Weighting} & \textbf{Training} & \textbf{Validation} &  \textbf{Testing} \\ [0.5 ex]
+\hline \hline
+457 & - & - & 0.311 & 0.290 & 0.314\\
+457 & - & Hyperbolic & 0.330 & 0.323 & 0.327\\
+\textbf{457} & \textbf{-} & \textbf{Linear}  & \textbf{0.344} &\textbf{0.319} & \textbf{0.335}\\
+40 & Spearman Correlation & Linear & 0.260 & 0.268  & 0.262 \\ 
+40 & Pearson Correlation & Linear & 0.198 & 0.196 & 0.197 \\ 
+40 & Spearman Correlation & Hyperbolic & 0.254 & 0.265 & 0.256 \\ 
+40 & Pearson Correlation & Hyperbolic & 0.168 & 0.171 & 0.168 \\ 
+176 & Manual & Linear &  0.311  & 0.283  & 0.310\\ [1ex]
+\hline
+\end{tabular}
+}
+\caption{Table showing  $R^2$ Scores for SVR.}
+\label {table:2}
+\end{table}
 
 \end{frame}
 
 \begin{frame}[t]{Rotation Forest Regression}
+\begin{itemize}
+\item Random forest trees divide data using axis aligned hyperplanes.
+\item The complexity of the trees can be reduced by linearly transforming (rotating) the data.  The eigen vectors of the training data become the basis vector.  For example:
+\begin{itemize}
+\item Representing $y = kx$ would take a very deep tree.
+\item If $y = kx$ is linearly transformed to $y = 0$,  only 1 node is enough.
+\end{itemize}
+
+\item Computationally very expensive - It took $\approx$ 25 min 29 seconds to train.
+\end{itemize}
+
+\begin{table} [h!]
+\centering
+\resizebox{0.7\linewidth}{!} {
+ \begin{tabular}{ | c | c | c | c | c | }
+\hline
+\textbf{No.  Features} & \textbf{Selected} & \textbf{Training} & \textbf{Validation} & \textbf{Testing} \\ [0.5 ex]
+\hline \hline
+457 & - & 0.967 & 0.767 & 0.449\\
+40 & Spearman Correlation & 0.952 & 0.650 & 0.890\\
+40 & Pearson Correlation & 0.951 & 0.629 & 0.883 \\
+\textbf{176} & \textbf{manual} & \textbf{0.960} & \textbf{0.716} & \textbf{0.471} \\ [1ex]
+\hline
+\end{tabular}
+}
+\caption{Rotation Forest $R^2$ Score overview.}
+\label {table:4}
+\end{table}
 
 \end{frame}
 
@@ -447,15 +504,17 @@ $$\mathrm{Importance}(f) = \mathrm{Accuracy_{pred}}(X) - \mathrm{Accuracy_{pred}
 Notable points:
 \begin{itemize}
 \item Best models: Linear Regression and Random Forest Regression.
-\item RF uses correlated features to make itself more robust.
-\item RF can deal with both discrete and real valued features.
+\item Random Forest uses correlated features to make itself more robust.
+\item Random Forest can deal with both discrete and real valued features.
+\item Rotation Forest did not improvement accuracy as they are good only for Real valued features.
 \end{itemize} 
 Limitations:
 \begin{itemize}
 \item Linear regression assumes data linearity.
-\item RF has heavy reliance on ligand features.
+\item Random Forest has heavy reliance on ligand features.
 \item Both models were black box models.
-\item Testing results were sometimes better than validation results. This is because test data $<$ validation data.
+\item Genetic feature selection was not helpful for Random Forests.
+\item Testing results were sometimes better than validation results. It is because test data $<$ validation data.
 But the difference is minimal.
 \end{itemize} 
 \end{frame}
@@ -507,13 +566,98 @@ $$
 
 \section{Appendix}
 
-\begin{frame}[t]{Appendix}
+\begin{frame}[t]{Appendix - Definitions}
 
 \begin{itemize}
 \item Binding affinity between a protein and a ligand is quantified by the $K_d$, $K_i$ and $IC_{50}$.
 Here $K_d$ refers to the dissociation constant, $K_i$ to inhibition constant, and $IC_{50}$ to 
 inhibitory concentration 50\%.
 \end{itemize}
+\end{frame}
+
+\begin{frame}[t]{Appendix - Visualizing Linear Regression results}
+\begin{figure}
+     \centering
+     \begin{subfigure}[b]{0.45\textwidth}
+         \centering
+         \includegraphics[scale=0.35]{images/accuracyValidateLGHyperbolic}
+         \caption{Validation Accuracy.}
+        \label{fig:accuracyValidateLGHyperbolic}
+     \end{subfigure}
+     \hfill
+     \begin{subfigure}[b]{0.45\textwidth}
+         \centering
+         \includegraphics[scale=0.35]{images/accuracytestLGHyperbolic}
+        \caption{Test Accuracy.}
+        \label{fig:accuracytestLGHyperbolic}
+     \end{subfigure}
+     \caption{Linear Model using Hyperbolic weighting and all 49 features selected by genetic algorithm.}
+     \label{fig:BestLinearModel}
+\end{figure}
+\end{frame}
+
+\begin{frame}[t]{Appendix - Visualizing Random Forest results}
+\begin{figure}
+     \centering
+     \begin{subfigure}[b]{0.45\textwidth}
+         \centering
+         \includegraphics[scale=0.35]{images/accuracyRFRvalidate}
+         \caption{Validation Accuracy.}
+        \label{fig:accuracyRFRvalidate}
+     \end{subfigure}
+     \hfill
+     \begin{subfigure}[b]{0.45\textwidth}
+         \centering
+         \includegraphics[scale=0.35]{images/accuracyRFRtest}
+        \caption{Testing Accuracy.}
+        \label{fig:accuracyRFRtest}
+     \end{subfigure}
+     \caption{Random Forest Regressor with 176 manually selected features and hyperbolic weighting.}
+     \label{fig:RFMModel}
+\end{figure}
+\end{frame}
+
+
+\begin{frame}[t]{Appendix - Visualizing SVR Results}
+\begin{figure}
+     \centering
+     \begin{subfigure}[b]{0.45\textwidth}
+         \centering
+         \includegraphics[scale=0.35]{images/SVRvalidate}
+         \caption{Validation accuracy.}
+        \label{fig:SVRvalidate}
+     \end{subfigure}
+     \hfill
+     \begin{subfigure}[b]{0.45\textwidth}
+         \centering
+         \includegraphics[scale=0.35]{images/SVRtest}
+        \caption{Testing accuracy.}
+        \label{fig:SVRtest}
+     \end{subfigure}
+     \caption{SVR accuracy visualization for all features 457 and Linear weighting.}
+     \label{fig:SVRaccuracy}
+\end{figure}
+\end{frame}
+
+\begin{frame}[t]{Appendix - Visualizing Rotation Forest Results}
+\begin{figure}
+     \centering
+     \begin{subfigure}[b]{0.45\textwidth}
+         \centering
+         \includegraphics[scale=0.35]{images/accuracyRotationFRvalidate}
+         \caption{Validation accuracy.}
+        \label{fig:accuracyRotationFRvalidate}
+     \end{subfigure}
+     \hfill
+     \begin{subfigure}[b]{0.45\textwidth}
+         \centering
+         \includegraphics[scale=0.35]{images/accuracyRotationFRtest}
+        \caption{Testing accuracy.}
+        \label{fig:accuracyRotationFRtest}
+     \end{subfigure}
+     \caption{Rotation Forest Accuracy visualization for manually selected features (176).  The rotation forest implementation does not support data weighting.}
+     \label{fig:RotationForestAccuracy}
+\end{figure}
 \end{frame}
 
 \end{document}
