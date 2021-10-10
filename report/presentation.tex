@@ -352,6 +352,85 @@ Also Note:
 \end{frame}
 
 \begin{frame}[t]{Random Forest Regression}
+\textbf{Introduction}
+\begin{itemize}
+\item It is a non-linear ensemble model of regression trees.  (Sampling with replacement aka Bagging is used)
+\item For each tree,  the data is split recursively till a stopping criterion.  Each data subset has lesser entropy than the superset.
+\item There is no need for any assumption w.r.t data.
+\item Additional feature selection strategy: Genetic Elitism.
+\end{itemize}
+\textbf{Dealing with correlated features}
+\begin{itemize}
+\item The RF was forced to randomly use only 20\% of the features to determine the best (feature, value) combination for each split step.
+\item The RF model does not depend on some features exclusively.
+\item The correlated features were used as an advantage.
+\end{itemize}
+\end{frame}
+ 
+ \begin{frame}[t]{Random Forest Regression}
+\textbf{Feature Importances}
+\begin{itemize}
+\item \textbf{Gini Importance:} (Provided by the RF model) 
+\begin{itemize}
+\item The most important features are the ones that contribute the most in the reduction in entropy.
+\end{itemize}  
+\item \textbf{Permutation Importance:} (Model agnostic)
+\begin{itemize}
+\item The most important features are the ones that are most relevant for prediction accuracy.
+\end{itemize}
+$$\mathrm{Importance}(f) = \mathrm{Accuracy_{pred}}(X) - \mathrm{Accuracy_{pred}}(X_{f\_shuffled})$$
+\end{itemize}
+
+\textbf{Genetic feature selection}
+\begin{itemize}
+\item Fitting an RF model is expensive.  However evaluation of feature importance is cheap.
+\item Hence the following scoring function is used,  $s = \mathrm{Importance}(f_1,  f_2 ... ) * \mathrm{features\_eliminated}$
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}[t]{Random Forest Regression}
+
+\begin{figure}
+     \centering
+     \begin{subfigure}[b]{0.49\textwidth}
+         \centering
+         \includegraphics[scale=0.23]{images/Gini_importance}
+         \caption{Gini importance.}
+        \label{fig:GiniImportanceLabel}
+     \end{subfigure}
+     \hfill
+     \begin{subfigure}[b]{0.49\textwidth}
+         \centering
+         \includegraphics[scale=0.23]{images/Permutation_importance}
+        \caption{Permutation importance.}
+        \label{fig:PermutationImportanceLabel}
+     \end{subfigure}
+     \caption{Feature Importance calculation of Random Forest Regressor (With manual feature selection).}
+     \label{fig:RFMFILable}
+\end{figure}
+
+\begin{table} [h!]
+\centering
+\resizebox{0.7\linewidth}{!} {
+ \begin{tabular}{ | c | c |  c | c | c | c | c |}
+\hline
+\textbf{No.  Features} & \textbf{Feature Selection} & \textbf{Weighting} & \textbf{Training} & \textbf{Validation} & \textbf{OOB score} & \textbf{Testing} \\ [0.5 ex]
+\hline \hline
+457 & - & - & 0.961 & 0.790 & 0.791 & 0.447\\
+457 & - & Hyperbolic &  0.961 & 0.773 & 0.794 & 0.448\\
+457 & - & Linear &  0.960 & 0.785 & 0.794 & 0.443\\
+40 & Spearman Correlation & Hyperbolic &  0.930 & 0.664 & 0.671 & 0.878  \\ 
+40 & Pearson Correlation & Hyperbolic &  0.925 & 0.642 & 0.645 & 0.868  \\ 
+229 & Genetic Elitism & Hyperbolic  & 0.958 &  0.779 & 0.793 & 0.444 \\
+394 & Genetic Normal& Hyperbolic & 0.961 & 0.776 & 0.795 & 0.448 \\
+\textbf{176} & \textbf{manual}  & \textbf{Hyperbolic} &  \textbf{0.949} & \textbf{0.734} & \textbf{0.736} & \textbf{0.463}  \\ [1ex]
+\hline
+\end{tabular}
+}
+\caption{Random Forest Regression $R^2$ Score table.}
+\label {table:3}
+\end{table}
 
 \end{frame}
 
