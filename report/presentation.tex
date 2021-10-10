@@ -4,7 +4,6 @@
 \graphicspath{ {./images/} }
 \usepackage{amsmath}
 
-
 \usepackage{amssymb}
 \usepackage{algpseudocode}
 \usepackage{algorithm}
@@ -273,9 +272,6 @@ $ W_\mathrm{Hyperbolic} = \frac{ \mathrm{\max{R_{1 ...  n}}}}{R_i}  \;\; W_\math
 \end{figure}
 \end{frame}
 
-\section{Machine Learning Models}
-\begin{frame}[t]{Machine Learning models}
-\end{frame}
 
 \section{Testing strategy}
 
@@ -300,19 +296,70 @@ The best plot is $y = x$ line which corresponds to the best $R^2$ score of 1.0.
 
 \end{frame}
 
-\section{Results}
-\subsection{Simple Linear Regression}
-\subsection{Random Forest Regression}
-\subsection{Support Vector Regression}
-\subsection{Rotation Forest Regression}
-
-
-\begin{frame}[t]{Results}
-Results:
+\section{Machine Learning Models \& Results}
+\begin{frame}[t]{Machine Learning models}
+The ML model should approximate the following function:
+$$ \textrm{Binding affinity prediction} : \mathbf{R}^n \mapsto \mathbf{R} \;\; \textrm{where} \;\; n \in \mathbf{I}^+$$
+The following ML models were studied
 \begin{itemize}
-\item 2,3,4
-\item
-\end{itemize} 
+\item Simple Linear Regression
+\item Random Forest Regression
+\item Support Vector Regression
+\item Rotation Forest Regression
+\end{itemize}
+Also Note:
+\begin{itemize}
+\item DNNs cold not be used due to lack of data.  
+\item The project only had $\approx 16000$ data points to train.
+\item A simple DNN a model of size $[457,  20, 10,  1]$ has 9350 parameters.
+\item The DNN would overfit drastically.
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}[t]{Simple Linear Regression}
+\begin{itemize}
+\item This model approximates the binding affinity using a linear hyperplane.  (By minimizing the square of errors).
+\item It is the cheapest computational model.
+\item Assumes strong linear relationship between input features and binding affinity.
+\item Genetic algorithms sucessfully used for feature selection.
+\end{itemize}
+
+\begin{table} [h!]
+\centering
+\resizebox{0.75\linewidth}{!} {
+\begin{tabular}{ | c | c | c | c | c | c | }
+\hline
+\textbf{No.  features} & \textbf{Feature selection} & \textbf{Weighting} & \textbf{Training} & \textbf{Validation} & \textbf{Testing} \\ [0.5 ex]
+\hline \hline
+457 & - & - & 0.461 & 0.415 & 0.320\\
+457 &  - & Hyperbolic & 0.454 & 0.427 & 0.337\\
+457 & - & Hyperbolic duplication & 0.465 & 0.416 & 0.326\\
+457 & - & Linear & 0.458 & 0.419 & 0.328\\
+457 & - & Linear Duplication & 0.460 & 0.428 & 0.327\\
+\textbf{49} & \textbf{Genetic} & \textbf{Hyperbolic} & \textbf{$\approx$0.377} & \textbf{$\approx$0.374}  & \textbf{$\approx$0.364}\\
+40 & Pearson Correlation & Hyperbolic & 0.287 & 0.278  & 0.285 \\ 
+40 & Spearman Correlation & Hyperbolic & 0.289 & 0.294  & 0.290 \\ 
+176 & Manual & Hyperbolic & 0.362  & 0.346  & 0.331\\ [1ex]
+\hline
+\end{tabular}
+}
+\caption{$R^2$ scores of the Linear Regression Model.}
+\label {table:1}
+\end{table}
+
+\end{frame}
+
+\begin{frame}[t]{Random Forest Regression}
+
+\end{frame}
+
+\begin{frame}[t]{Support Vector Regression}
+
+\end{frame}
+
+\begin{frame}[t]{Rotation Forest Regression}
+
 \end{frame}
 
 \section{Discussion}
@@ -387,7 +434,6 @@ $$
 Here $K_d$ refers to the dissociation constant, $K_i$ to inhibition constant, and $IC_{50}$ to 
 inhibitory concentration 50\%.
 \end{itemize}
-
 \end{frame}
 
 \end{document}
