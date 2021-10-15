@@ -390,8 +390,9 @@ $$\mathrm{Importance}(f) = \mathrm{Accuracy_{pred}}(X) - \mathrm{Accuracy_{pred}
 
 \textbf{Genetic feature selection}
 \begin{itemize}
-\item Fitting an RF model is expensive.  However evaluation of feature importance is cheap.
-\item Hence the following scoring function is used,  $s = \mathrm{Importance}(f_1,  f_2 ... ) * \mathrm{features\_eliminated}$
+\item Consider a chromosome $\mathrm{ch} = [10011....1...]$
+\item $\mathrm{Score}(\mathrm{ch}) = \mathrm{Importance}(f_1,  f_4, f_5 ..f_{17}... ) * \mathrm{FeaturesEliminated}$
+\item Reason for using different scoring function: Fitting an RF model is expensive whereas feature importance evaluation is cheap.
 \end{itemize}
 
 \end{frame}
