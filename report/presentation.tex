@@ -232,12 +232,14 @@ Feature selection strategies:
 
 \begin{frame}[t]{Dealing with measurement resolution}
 \begin{itemize}
-\item In PDB bind databank,  each complex has a corresponding measurement resolution (\si{\angstrom} units).
-\item The structural
-detail of the 3D image is inversely proportional to the measurement
-resolution.
-\item The weighting of each data point was done according to hyperbolic formulae (or) linear formulae:
-$ W_\mathrm{Hyperbolic} = \frac{ \mathrm{\max{R_{1 ...  n}}}}{R_i}  \;\; W_\mathrm{Linear}  = (\mathrm{\max{R_{1 ...  n}}} + 1) - R_i $
+\item Each complex has a measurement resolution (\si{\angstrom} units).
+\item Data quality (3D image detail) $\propto \frac{1}{\mathrm{Measurement
+Resolution}}$
+\item The weighting of the data point was done by
+\begin{itemize}
+\item Hyperbolic Weighting: $ W_\mathrm{Hyperbolic} = \frac{ \mathrm{\max{R_{1 ...  n}}}}{R_i}$
+\item Linear Weighting: $W_\mathrm{Linear}  = (\mathrm{\max{R_{1 ...  n}}} + 1) - R_i$
+\end{itemize} 
 \end{itemize}
 
 \begin{figure}
@@ -278,9 +280,12 @@ $ W_\mathrm{Hyperbolic} = \frac{ \mathrm{\max{R_{1 ...  n}}}}{R_i}  \;\; W_\math
 \section{Testing strategy}
 
 \begin{frame}[t]{Testing strategy}
-For every execution, we report the \textbf{random seed} used in it.
-This random seed can be used as a script argument (Execution ID) to reproduce the exact results. To determine the result quality we use:
+\textbf{Reproducibilty}:
+\begin{itemize}
+\item \textbf{Random Seed} (Execution ID) reported for every execution.
+\end{itemize}
 
+\textbf{Result quality analysis}:
 \begin{itemize}
 \item $\mathbf{R}^2$ \textbf{score} (\textit{Coefficient of determination}): $R^2  \in (- \infty, 1.0]$ where $1.0$ is the best score. 
 \item \textbf{Visualization:}
