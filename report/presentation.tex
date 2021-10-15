@@ -213,7 +213,11 @@ Feature selection strategies:
 \begin{itemize}
 \item \textbf{Manual:} 121 ligand descriptors given by domain expert + all protein descriptors.
 \item \textbf{Output Correlation}: Features with the best \textit{Pearson} or \textit{Spearman} correlation w.r.t the affinity score (output) were selected.
-\item \textbf{Genetic Algorithms}: Genetic algorithms with a population score function "$ \mathbf{R}2 \; \textrm{score} * \textrm{Features Eliminated} $" was used to select the best features \cite{geneticalgorithmsresearchpaper}:
+\item \textbf{Genetic Algorithms}:  \cite{geneticalgorithmsresearchpaper}
+\begin{itemize}
+\item Each chromosome is represented by $\mathbf{B}^{457}$.  (E.g $[1100..10..]$)
+\item $\mathrm{Chromosome Score} = \mathrm{Model}\_\mathbf{R2}_{score} * \textrm{Features Eliminated}$
+\end{itemize}
 
 \begin{figure}[htb]
   \centering
