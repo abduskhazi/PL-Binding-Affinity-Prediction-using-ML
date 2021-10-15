@@ -250,8 +250,7 @@ $ W_\mathrm{Hyperbolic} = \frac{ \mathrm{\max{R_{1 ...  n}}}}{R_i}  \;\; W_\math
 \begin{frame}[t]{Feature Family Correlations}
 \begin{itemize}
 \item Features can be divided into families.
-\item Important ones are - AUTOCORR2d\_, Chi, EState\_VSA,  PEOE\_VSA,  SMR\_VSA,  SlogP\_VSA,  VSA\_EState, and fr\_.
-\item Within Chi and AUTOCORR2d\_, the features are correlated.
+\item Within some families, the features are correlated.
 \item ML models need to take into account this issue.
 \end{itemize}
 \begin{figure}[htb]
@@ -266,7 +265,7 @@ $ W_\mathrm{Hyperbolic} = \frac{ \mathrm{\max{R_{1 ...  n}}}}{R_i}  \;\; W_\math
          \includegraphics[scale=0.25]{images/correlationAUTOCORR2D}
         \label{fig:correlationfr}
      \end{subfigure}
-     \caption{Correlation Heat Map.}
+     \caption{Correlation Heat Map of families: Chi (left) and AUTOCORR2d\_ (right).}
      \label{fig:correlationheatmap}
 \end{figure}
 \end{frame}
