@@ -211,7 +211,7 @@ There are various problems in the protein-ligand domain.  The following figure s
 \begin{frame}[t]{Feature Selection}
 Feature selection strategies:
 \begin{itemize}
-\item \textbf{Manual:} 121 ligand descriptors + all protein descriptors.
+\item \textbf{Manual:} 121 ligand descriptors given by domain expert + all protein descriptors.
 \item \textbf{Output Correlation}: Features with the best \textit{Pearson} or \textit{Spearman} correlation w.r.t the affinity score (output) were selected.
 \item \textbf{Genetic Algorithms}: Genetic algorithms with a population score function "$ \mathbf{R}2 \; \textrm{score} * \textrm{Features Eliminated} $" was used to select the best features \cite{geneticalgorithmsresearchpaper}:
 
@@ -469,7 +469,7 @@ $$\mathrm{Importance}(f) = \mathrm{Accuracy_{pred}}(X) - \mathrm{Accuracy_{pred}
 \begin{frame}[t]{Rotation Forest Regression}
 \begin{itemize}
 \item Random forest trees divide data using axis aligned hyperplanes.
-\item The complexity of the trees can be reduced by linearly transforming (rotating) the data.  The eigen vectors of the training data become the basis vector.  For example:
+\item The complexity of the trees can be reduced by linearly transforming (rotating) the data.  The eigen vectors of the training data become the basis vectors.  For example:
 \begin{itemize}
 \item Representing $y = kx$ would take a very deep tree.
 \item If $y = kx$ is linearly transformed to $y = 0$,  only 1 node is enough.
