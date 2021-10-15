@@ -139,7 +139,9 @@ There are various problems in the protein-ligand domain.  The following figure s
 
 \end{frame}
 
-\begin{frame}[t]{Problem Definition}
+\section{Data Processing and Analysis}
+
+\begin{frame}[t]{Feature Extraction}
 
 \begin{itemize}
 \item The input data to the ML model is extracted from a database called PDB Data bank.
@@ -157,8 +159,6 @@ There are various problems in the protein-ligand domain.  The following figure s
 
 \end{frame}
 
-\section{Data Processing and Analysis}
-
 \begin{frame}[t]{Feature Extraction}
 \textbf{Protein Features:}
 \begin{itemize}
@@ -174,7 +174,7 @@ There are various problems in the protein-ligand domain.  The following figure s
 
 \textbf{Concatenation:}
 \begin{itemize}
-\item The (concatinated) input feature space to the model was $\mathbf{R}^{457}$.
+\item The (concatenated) input feature space to the model was $\mathbf{R}^{457}$.
 \item It was less than $\mathbf{R}^{457}$ if feature selection is done before model training.
 \end{itemize}
 
@@ -183,7 +183,7 @@ There are various problems in the protein-ligand domain.  The following figure s
 \begin{frame}[t]{Data Preprocessing}
 \begin{itemize}
 \item Data points containing NaN (Not a number) values were removed from the data.
-\item PCA (Principle Component Analysis) was used to find the variance contribution of the features.
+\item PCA (Principal Component Analysis) was used to find the variance contribution of the features.
 \item Feature \textit{IPC} was log scaled for numerical safety during training.
 \end{itemize}
 
