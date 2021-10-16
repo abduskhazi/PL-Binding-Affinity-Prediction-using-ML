@@ -127,18 +127,6 @@ Here $[P] = $ Protein concentration, $[L] = $ Ligand concentration and $[PL] = $
 
 \end{frame}
 
-\begin{frame}[t]{Problem Definition}
-There are various problems in the protein-ligand domain.  The following figure shows the classification tree.
-
-\begin{figure}[htb]
-  \centering
-    \includegraphics[scale=0.35]{images/pl_problem_classification}
-    \caption{Protein-Ligand problem classification.}
-    \label{fig:plproblemclassification}
-\end{figure}
-
-\end{frame}
-
 \section{Data Processing and Analysis}
 
 \begin{frame}[t]{Feature Extraction}
@@ -233,28 +221,6 @@ Resolution}}$
 \end{frame}
 
 
-\begin{frame}[t]{Feature Family Correlations}
-\begin{itemize}
-\item Features can be divided into families.
-\item Within some families, the features are correlated.
-\item ML models need to take into account this issue.
-\end{itemize}
-\begin{figure}[htb]
-    \begin{subfigure}[b]{0.49\textwidth}
-         \centering
-         \includegraphics[scale=0.25]{images/correlationChi}
-        \label{fig:correlationChi}
-     \end{subfigure}
-     \hfill
-    \begin{subfigure}[b]{0.49\textwidth}
-         \centering
-         \includegraphics[scale=0.25]{images/correlationAUTOCORR2D}
-        \label{fig:correlationfr}
-     \end{subfigure}
-     \caption{Correlation Heat Map of families: Chi (left) and AUTOCORR2d\_ (right).}
-     \label{fig:correlationheatmap}
-\end{figure}
-\end{frame}
 
 
 \section{Testing strategy}
@@ -563,6 +529,20 @@ inhibitory concentration 50\%.
 \end{itemize}
 \end{frame}
 
+\begin{frame}[t]{Appendix - PL Problem Classification}
+There are various problems in the protein-ligand domain.  The following figure shows the classification tree.
+
+\begin{figure}[htb]
+  \centering
+    \includegraphics[scale=0.35]{images/pl_problem_classification}
+    \caption{Protein-Ligand problem classification.}
+    \label{fig:plproblemclassification}
+\end{figure}
+
+\end{frame}
+
+
+
 \begin{frame}[t]{Appendix - Feature Extraction}
 \textbf{Protein Features:}
 \begin{itemize}
@@ -582,6 +562,30 @@ inhibitory concentration 50\%.
 \item It was less than $\mathbf{R}^{457}$ if feature selection is done before model training.
 \end{itemize}
 
+\end{frame}
+
+
+\begin{frame}[t]{Appendix - Feature Family Correlations}
+\begin{itemize}
+\item Features can be divided into families.
+\item Within some families, the features are correlated.
+\item ML models need to take into account this issue.
+\end{itemize}
+\begin{figure}[htb]
+    \begin{subfigure}[b]{0.49\textwidth}
+         \centering
+         \includegraphics[scale=0.25]{images/correlationChi}
+        \label{fig:correlationChi}
+     \end{subfigure}
+     \hfill
+    \begin{subfigure}[b]{0.49\textwidth}
+         \centering
+         \includegraphics[scale=0.25]{images/correlationAUTOCORR2D}
+        \label{fig:correlationfr}
+     \end{subfigure}
+     \caption{Correlation Heat Map of families: Chi (left) and AUTOCORR2d\_ (right).}
+     \label{fig:correlationheatmap}
+\end{figure}
 \end{frame}
 
 
