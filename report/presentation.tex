@@ -147,6 +147,7 @@ There are various problems in the protein-ligand domain.  The following figure s
 \item The input data to the ML model is extracted from a database called PDB Data bank.
 \item \textit{fpocket} and \textit{RDKit} were used to extract the features of proteins and ligands.
 \item The input features contain information about the 3D structures of the proteins and the ligands.
+\item Protein Features (55) + Ligand Features (402) = 457 features
 \end{itemize}
 
 \begin{figure}[htb]
@@ -156,27 +157,6 @@ There are various problems in the protein-ligand domain.  The following figure s
     \label{fig:projectoverviewimage}
 \end{figure}
 
-
-\end{frame}
-
-\begin{frame}[t]{Feature Extraction}
-\textbf{Protein Features:}
-\begin{itemize}
-\item \textit{fpocket} is an LBS prediction algorithm used to predict ligand binding pockets.
-\item There can be multiple binding pockets for a PL complex.
-\item Using \textit{dpocket},  $55$ descriptors were obtained for every (potentially) binding pocket as real values.
-\end{itemize}
-
-\textbf{Ligand Features:}
-\begin{itemize}
-\item Using \textit{RDKit.Chem.Descriptors} module,  $402$ features were extracted as real values.
-\end{itemize}
-
-\textbf{Concatenation:}
-\begin{itemize}
-\item The (concatenated) input feature space to the model was $\mathbf{R}^{457}$.
-\item It was less than $\mathbf{R}^{457}$ if feature selection is done before model training.
-\end{itemize}
 
 \end{frame}
 
@@ -492,7 +472,7 @@ $$\mathrm{Importance}(f) = \mathrm{Accuracy_{pred}}(X) - \mathrm{Accuracy_{pred}
 \resizebox{0.7\linewidth}{!} {
  \begin{tabular}{ | c | c | c | c | c | }
 \hline
-\textbf{No.  Features} & \textbf{Selected} & \textbf{Training} & \textbf{Validation} & \textbf{Testing} \\ [0.5 ex]
+\textbf{No.  Features} & \textbf{Feature Selection} & \textbf{Training} & \textbf{Validation} & \textbf{Testing} \\ [0.5 ex]
 \hline \hline
 457 & - & 0.967 & 0.767 & 0.449\\
 40 & Spearman Correlation & 0.952 & 0.650 & 0.890\\
@@ -584,20 +564,42 @@ inhibitory concentration 50\%.
 \end{itemize}
 \end{frame}
 
+\begin{frame}[t]{Appendix - Feature Extraction}
+\textbf{Protein Features:}
+\begin{itemize}
+\item \textit{fpocket} is an LBS prediction algorithm used to predict ligand binding pockets.
+\item There can be multiple binding pockets for a PL complex.
+\item Using \textit{dpocket},  $55$ descriptors were obtained for every (potentially) binding pocket as real values.
+\end{itemize}
+
+\textbf{Ligand Features:}
+\begin{itemize}
+\item Using \textit{RDKit.Chem.Descriptors} module,  $402$ features were extracted as real values.
+\end{itemize}
+
+\textbf{Concatenation:}
+\begin{itemize}
+\item The (concatenated) input feature space to the model was $\mathbf{R}^{457}$.
+\item It was less than $\mathbf{R}^{457}$ if feature selection is done before model training.
+\end{itemize}
+
+\end{frame}
+
+
 \begin{frame}[t]{Appendix - Visualizing Linear Regression results}
 \begin{figure}
      \centering
      \begin{subfigure}[b]{0.45\textwidth}
          \centering
          \includegraphics[scale=0.35]{images/accuracyValidateLGHyperbolic}
-         \caption{Validation Accuracy.}
+         \caption{Validation accuracy.}
         \label{fig:accuracyValidateLGHyperbolic}
      \end{subfigure}
      \hfill
      \begin{subfigure}[b]{0.45\textwidth}
          \centering
          \includegraphics[scale=0.35]{images/accuracytestLGHyperbolic}
-        \caption{Test Accuracy.}
+        \caption{Testing accuracy.}
         \label{fig:accuracytestLGHyperbolic}
      \end{subfigure}
      \caption{Linear Model using Hyperbolic weighting and all 49 features selected by genetic algorithm.}
@@ -611,14 +613,14 @@ inhibitory concentration 50\%.
      \begin{subfigure}[b]{0.45\textwidth}
          \centering
          \includegraphics[scale=0.35]{images/accuracyRFRvalidate}
-         \caption{Validation Accuracy.}
+         \caption{Validation accuracy.}
         \label{fig:accuracyRFRvalidate}
      \end{subfigure}
      \hfill
      \begin{subfigure}[b]{0.45\textwidth}
          \centering
          \includegraphics[scale=0.35]{images/accuracyRFRtest}
-        \caption{Testing Accuracy.}
+        \caption{Testing accuracy.}
         \label{fig:accuracyRFRtest}
      \end{subfigure}
      \caption{Random Forest Regressor with 176 manually selected features and hyperbolic weighting.}
