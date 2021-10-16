@@ -338,7 +338,7 @@ $$\mathrm{Importance}(f) = \mathrm{Accuracy_{pred}}(X) - \mathrm{Accuracy_{pred}
 \begin{itemize}
 \item Consider a chromosome $\mathrm{ch} = [10011....1...]$
 \item $\mathrm{Score}(\mathrm{ch}) = \mathrm{Importance}(f_1,  f_4, f_5 ..f_{17}... ) * \mathrm{FeaturesEliminated}$
-\item Reason for using different scoring function: Fitting an RF model is expensive whereas feature importance evaluation is cheap.
+\item Reason for using different scoring function: Fitting an RF model is expensive ($\approx 25.86$s) whereas feature importance evaluation is cheap ($\approx  0.0008$s).
 \end{itemize}
 
 \end{frame}
