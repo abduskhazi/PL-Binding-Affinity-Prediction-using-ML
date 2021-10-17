@@ -184,7 +184,7 @@ Feature selection strategies:
 \item \textbf{Genetic Algorithms}:  \cite{geneticalgorithmsresearchpaper}
 \begin{itemize}
 \item Each chromosome is represented by $\mathbf{B}^{457}$.  (E.g $[1100..10..]$)
-\item $\mathrm{Chromosome Score} = \mathrm{Model}\_\mathbf{R2}_{score} * \textrm{Features Eliminated}$
+\item $\mathrm{Chromosome Score} = \mathrm{Model}\_\mathbf{R}^2_{score} * \textrm{Features Eliminated}$
 \end{itemize}
 
 \begin{figure}[htb]
@@ -391,7 +391,7 @@ $$\mathrm{Importance}(f) = \mathrm{Accuracy_{pred}}(X) - \mathrm{Accuracy_{pred}
 \begin{frame}[t]{Support Vector Regression}
 \begin{itemize}
 \item It is a non linear model.
-\item It fits a $\epsilon$ radius pipe to the data.
+\item It fits an $\epsilon$ radius pipe to the data.
 \item The model was not suitable for running genetic algorithms (for both normal and permutation genetics).  Training took $\approx 99.07 s$ and validation took $\approx 27.01 s$.
 \item Features were selected using either output correlation or manual feature selection.
 \item Contrary to other models,  linear weighting of data gave the best results.
