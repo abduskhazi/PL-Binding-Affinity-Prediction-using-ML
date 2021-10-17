@@ -39,29 +39,28 @@
 \tableofcontents
 \newpage
 
-\section{Abstract}
+\begin{abstract}
 
 Drug Discovery is the process of finding new drugs against potential diseases or medical conditions in living organisms.
 There is a need to find new medications quickly since new diseases are being discovered rapidly in biology.
-It becomes more urgent if the diseases are very contagious similar to the Covid-19 pandemic.
 However, the process of finding the candidate drug is expensive and time-consuming.
-Biologists or chemists discover potential drugs by doing wet-lab experiments.
+All potential drugs need to be tested in wet-lab experiments.
 The issue with wet-lab experiments is that most potential drugs, also known as leads, are not suitable for use and are discarded.
 
-One way to reduce the cost and time for drug discovery is by taking the help of computers or computer algorithms to select the drugs. The methods that use computer algorithms in the drug discovery process are called in-silico methods.
-This project is one such in-silico method. It aims to predict the binding affinity between a potential drug and the target protein. 
-It trains a machine learning model using historical data of protein and ligand binding affinities.
-Figure~\ref{fig:ProjectOverviewImage}  shows an overview of what the project aims to solve.
+This project tries to reduce the cost of drug discovery by predicting the binding affinities between the potential drugs (ligands) and the target proteins responsible for diseases or conditions.
+It uses the data of Protein-Ligand complexes stored in the PDB Data Bank to train a machine learning model.
+From every complex, features related to proteins are extracted by using a pocket finding toolchain called \textit{fpocket}. The features related to the ligands are extracted using the \textit{RDKit} python library.
 
-The project aims to help scientists to make informed decisions when trying to eliminate bad leads. Potential drugs could also be prioritized for wet-lab experiments using the binding affinity prediction of the ML models in this project.
+The complexity of ML models was reduced in this project by using manual, output correlation, and genetic feature selection strategies.
+In addition to this,  data points were weighted according to their quality of measurement.
+Four ML models were studied in this project - Simple Linear Regression,  Random Forest Regression,  Support Vector Regression, and Rotation Forest Regression.
 
+The project concludes that the best ML model for the Protein-Ligand binding prediction problem is the \textit{Random Forest Regression}.
+This model gave the best generalization results (Testing $\mathbf{R}2$ score $> 0.46$).
+There was also no need for any assumption with respect to the data required for training the RFR model.
+In addition to this, the model could make itself more robust by using the correlations between different input features to its advantage.
 
-\begin{figure}[htb]
-  \centering
-    \includegraphics[scale=0.4]{images/ProjectOverview}
-    \caption{Project Overview}
-    \label{fig:ProjectOverviewImage}
-\end{figure}
+\end{abstract}
 
 \newpage
 
