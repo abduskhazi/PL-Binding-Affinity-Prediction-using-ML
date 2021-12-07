@@ -1,6 +1,7 @@
-# MSc-Project
+# Protein-Ligand Binding Affinity Prediction using ML
 This repository is maintained for the documentation and coding of the MSc project in Bioinformatics Lab @ Uni-Freiburg.
 Please read the file `[repo]/report/report.pdf` to get an idea of the project.
+All references have been quoted by the best of my knowledge. If any discrepencies are found, please report using "Reporting Issues" option.
 
 ## Setup
 * Please clone the repository. Let this folder be `repo`
