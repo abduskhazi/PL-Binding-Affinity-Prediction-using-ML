@@ -1,6 +1,6 @@
 # MSc-Project
-This repository is maintained for the documentation and coding of the MSc project.
-Please read the weekly notes committed to get an idea about the work done till now in the project.
+This repository is maintained for the documentation and coding of the MSc project in Bioinformatics Lab @ Uni-Freiburg.
+Please read the file [repo]/report/report.pdf to get an idea of the project.
 
 ## Setup
 * Please clone the repository. Let this folder be `repo`
